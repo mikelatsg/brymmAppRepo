@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/itemPedidoLlPedido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/itemPedidoTvIdPedido"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/item_pedido_id_pedido" />
+
+        <TextView
+            android:id="@+id/itemPedidoTvNombreLocal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/item_pedido_local" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/itemPedidoLlPrecio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/itemPedidoTvPrecio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/item_pedido_precio" />
+
+        <TextView
+            android:id="@+id/itemPedidoTvEstado"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/item_pedido_estado" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/itemPedidoLlFechas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/itemPedidoTvFechaPedido"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/item_pedido_fecha_pedido" />
+
+        <TextView
+            android:id="@+id/itemPedidoTvFechaEntrega"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/item_pedido_fecha_entrega" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/itemPedidoTvDireccionEnvio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/item_pedido_direccion" />
+
+</LinearLayout>

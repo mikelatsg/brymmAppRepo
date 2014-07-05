@@ -1,0 +1,74 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/hacerPedidoLlPrincipal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".HacerPedidoFragment" >
+
+    <LinearLayout
+        android:id="@+id/hacerPedidoLlBotones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/hacerPedidoBtAnadirArticulo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/hacer_pedido_anadir_articulo"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/hacerPedidoBtTerminarPedido"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/hacer_pedido_terminar_pedido"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/hacerPedidoEtObservaciones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/hacer_pedido_observaciones"
+        android:inputType="textMultiLine"
+        android:textSize="12sp" />
+
+    <LinearLayout
+        android:id="@+id/hacerPedidoLlFecha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <CheckBox
+            android:id="@+id/hacerPedidoCbfecha"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/hacer_pedido_retrasar_pedido"
+            android:textSize="12sp" />
+
+        <EditText
+            android:id="@+id/hacerPedidoEtFecha"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:textSize="12sp" >
+        </EditText>
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/hacerPedidoLvListaArticulos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+
+</LinearLayout>

@@ -1,0 +1,135 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/anadirHorarioLocalLlPrincipal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".AnadirReservaFragment" >
+
+    <LinearLayout
+        android:id="@+id/nuevaReservaLocalLlBotones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/nuevaReservaLocalBtAceptar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/nueva_reserva_local_realizar_reserva" />
+
+        <Button
+            android:id="@+id/nuevaReservaLocalBtCancelar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/nueva_reserva_local_cancelar" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/nuevaReservaLocalLlFecha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <EditText
+            android:id="@+id/nuevaReservaLocalEtFecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/nueva_reserva_local_fecha" >
+        </EditText>
+
+        <EditText
+            android:id="@+id/nuevaReservaLocalEtHora"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/nueva_reserva_local_hora" >
+        </EditText>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/nuevaReservaLocalEtNumeroPersonas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/nueva_reserva_local_numero_personas"
+        android:inputType="number" />
+
+    <Spinner
+        android:id="@+id/nuevaReservaLocalSpTipoMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/nuevaReservaLocalEtNombreDe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/nueva_reserva_local_nombre_de" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/nuevaReservaLocalEtObservaciones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/nueva_reserva_local_observaciones"
+        android:inputType="textMultiLine" />
+
+    <LinearLayout
+        android:id="@+id/nuevaReservaLocalLlMesas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/nuevaReservaLocalLlMesasAsignadas"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/nuevaReservaLocalTvMesasAsignadas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nueva_reserva_local_mesas_asignadas"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <ListView
+                android:id="@+id/nuevaReservaLocalLvMesasAsignadas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </ListView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/nuevaReservaLocalLlMesasLibres"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/nuevaReservaLocalTvMesasLibres"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nueva_reserva_local_mesas_libres"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <ListView
+                android:id="@+id/nuevaReservaLocalLvMesasLibres"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </ListView>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

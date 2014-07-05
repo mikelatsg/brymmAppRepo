@@ -1,0 +1,33 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menuUsuarioUltimosPedidos"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/menu_usuario_ultimos_pedidos"/>    
+        
+    <item
+        android:id="@+id/menuUsuarioDirecciones"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/menu_usuario_direcciones"/>  
+        
+    <item
+        android:id="@+id/menuUsuarioBuscador"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/menu_usuario_buscador"/>  
+        
+    <item
+        android:id="@+id/menuUsuarioLocalesFavoritos"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/menu_usuario_locales_favoritos"/>  
+    
+    <item
+        android:id="@+id/menuUsuarioUltimasReservas"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/menu_usuario_ultimas_reservas"/>
+
+</menu>

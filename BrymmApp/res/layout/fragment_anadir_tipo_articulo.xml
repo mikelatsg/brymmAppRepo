@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/hacerPedidoLlPrincipal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".HacerPedidoFragment" >
+
+    <Spinner
+        android:id="@+id/anadirTipoArticuloSpTipoArticulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/anadirTipoArticuloEtPrecio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberDecimal" >
+    </EditText>
+
+    <CheckBox
+        android:id="@+id/anadirTipoArticuloCbPersonalizar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/item_tipo_articulo_personalizar" />
+
+    <LinearLayout
+        android:id="@+id/anadirTipoArticuloLlBotones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/anadirTipoArticuloBtAceptar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/anadir_tipo_articulo_aceptar" />
+
+        <Button
+            android:id="@+id/anadirTipoArticuloBtCancelar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/anadir_tipo_articulo_cancelar" />
+    </LinearLayout>
+
+</LinearLayout>

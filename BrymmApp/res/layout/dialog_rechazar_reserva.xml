@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/dialogRechazarReservaEtMotivo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/dialog_rechazar_reserva_motivo"
+        android:inputType="textMultiLine" />
+
+    <LinearLayout
+        android:id="@+id/dialogRechazarReservaLlBotones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/dialogRechazarReservaBtAceptar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/dialog_rechazar_reserva_aceptar" />
+
+        <Button
+            android:id="@+id/dialogRechazarReservaBtCancelar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/dialog_rechazar_reserva_cancelar" />
+    </LinearLayout>
+
+</LinearLayout>

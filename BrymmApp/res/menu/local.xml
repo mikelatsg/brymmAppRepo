@@ -1,0 +1,44 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menuLocalIngredientes"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/menu_local_ingredientes"/>
+    <item
+        android:id="@+id/menuLocalTiposArticulo"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/menu_local_tipos_articulo"/>
+    <item
+        android:id="@+id/menuLocalArticulos"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/menu_local_articulos"/>
+    <item
+        android:id="@+id/menuLocalPedidos"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/menu_local_pedidos"/>
+    <item
+        android:id="@+id/menuLocalServicios"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/menu_local_servicios"/>
+    <item
+        android:id="@+id/menuLocalHorarios"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/menu_local_horarios"/>
+    <item
+        android:id="@+id/menuLocalReservas"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/menu_local_reservas"/>
+    <item
+        android:id="@+id/menuLocalMenus"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/menu_local_menus"/>
+
+</menu>

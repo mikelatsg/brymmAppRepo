@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Array tipoMenu -->
+    <string-array name="tipoMenuArray">
+        <item>Comida#2</item>
+        <item>Cena#3</item>
+    </string-array>
+
+    <!-- Array estados pedidos -->
+    <string-array name="estadoPedidoArray">
+        <item>Pendiente#P</item>
+        <item>Aceptado#A</item>
+        <item>Rechazado#R</item>
+        <item>Terminado#T</item>
+    </string-array>
+
+    <!-- Array horarios -->
+    <string-array name="horariosArray">
+        <item>Horarios local#0</item>
+        <item>Horarios pedido#1</item>
+        <item>Dias cierre#2</item>
+    </string-array>
+
+    <!-- Array Reservas -->
+    <string-array name="reservasArray">
+        <item>Reservas pendientes#0</item>
+        <item>Reservas aceptadas#1</item>
+        <item>Reservas rechazadas#2</item>
+        <item>Mesas#3</item>
+        <item>Calendario reservas#4</item>
+    </string-array>
+    <string-array name="menusArray">
+        <item>Platos#0</item>
+        <item>Menus#1</item>
+        <item>Calendario menus#2</item>
+    </string-array>
+
+    <string name="app_name">BrymmApp</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Activities -->
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_home_usuario">HomeUsuarioActivity</string>
+    <string name="title_activity_home_local">HomeLocalActivity</string>
+
+    <!-- Login usuario -->
+    <string name="login_usuario_tab_usuario">Usuario</string>
+    <string name="login_usuario_nick">Nick</string>
+    <string name="login_usuario_password">Password</string>
+    <string name="login_usuario_aceptar">Aceptar</string>
+    <string name="login_usuario_guardar_sesion">Guardar sesion</string>
+    <string name="login_usuario_error_login">Login KO .Usuario o password incorrecto</string>
+
+    <!-- Login local -->
+    <string name="login_local_tab_local">Local</string>
+    <string name="login_local_nombre_local">Nombre local</string>
+    <string name="login_local_camarero">Camarero</string>
+    <string name="login_local_password">Password</string>
+    <string name="login_local_guardar_sesion">Guardar sesion</string>
+    <string name="login_local_login_camarero">Login camarero</string>
+    <string name="login_local_aceptar">Aceptar</string>
+    <string name="login_local_error_login">Login KO .Nombre local o password incorrecto</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_buscador_locales">BuscadorLocalesActivity</string>
+
+    <!-- Buscador locales -->
+    <string name="buscador_local_nombre_local">Nombre local</string>
+    <string name="buscador_local_calle">Calle</string>
+    <string name="buscador_local_poblacion">Poblacion</string>
+    <string name="buscador_local_codigo_postal">Codigo postal</string>
+    <string name="buscador_local_buscar">Buscar</string>
+    <string name="buscador_local_tipo_comida">Tipo comida :</string>
+    <string name="buscador_local_todas">Todas</string>
+    <string name="buscador_local_no_locales">No se han encontrado locales con los datos indicados!</string>
+    <string name="title_activity_mostrar_locales">MostrarLocalesActivity</string>
+
+    <!-- Mostrar locales -->
+    <string name="mostrar_local_telefono">Tel : </string>
+    <string name="mostrar_local_direccion">Dir : </string>
+    <string name="mostrar_local_tipo_comida">Tipo comida: </string>
+    <string name="mostrar_local_anadir_favorito">Añadir a favoritos</string>
+    <string name="title_activity_mostrar_local">MostrarLocalActivity</string>
+
+    <!-- Hacer pedido -->
+    <string name="title_activity_hacer_pedido_fragment">HacerPedidoFragment</string>
+    <string name="hacer_pedido_anadir_articulo">Añadir articulo</string>
+    <string name="hacer_pedido_anadir_articulo_personalizado">Añadir articulo personalizado</string>
+    <string name="hacer_pedido_terminar_pedido">Terminar pedido</string>
+    <string name="hacer_pedido_observaciones">Observaciones</string>
+    <string name="hacer_pedido_enviar_a">Enviar a</string>
+    <string name="hacer_pedido_fecha">Fecha</string>
+    <string name="hacer_pedido_hora">Hora</string>
+    <string name="hacer_pedido_retrasar_pedido">Retrasar pedido</string>
+
+    <!-- Reservar -->
+    <string name="title_activity_reservar_fragment">ReservarFragment</string>
+    <string name="reservar_fecha">Fecha/hora</string>
+    <string name="reservar_numero_personas">Numero personas</string>
+    <string name="reservar_realizar_reserva">Realizar reserva</string>
+    <string name="reservar_aceptar">Aceptar</string>
+    <string name="reservar_cancelar">Cancelar</string>
+
+    <!-- Obtener menu -->
+    <string name="obtener_menu_fecha">Fecha</string>
+    <string name="obtener_menu_ver_menu">Ver menu</string>
+
+    <!-- Añadir articulo -->
+    <string name="title_activity_anadir_articulo">AnadirArticulo</string>
+    <string name="anadir_articulo_anadir">Añadir</string>
+    <string name="anadir_articulo_cantidad">Cantidad</string>
+    <string name="anadir_articulo_ingredientes">Ing:</string>
+    <string name="anadir_articulo_aceptar">Aceptar</string>
+    <string name="anadir_articulo_cancelar">Cancelar</string>
+
+    <!-- Añadir articulo personalizado -->
+    <string name="title_activity_anadir_articulo_personalizado">AnadirArticuloPersonalizado</string>
+    <string name="anadir_articulo_personalizado_aceptar">Aceptar</string>
+    <string name="anadir_articulo_personalizado_cancelar">Cancelar</string>
+    <string name="anadir_articulo_personalizado_cantidad">Cantidad</string>
+    <string name="anadir_articulo_personalizado_articulo_personalizado">Articulo personalizado</string>
+
+    <!-- Lista pedidos -->
+    <string name="item_pedido_id_pedido">Pedido :</string>
+    <string name="item_pedido_local">Local :</string>
+    <string name="item_pedido_fecha_entrega">Fecha entrega :</string>
+    <string name="item_pedido_fecha_pedido">Fecha pedido :</string>
+    <string name="item_pedido_precio">Precio :</string>
+    <string name="item_pedido_direccion">Dir :</string>
+    <string name="item_pedido_estado">Estado :</string>
+
+    <!-- Pedido -->
+    <string name="title_activity_ultimos_pedidos">UltimosPedidosActivity</string>
+    <string name="title_activity_pedido">PedidoActivity</string>
+    <string name="pedido_id_pedido">Pedido :</string>
+    <string name="pedido_local">Local :</string>
+    <string name="pedido_fecha_entrega">Fecha entrega :</string>
+    <string name="pedido_fecha_pedido">Fecha pedido :</string>
+    <string name="pedido_precio">Precio :</string>
+    <string name="pedido_direccion">Dir :</string>
+    <string name="pedido_estado">Estado :</string>
+    <string name="pedido_motivo_rechazo">Motivo :</string>
+    <string name="pedido_observaciones">Observaciones :</string>
+
+    <!-- dialogos de carga, toast -->
+    <string name="progress_dialog_realizando_operacion">Realizando operacion</string>
+    <string name="progress_dialog_pedido">Realizando pedido</string>
+    <string name="toast_datos_incorrectos">Datos incorrectos</string>
+    <string name="toast_error_operacion">Error realizando operacion</string>
+
+    <!-- ###############################  Menus  ############################### -->
+    <!-- Menu Usuario -->
+    <string name="menu_usuario_ultimos_pedidos">Ultimos pedidos</string>
+    <string name="menu_usuario_direcciones">Direcciones</string>
+    <string name="menu_usuario_buscador">Buscador locales</string>
+    <string name="menu_usuario_locales_favoritos">Locales favoritos</string>
+    <string name="menu_usuario_ultimas_reservas">Ultimas reservas</string>
+
+    <!-- Menu local -->
+    <string name="menu_local_ingredientes">Ingredientes</string>
+    <string name="menu_local_tipos_articulo">Tipos articulo</string>
+    <string name="menu_local_articulos">Articulos</string>
+    <string name="menu_local_pedidos">Pedidos</string>
+    <string name="menu_local_servicios">Servicios</string>
+    <string name="menu_local_horarios">Horarios</string>
+    <string name="menu_local_reservas">Reservas</string>
+    <string name="menu_local_menus">Menus</string>
+
+    <!-- Menus contextuales -->
+    <string name="context_menu_ingrediente_borrar">Borrar</string>
+    <string name="context_menu_ingrediente_modificar">Modificar</string>
+    <string name="context_menu_tipo_articulo_borrar">Borrar</string>
+    <string name="context_menu_tipo_articulo_modificar">Modificar</string>
+    <string name="context_menu_articulo_borrar">Borrar</string>
+    <string name="context_menu_articulo_modificar">Modificar</string>
+    <string name="context_menu_pedido_borrar_articulo">Borrar articulo</string>
+    <string name="context_menu_direccion_borrar">Borrar</string>
+    <string name="context_menu_direccion_modificar">Modificar</string>
+    <string name="context_menu_favoritos_eliminar">Eliminar</string>
+    <string name="context_menu_reserva_anular">Anular reserva</string>
+    <string name="context_menu_servicio_modificar">Modificar</string>
+    <string name="context_menu_servicio_borrar">Borrar</string>
+    <string name="context_menu_servicio_activar">Activar</string>
+    <string name="context_menu_servicio_desactivar">Desactivar</string>
+    <string name="context_menu_horario_local_borrar">Borrar</string>
+    <string name="context_menu_horario_pedido_borrar">Borrar</string>
+    <string name="context_menu_dia_cierre_borrar">Borrar</string>
+    <string name="context_menu_mesa_borrar">Borrar</string>
+    <string name="context_menu_mesa_modificar">Modificar</string>
+    <string name="context_menu_plato_borrar">Borrar</string>
+    <string name="context_menu_plato_modificar">Modificar</string>
+    <string name="context_menu_menu_borrar">Borrar</string>
+    <string name="context_menu_menu_modificar">Modificar</string>
+    <string name="context_menu_menu_dia_asignar_plato">Añadir plato</string>
+    <string name="context_menu_menu_dia_desasignar_plato">Borrar plato del menu</string>
+
+    <!-- Direcciones -->
+    <string name="title_activity_direcciones">DireccionesActivity</string>
+    <string name="direcciones_anadir">Añadir direccion</string>
+
+    <!-- Añadir direccion -->
+    <string name="title_activity_anadir_direccion">AnadirDireccionActivity</string>
+    <string name="anadir_direccion_nombre">Nombre direccion (ej : casa)</string>
+    <string name="anadir_direccion_direccion">Direccion</string>
+    <string name="anadir_direccion_poblacion">Poblacion</string>
+    <string name="anadir_direccion_provincia">Provincia</string>
+    <string name="anadir_direccion_guardar">Guardar</string>
+    <string name="anadir_direccion_cancelar">Cancelar</string>
+    <string name="title_activity_locales_favoritos">LocalesFavoritosActivity</string>
+    <string name="title_activity_ultimas_reservas">UltimasReservasActivity</string>
+
+    <!-- ###############################  Local  ############################### -->
+
+
+    <!-- ############  Ingredientes  ########### -->
+    <string name="title_activity_ingredientes">IngredientesActivity</string>
+    <string name="ingredientes_anadir">Anadir ingrediente</string>
+
+    <!-- Item ingrediente -->
+    <string name="item_ingrediente_descripcion">Descripcion :</string>
+    <string name="item_ingrediente_precio">Precio :</string>
+
+    <!-- Anadir ingrediente -->
+    <string name="title_activity_anadir_modificar">AnadirModificarActivity</string>
+    <string name="anadir_modificar_ingrediente_nombre">Nombre</string>
+    <string name="anadir_modificar_ingrediente_precio">Precio</string>
+    <string name="anadir_modificar_ingrediente_descripcion">Descripcion</string>
+    <string name="anadir_modificar_ingrediente_aceptar">Aceptar</string>
+    <string name="anadir_modificar_ingrediente_cancelar">Cancelar</string>
+
+    <!-- ############  Tipos Articulo  ########### -->
+    <string name="title_activity_tipos_articulo">TiposArticuloActivity</string>
+    <string name="tipos_articulo_anadir">Añadir tipo articulo</string>
+
+    <!-- Lista tipos articulo -->
+    <string name="item_tipo_articulo_precio">Precio :</string>
+    <string name="item_tipo_articulo_personalizar">Personalizar</string>
+
+    <!-- Anadir tipo articulo -->
+    <string name="anadir_tipo_articulo_aceptar">Aceptar</string>
+    <string name="anadir_tipo_articulo_cancelar">Cancelar</string>
+
+    <!-- ############  Articulos  ########### -->
+    <string name="title_activity_articulos">ArticulosActivity</string>
+    <string name="title_activity_anadir_articulo_local">AnadirArticuloLocalActivity</string>
+    <string name="articulos_anadir">Añadir articulo</string>
+
+    <!-- Item articulo -->
+    <string name="item_articulo_descripcion">Descripcion :</string>
+    <string name="item_articulo_precio">Precio :</string>
+    <string name="item_articulo_valido_pedidos">Valido pedidos</string>
+
+    <!-- Anadir articulo -->
+    <string name="anadir_articulo_local_nombre">Nombre</string>
+    <string name="anadir_articulo_local_descripcion">descripcion</string>
+    <string name="anadir_articulo_local_precio">precio</string>
+    <string name="anadir_articulo_local_aceptar">Aceptar</string>
+    <string name="anadir_articulo_local_cancelar">Cancelar</string>
+    <string name="anadir_articulo_local_valido_pedidos">Valido pedidos</string>
+
+    <!-- ############  Pedidos  ########### -->
+    <string name="title_activity_pedidos">PedidosActivity</string>
+    <string name="title_activity_detalle_pedido">DetallePedidoActivity</string>
+    <string name="detalle_pedido_id_pedido">Pedido :</string>
+    <string name="detalle_pedido_fecha_entrega">Fecha entrega :</string>
+    <string name="detalle_pedido_fecha_pedido">Fecha pedido :</string>
+    <string name="detalle_pedido_precio">Precio :</string>
+    <string name="detalle_pedido_direccion">Dir :</string>
+    <string name="detalle_pedido_estado">Estado :</string>
+    <string name="detalle_pedido_usuario">Usuario :</string>
+    <string name="detalle_pedido_cancelar">Cancelar</string>
+    <string name="detalle_pedido_rechazar">Rechazar</string>
+    <string name="detalle_pedido_aceptar">Aceptar</string>
+    <string name="detalle_pedido_terminar">Terminar</string>
+    <string name="dialog_rechazar_pedido_motivo">Motivo del rechazo</string>
+    <string name="dialog_rechazar_pedido_aceptar">Aceptar</string>
+    <string name="dialog_rechazar_pedido_cancelar">Cancelar</string>
+
+    <!-- Pedido local adapter -->
+    <string name="item_pedido_local_id_pedido">Pedido :</string>
+    <string name="item_pedido_local_usuario">Usuario :</string>
+    <string name="item_pedido_local_fecha_entrega">Fecha entrega :</string>
+    <string name="item_pedido_local_fecha_pedido">Fecha pedido :</string>
+    <string name="item_pedido_local_precio">Precio :</string>
+    <string name="item_pedido_local_direccion">Dir :</string>
+    <string name="item_pedido_local_estado">Estado :</string>
+
+    <!-- Articulo cantidad adapter -->
+    <string name="item_articulo_cantidad_descripcion">Descripcion :</string>
+    <string name="item_articulo_cantidad_precio_unidad">Precio unidad:</string>
+    <string name="item_articulo_cantidad_precio_total">Precio total:</string>
+    <string name="item_articulo_cantidad_cantidad">Cantidad :</string>
+
+    <!-- ############  Servicios  ########### -->
+    <string name="title_activity_servicios">ServiciosActivity</string>
+    <string name="title_activity_anadir_servicio">AnadirServicioActivity</string>
+    <string name="servicios_anadir">Añadir servicio</string>
+
+    <!-- Anadir serivicio -->
+    <string name="anadir_servicio_importe_minimo">Importe minimo</string>
+    <string name="anadir_servicio_precio">Precio</string>
+
+    <!-- Servicio adapter -->
+    <string name="item_servicio_precio">Precio :</string>
+    <string name="item_servicio_importe_minimo">Importe minimo :</string>
+    <string name="item_servicio_activo">Activo</string>
+
+    <!-- ############  Horarios  ########### -->
+    <string name="title_activity_horarios">HorariosActivity</string>
+    <string name="title_activity_anadir_horario">AnadirHorarioActivity</string>
+
+    <!-- Horarios local -->
+    <string name="anadir_horario_local_hora_inicio">Hora inicio</string>
+    <string name="anadir_horario_local_hora_fin">Hora fin</string>
+    <string name="anadir_horario_local_aceptar">Aceptar</string>
+    <string name="anadir_horario_local_cancelar">Cancelar</string>
+
+    <!-- Horario local adapter -->
+    <string name="item_horario_local_hora_inicio">Hora inicio :</string>
+    <string name="item_horario_local_hora_fin">Hora fin :</string>
+
+    <!-- Dialog hora -->
+    <string name="dialog_hora_aceptar">Aceptar</string>
+    <string name="dialog_hora_cancelar">Cancelar</string>
+
+    <!-- Horario pedido -->
+    <string name="anadir_horario_pedido_hora_inicio">Hora inicio</string>
+    <string name="anadir_horario_pedido_hora_fin">Hora fin</string>
+    <string name="anadir_horario_pedido_aceptar">Aceptar</string>
+    <string name="anadir_horario_pedido_cancelar">Cancelar</string>
+    <string name="horario_pedido_anadir">Añadir horario pedido</string>
+
+    <!-- Horario pedido adapter -->
+    <string name="item_horario_pedido_hora_inicio">Hora inicio :</string>
+    <string name="item_horario_pedido_hora_fin">Hora fin :</string>
+    <string name="title_activity_anadir_horario_pedido">AnadirHorarioPedidoActivity</string>
+
+    <!-- Dias cierre -->
+    <string name="dias_cierre_anadir">Añadir dia cierre</string>
+    <string name="anadir_dia_cierre_fecha">Fecha</string>
+    <string name="anadir_dia_cierre_aceptar">Aceptar</string>
+    <string name="anadir_dia_cierre_cancelar">Cancelar</string>
+    <string name="title_activity_anadir_dia_cierre">AnadirDiaCierreActivity</string>
+    <string name="title_activity_reservas">ReservasActivity</string>
+    <string name="title_activity_anadir_mesa">AnadirMesaActivity</string>
+
+    <!-- ############  Reservas  ########### -->
+
+
+    <!-- Mesas -->
+    <string name="anadir_mesa_capacidad">Capacidad</string>
+    <string name="anadir_mesa_nombre">Nombre mesa</string>
+    <string name="anadir_mesa_aceptar">Aceptar</string>
+    <string name="anadir_mesa_cancelar">Cancelar</string>
+    <string name="mesa_anadir">Añadir mesa</string>
+    <string name="reserva_anadir">Añadir reserva</string>
+    <string name="title_activity_anadir_reserva">AnadirReservaActivity</string>
+
+    <!-- Detalle reserva -->
+    <string name="detalle_reserva_aceptar">Aceptar</string>
+    <string name="detalle_reserva_rechazar">Rechazar</string>
+    <string name="detalle_reserva_cancelar">Cancelar</string>
+    <string name="detalle_reserva_mesas_libres">Mesas libres</string>
+    <string name="detalle_reserva_mesas_asignadas">Mesas asignadas</string>
+    <string name="dialog_rechazar_reserva_motivo">Motivo del rechazo</string>
+    <string name="dialog_rechazar_reserva_aceptar">Aceptar</string>
+    <string name="dialog_rechazar_reserva_cancelar">Cancelar</string>
+    <string name="context_menu_reserva_asignar_mesa">Asignar mesa</string>
+    <string name="context_menu_reserva_desasignar_mesa">Desasignar mesa</string>
+    <string name="nueva_reserva_local_fecha">Fecha</string>
+    <string name="nueva_reserva_local_hora">Hora</string>
+    <string name="nueva_reserva_local_numero_personas">Numero personas</string>
+    <string name="nueva_reserva_local_realizar_reserva">Realizar reserva</string>
+    <string name="nueva_reserva_local_cancelar">Cancelar</string>
+    <string name="nueva_reserva_local_nombre_de">A nombre de</string>
+    <string name="nueva_reserva_local_observaciones">Observaciones</string>
+    <string name="nueva_reserva_local_mesas_libres">Mesas libres</string>
+    <string name="nueva_reserva_local_mesas_asignadas">Mesas reserva</string>
+    <string name="title_activity_lista_reservas_dia">ListaReservasDiaActivity</string>
+    <string name="reservas_dia_cerrar_reservas">Cerrar reservas</string>
+    <string name="reservas_dia_abrir_reservas">Abrir reservas</string>
+    <string name="title_activity_menus">MenusActivity</string>
+
+    <!-- ############  Menus local  ########### -->
+
+
+    <!-- Platos -->
+    <string name="anadir_plato_precio">Precio</string>
+    <string name="anadir_plato_nombre">Nombre plato</string>
+    <string name="anadir_plato_aceptar">Aceptar</string>
+    <string name="anadir_plato_cancelar">Cancelar</string>
+    <string name="plato_anadir">Añadir plato</string>
+    <string name="title_activity_anadir_plato">AnadirPlatoActivity</string>
+
+    <!-- Menus -->
+    <string name="menu_adapter_menu">Menu</string>
+    <string name="menu_adapter_carta">Carta</string>
+    <string name="menu_anadir">Añadir menu</string>
+    <string name="anadir_menu_precio">Precio</string>
+    <string name="anadir_menu_nombre">Nombre menu</string>
+    <string name="anadir_menu_aceptar">Aceptar</string>
+    <string name="anadir_menu_cancelar">Cancelar</string>
+    <string name="title_activity_anadir_menu">AnadirMenuActivity</string>
+    <string name="title_activity_menus_dia">MenusDiaActivity</string>
+
+    <!-- Menu dia -->
+    <string name="detalle_menu_dia_platos_menu">Platos menu</string>
+    <string name="detalle_menu_dia_resto_platos">Resto de platos</string>
+    <string name="detalle_menu_dia_cancelar">Cancelar</string>
+    <string name="lista_menu_dia_cancelar">Añadir menu al dia</string>
+    <string name="title_activity_detalle_menu_dia">DetalleMenuDiaActivity</string>
+
+</resources>

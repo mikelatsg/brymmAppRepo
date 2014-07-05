@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/contextMenuServicioBorrar"
+        android:title="@string/context_menu_servicio_borrar"/>
+    
+    <item
+        android:id="@+id/contextMenuServicioModificar"
+        android:title="@string/context_menu_servicio_modificar"/>
+    
+    <item
+        android:id="@+id/contextMenuServicioActivar"
+        android:title="@string/context_menu_servicio_activar"/>
+    
+    <item
+        android:id="@+id/contextMenuServicioDesactivar"
+        android:title="@string/context_menu_servicio_desactivar"/>
+
+</menu>

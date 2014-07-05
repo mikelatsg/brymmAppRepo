@@ -1,0 +1,97 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".PedidoActivity" >
+
+    <LinearLayout
+        android:id="@+id/pedidoLlPedido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/pedidoTvIdPedido"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/pedido_id_pedido" />
+
+        <TextView
+            android:id="@+id/pedidoTvNombreLocal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/pedido_local" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/pedidoLlPrecio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/pedidoTvPrecio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/pedido_precio" />
+
+        <TextView
+            android:id="@+id/pedidoTvEstado"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/pedido_estado" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/pedidoLlFechas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/pedidoTvFechaPedido"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/pedido_fecha_pedido" />
+
+        <TextView
+            android:id="@+id/pedidoTvFechaEntrega"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/pedido_fecha_entrega" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/pedidoTvDireccionEnvio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pedido_direccion" />
+    
+    <TextView
+        android:id="@+id/pedidoTvObservaciones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pedido_observaciones" />
+    
+    <TextView
+        android:id="@+id/pedidoTvMotivoRechazo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pedido_motivo_rechazo" />
+
+    <ListView
+        android:id="@+id/pedidoLvArticulos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+
+</LinearLayout>

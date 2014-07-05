@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.brymm.brymmapp"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="18" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <service
+            android:name="com.brymm.brymmapp.servicios.ServicioDatosUsuario"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+        <service
+            android:name="com.brymm.brymmapp.servicios.ServicioDatosLocal"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+
+        <activity
+            android:name="com.brymm.brymmapp.InicioActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.LoginActivity"
+            android:label="@string/title_activity_login" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.usuario.HomeUsuarioActivity"
+            android:label="@string/title_activity_home_usuario" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.HomeLocalActivity"
+            android:label="@string/title_activity_home_local" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.usuario.BuscadorLocalesActivity"
+            android:label="@string/title_activity_buscador_locales" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.usuario.MostrarLocalesActivity"
+            android:label="@string/title_activity_mostrar_locales" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.usuario.MostrarLocalActivity"
+            android:label="@string/title_activity_mostrar_local" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.usuario.HacerPedidoFragment"
+            android:label="@string/title_activity_hacer_pedido_fragment" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.usuario.ReservarFragment"
+            android:label="@string/title_activity_reservar_fragment" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.usuario.AnadirArticulo"
+            android:label="@string/title_activity_anadir_articulo" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.usuario.AnadirArticuloPersonalizado"
+            android:label="@string/title_activity_anadir_articulo_personalizado" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.usuario.UltimosPedidosActivity"
+            android:label="@string/title_activity_ultimos_pedidos" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.usuario.PedidoActivity"
+            android:label="@string/title_activity_pedido" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.usuario.DireccionesActivity"
+            android:label="@string/title_activity_direcciones" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.usuario.AnadirDireccionActivity"
+            android:label="@string/title_activity_anadir_direccion" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.usuario.LocalesFavoritosActivity"
+            android:label="@string/title_activity_locales_favoritos" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.usuario.UltimasReservasActivity"
+            android:label="@string/title_activity_ultimas_reservas" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.IngredientesActivity"
+            android:label="@string/title_activity_ingredientes" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.AnadirModificarIngredienteActivity"
+            android:label="@string/title_activity_anadir_modificar" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.TiposArticuloFragment"
+            android:label="@string/title_activity_tipos_articulo" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.TiposArticuloActivity"
+            android:label="@string/title_activity_tipos_articulo" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.AnadirTipoArticuloActivity"
+            android:label="@string/title_activity_tipos_articulo" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.fragments.AnadirTipoArticuloFragment"
+            android:label="@string/title_activity_tipos_articulo" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.ArticulosActivity"
+            android:label="@string/title_activity_articulos" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.AnadirArticuloLocalActivity"
+            android:label="@string/title_activity_anadir_articulo_local" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.PedidosActivity"
+            android:label="@string/title_activity_pedidos" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.DetallePedidoActivity"
+            android:label="@string/title_activity_detalle_pedido" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.ServiciosActivity"
+            android:label="@string/title_activity_servicios" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.AnadirServicioActivity"
+            android:label="@string/title_activity_anadir_servicio" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.HorariosActivity"
+            android:label="@string/title_activity_horarios" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.AnadirHorarioLocalActivity"
+            android:label="@string/title_activity_anadir_horario" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.AnadirHorarioPedidoActivity"
+            android:label="@string/title_activity_anadir_horario_pedido" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.AnadirDiaCierreActivity"
+            android:label="@string/title_activity_anadir_dia_cierre" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.ReservasActivity"
+            android:label="@string/title_activity_reservas" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.AnadirMesaActivity"
+            android:label="@string/title_activity_anadir_mesa" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.AnadirReservaActivity"
+            android:label="@string/title_activity_anadir_reserva" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.ReservasDiaActivity"
+            android:label="@string/title_activity_lista_reservas_dia" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.MenusActivity"
+            android:label="@string/title_activity_menus" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.AnadirPlatoActivity"
+            android:label="@string/title_activity_anadir_plato" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.AnadirMenuActivity"
+            android:label="@string/title_activity_anadir_menu" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.MenusDiaActivity"
+            android:label="@string/title_activity_menus_dia" >
+        </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.DetalleMenuDiaActivity"
+            android:label="@string/title_activity_detalle_menu_dia" >
+        </activity>
+    </application>
+
+</manifest>
