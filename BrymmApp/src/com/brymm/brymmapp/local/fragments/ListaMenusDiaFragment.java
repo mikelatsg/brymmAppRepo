@@ -5,21 +5,29 @@ import java.util.List;
 
 import com.brymm.brymmapp.R;
 import com.brymm.brymmapp.local.DetalleMenuDiaActivity;
+import com.brymm.brymmapp.local.adapters.MenuAdapter;
 import com.brymm.brymmapp.local.adapters.MenuDiaAdapter;
+import com.brymm.brymmapp.local.bbdd.GestionMenu;
 import com.brymm.brymmapp.local.bbdd.GestionMenuDia;
 import com.brymm.brymmapp.local.interfaces.ListaEstado;
 import com.brymm.brymmapp.local.pojo.MenuDia;
+import com.brymm.brymmapp.local.pojo.MenuLocal;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 public class ListaMenusDiaFragment extends Fragment implements ListaEstado {
 
@@ -27,6 +35,8 @@ public class ListaMenusDiaFragment extends Fragment implements ListaEstado {
 	public static final int REQUEST_CODE_DETALLE = 1;
 
 	private ListView lvMenus;
+	private ListView lvSeleccionMenu;
+	private Button btAnadirMenuDia;
 
 	private boolean mDualPane;
 	private String fecha;
@@ -60,6 +70,17 @@ public class ListaMenusDiaFragment extends Fragment implements ListaEstado {
 	private void inicializar() {
 		lvMenus = (ListView) getActivity().findViewById(
 				R.id.listaMenusDiaLvLista);		
+		
+		btAnadirMenuDia = (Button) getActivity().findViewById(R.id.listaMenusDiaBtAnadirMenu);
+		btAnadirMenuDia.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				dialogoSeleccionarMenu();
+			}
+		});
+			
+		
 
 		/* Se guarda si esta el fragmento de añadir */
 		View detalleFrame = getActivity()
@@ -76,6 +97,29 @@ public class ListaMenusDiaFragment extends Fragment implements ListaEstado {
 		actualizarLista(this.fecha);
 
 		// registerForContextMenu(lvReservas);
+
+	}
+	
+	@SuppressLint("NewApi")
+	private void dialogoSeleccionarMenu() {
+		final Dialog custom = new Dialog(getActivity());
+		custom.setContentView(R.layout.dialog_seleccionar_menu_dia);
+		
+		lvSeleccionMenu = (ListView) custom.findViewById(
+				R.id.listaMenusDialogoListaMenus);
+				
+		custom.setTitle("Custom Dialog");
+		List<MenuLocal> menus = new ArrayList<MenuLocal>();
+		GestionMenu gestor = new GestionMenu(getActivity());
+		menus = gestor.obtenerMenus();
+		gestor.cerrarDatabase();
+
+		MenuAdapter menuAdapter = new MenuAdapter(getActivity(),
+				R.layout.menu_item, menus);
+
+		lvSeleccionMenu.setAdapter(menuAdapter);
+		
+		custom.show();
 
 	}
 

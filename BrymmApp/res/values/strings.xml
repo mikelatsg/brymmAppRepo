@@ -407,7 +407,7 @@
     <string name="detalle_menu_dia_platos_menu">Platos menu</string>
     <string name="detalle_menu_dia_resto_platos">Resto de platos</string>
     <string name="detalle_menu_dia_cancelar">Cancelar</string>
-    <string name="lista_menu_dia_cancelar">Añadir menu al dia</string>
+    <string name="lista_menu_dia_anadir">Añadir menu al dia</string>
     <string name="title_activity_detalle_menu_dia">DetalleMenuDiaActivity</string>
 
 </resources>

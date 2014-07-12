@@ -14,7 +14,7 @@
         android:id="@+id/listaMenusDiaBtAnadirMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/lista_menu_dia_cancelar" />
+        android:text="@string/lista_menu_dia_anadir" />
 
     <ListView
         android:id="@+id/listaMenusDiaLvLista"
