@@ -20,7 +20,13 @@ public class Plato implements Parcelable {
 		this.precio = precio;
 	}
 	
-	
+	public Plato() {
+		super();
+		this.idPlato = 0;
+		this.tipoPlato = null;
+		this.nombre = "";
+		this.precio = 0;
+	}
 
 	public int getIdPlato() {
 		return idPlato;

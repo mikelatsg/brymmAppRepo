@@ -21,6 +21,14 @@ public class MenuDia implements Parcelable {
 		this.fecha = fecha;
 		this.platos = platos;
 	}
+	
+	public MenuDia() {
+		super();
+		this.idMenuDia = 0;
+		this.menu = null;
+		this.fecha = null;
+		this.platos = null;
+	}
 
 	public int getIdMenuDia() {
 		return idMenuDia;

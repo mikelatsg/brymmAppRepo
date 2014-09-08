@@ -26,6 +26,7 @@ import com.brymm.brymmapp.local.bbdd.GestionReserva;
 import com.brymm.brymmapp.local.bbdd.GestionServicioLocal;
 import com.brymm.brymmapp.local.bbdd.GestionTipoArticulo;
 import com.brymm.brymmapp.local.bbdd.GestionTipoArticuloLocal;
+import com.brymm.brymmapp.local.bbdd.GestionTipoComanda;
 import com.brymm.brymmapp.local.bbdd.GestionTipoMenu;
 import com.brymm.brymmapp.local.bbdd.GestionTipoPlato;
 import com.brymm.brymmapp.local.bbdd.GestionTipoServicio;
@@ -44,6 +45,7 @@ import com.brymm.brymmapp.local.pojo.Reserva;
 import com.brymm.brymmapp.local.pojo.ServicioLocal;
 import com.brymm.brymmapp.local.pojo.TipoArticulo;
 import com.brymm.brymmapp.local.pojo.TipoArticuloLocal;
+import com.brymm.brymmapp.local.pojo.TipoComanda;
 import com.brymm.brymmapp.local.pojo.TipoMenu;
 import com.brymm.brymmapp.local.pojo.TipoPlato;
 import com.brymm.brymmapp.local.pojo.TipoServicio;
@@ -231,6 +233,11 @@ public class ServicioDatosLocal extends Service {
 		JSONArray menusDia = datosLocal
 				.getJSONArray(GestionMenuDia.JSON_MENUS_DIA);
 		guardarMenusDia(menusDia);
+
+		// Se guardan los tipos de comanda
+		JSONArray tiposComanda = datosLocal
+				.getJSONArray(GestionTipoComanda.JSON_TIPOS_COMANDA);
+		guardarTiposComanda(tiposComanda);
 
 	}
 
@@ -509,7 +516,7 @@ public class ServicioDatosLocal extends Service {
 		}
 		gestor.cerrarDatabase();
 	}
-	
+
 	private void guardarMenusDia(JSONArray menusDiaJson) throws JSONException {
 		GestionMenuDia gestor = new GestionMenuDia(this);
 		gestor.borrarMenusDia();
@@ -519,6 +526,21 @@ public class ServicioDatosLocal extends Service {
 			MenuDia menuDia = GestionMenuDia.menuDiaJson2MenuDia(menuDiaJson);
 
 			gestor.guardarMenuDia(menuDia);
+
+		}
+		gestor.cerrarDatabase();
+	}
+	
+	private void guardarTiposComanda(JSONArray tiposComandaJson) throws JSONException {
+		GestionTipoComanda gestor = new GestionTipoComanda(this);
+		gestor.borrarTiposComanda();
+		for (int i = 0; i < tiposComandaJson.length(); i++) {
+			JSONObject tipoComandaJson = tiposComandaJson.getJSONObject(i);
+
+			TipoComanda tipoComanda = GestionTipoComanda
+					.tipoComandaJson2TipoComanda(tipoComandaJson);
+
+			gestor.guardarTipoComanda(tipoComanda);
 
 		}
 		gestor.cerrarDatabase();

@@ -275,6 +275,7 @@ public class LoginActivity extends Activity {
 			 * nulo
 			 */
 			respStr = EntityUtils.toString(resp.getEntity());
+			Log.d("d",respStr);
 			if (resp.getStatusLine().getStatusCode() == CODE_LOGIN_OK) {
 				respJSON = new JSONObject(respStr);
 			}

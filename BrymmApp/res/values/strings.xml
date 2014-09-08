@@ -193,6 +193,7 @@
     <string name="context_menu_menu_modificar">Modificar</string>
     <string name="context_menu_menu_dia_asignar_plato">Añadir plato</string>
     <string name="context_menu_menu_dia_desasignar_plato">Borrar plato del menu</string>
+    <string name="context_menu_menu_dia_borrar">Borrar</string>
 
     <!-- Direcciones -->
     <string name="title_activity_direcciones">DireccionesActivity</string>

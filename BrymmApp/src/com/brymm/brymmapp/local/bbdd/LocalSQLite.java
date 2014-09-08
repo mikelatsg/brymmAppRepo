@@ -396,6 +396,49 @@ public class LocalSQLite extends SQLiteOpenHelper {
 			+ " INTEGER NOT NULL," + COLUMN_PMD_ID_MENU_DIA
 			+ " INTEGER NOT NULL)";
 
+	// Tipos comanda
+	public static final String TABLE_TIPOS_COMANDA = "tipos_comanda";
+	public static final String COLUMN_TC_ID_TIPO_COMANDA = "id_tipo_comanda";
+	public static final String COLUMN_TC_DESCRIPCION = "descripcion";
+
+	private static final String CREATE_TABLE_TIPOS_COMANDA = "CREATE TABLE "
+			+ TABLE_TIPOS_COMANDA + "(" + COLUMN_TC_ID_TIPO_COMANDA
+			+ " INTEGER PRIMARY KEY ," + COLUMN_TC_DESCRIPCION
+			+ " TEXT NOT NULL)";
+
+	// Comanda menu
+	public static final String TABLE_COMANDA_MENU = "comanda_menu";
+	public static final String COLUMN_CM_ID_COMANDA_MENU = "id_comanda_menu";
+	public static final String COLUMN_CM_ID_DETALLE_COMANDA = "id_detalle_comanda";
+	public static final String COLUMN_CM_ID_PLATO = "id_plato";
+	public static final String COLUMN_CM_CANTIDAD = "cantidad";
+	public static final String COLUMN_CM_ESTADO = "estado";
+
+	private static final String CREATE_TABLE_COMANDA_MENU = "CREATE TABLE "
+			+ TABLE_COMANDA_MENU + "(" + COLUMN_CM_ID_COMANDA_MENU
+			+ " INTEGER PRIMARY KEY ," + COLUMN_CM_ID_PLATO
+			+ " INTEGER NOT NULL ," + COLUMN_CM_ID_DETALLE_COMANDA
+			+ " INTEGER NOT NULL ," + COLUMN_CM_CANTIDAD
+			+ " INTEGER NOT NULL ," + COLUMN_CM_ESTADO + " TEXT NOT NULL)";
+
+	// Comanda menu
+	public static final String TABLE_COMANDA_ARTICULO_PER = "comanda_articulo_per";
+	public static final String COLUMN_CAM_ID_COMANDA_ARTICULO_PER = "id_comanda_articulo_per";
+	public static final String COLUMN_CAM_ID_DETALLE_COMANDA = "id_detalle_comanda";
+	public static final String COLUMN_CAM_ID_INGREDIENTE = "id_ingrediente";
+	public static final String COLUMN_CAM_PRECIO = "precio";
+
+	private static final String CREATE_TABLE_COMANDA_ARTICULO_PER = "CREATE TABLE "
+			+ TABLE_COMANDA_ARTICULO_PER
+			+ "("
+			+ COLUMN_CAM_ID_COMANDA_ARTICULO_PER
+			+ " INTEGER PRIMARY KEY ,"
+			+ COLUMN_CAM_ID_DETALLE_COMANDA
+			+ " INTEGER NOT NULL ,"
+			+ COLUMN_CAM_ID_INGREDIENTE
+			+ " INTEGER NOT NULL ,"
+			+ COLUMN_CAM_PRECIO + " INTEGER NOT NULL )";
+
 	public LocalSQLite(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
@@ -429,6 +472,9 @@ public class LocalSQLite extends SQLiteOpenHelper {
 		database.execSQL(CREATE_TABLE_MENUS);
 		database.execSQL(CREATE_TABLE_MENUS_DIA);
 		database.execSQL(CREATE_TABLE_PLATOS_MENU_DIA);
+		database.execSQL(CREATE_TABLE_TIPOS_COMANDA);
+		database.execSQL(CREATE_TABLE_COMANDA_MENU);
+		database.execSQL(CREATE_TABLE_COMANDA_ARTICULO_PER);
 	}
 
 	@Override
