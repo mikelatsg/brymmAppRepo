@@ -12,9 +12,12 @@ import com.brymm.brymmapp.local.pojo.ArticuloCantidad;
 import com.brymm.brymmapp.local.pojo.DetalleComanda;
 import com.brymm.brymmapp.local.pojo.Ingrediente;
 import com.brymm.brymmapp.local.pojo.IngredientePerComanda;
+import com.brymm.brymmapp.local.pojo.MenuComanda;
+import com.brymm.brymmapp.local.pojo.MenuLocal;
 import com.brymm.brymmapp.local.pojo.Plato;
 import com.brymm.brymmapp.local.pojo.PlatoComanda;
 import com.brymm.brymmapp.local.pojo.TipoArticulo;
+import com.brymm.brymmapp.local.pojo.TipoComanda;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -27,9 +30,14 @@ public class GestionComanda {
 	public static final String JSON_COMANDA = "comanda";
 	public static final String JSON_PLATO_ESTADO = "platoEstado";
 	public static final String JSON_PLATOS_ESTADO = "platosEstado";
+	public static final String JSON_PLATO_COMANDA = "platoComanda";
+	public static final String JSON_PLATOS_COMANDA = "platosComanda";
 	public static final String JSON_ESTADO = "estado";
+	public static final String JSON_PRECIO = "precio";
 	public static final String JSON_CANTIDAD = "cantidad";
 	public static final String JSON_ID_COMANDA_MENU = "idComandaMenu";
+	public static final String JSON_ID_DETALLE_COMANDA = "idDetalleComanda";
+	public static final String JSON_MENU_COMANDA = "menuComanda";
 
 	private SQLiteDatabase database;
 	private LocalSQLite openHelper;
@@ -256,6 +264,83 @@ public class GestionComanda {
 
 	}
 
+	public List<DetalleComanda> obtenerDetallesComanda(int idComanda) {
+		List<DetalleComanda> detallesComanda = new ArrayList<DetalleComanda>();
+
+		if (!database.isOpen()) {
+			database = openHelper.getWritableDatabase();
+		}
+
+		Cursor cursor = database.query(LocalSQLite.TABLE_DETALLE_COMANDA, null,
+				LocalSQLite.COLUMN_DC_ID_COMANDA + " = ?",
+				new String[] { Integer.toString(idComanda) }, null, null, null);
+
+		while (cursor.moveToNext()) {
+			GestionTipoComanda gestor = new GestionTipoComanda(context);
+			TipoComanda tipoComanda = gestor
+					.obtenerTipoComanda(cursor.getInt(cursor
+							.getColumnIndex(LocalSQLite.COLUMN_DC_ID_TIPO_COMANDA)));
+			gestor.cerrarDatabase();
+
+			MenuComanda menuComanda = null;
+			ArticuloCantidad articuloCantidad = null;
+			// Si la comanda es de un articulo
+			switch (tipoComanda.getIdTipoComanda()) {
+			case 1:
+				GestionArticulo gestorArticulo = new GestionArticulo(context);
+				Articulo articulo = gestorArticulo
+						.obtenerArticulo(cursor.getInt(cursor
+								.getColumnIndex(LocalSQLite.COLUMN_DC_ID_ARTICULO)));
+				gestorArticulo.cerrarDatabase();
+				articuloCantidad = new ArticuloCantidad(
+						articulo,
+						cursor.getInt(cursor
+								.getColumnIndex(LocalSQLite.COLUMN_DC_CANTIDAD)));
+				break;
+			// Articulo personalizado
+			case 2:
+				articuloCantidad = obtenerArticuloPerDetalleComanda(
+						cursor.getInt(cursor
+								.getColumnIndex(LocalSQLite.COLUMN_DC_ID_DETALLE_COMANDA)),
+						cursor.getInt(cursor
+								.getColumnIndex(LocalSQLite.COLUMN_DC_ID_ARTICULO)),
+						cursor.getInt(cursor
+								.getColumnIndex(LocalSQLite.COLUMN_DC_CANTIDAD)),
+						cursor.getInt(cursor
+								.getColumnIndex(LocalSQLite.COLUMN_DC_PRECIO)));
+				break;
+			case 3:
+			case 4:
+				GestionMenu gestionMenu = new GestionMenu(context);
+				MenuLocal menu = gestionMenu.obtenerMenu(cursor.getInt(cursor
+						.getColumnIndex(LocalSQLite.COLUMN_DC_ID_ARTICULO)));
+				gestionMenu.cerrarDatabase();
+
+				List<PlatoComanda> platosComanda = obtenerPlatosDetalleComanda(cursor
+						.getInt(cursor
+								.getColumnIndex(LocalSQLite.COLUMN_DC_ID_DETALLE_COMANDA)));
+
+				menuComanda = new MenuComanda(menu, platosComanda);
+				break;
+			}
+
+			DetalleComanda detalleComanda = new DetalleComanda(
+					cursor.getInt(cursor
+							.getColumnIndex(LocalSQLite.COLUMN_DC_ID_DETALLE_COMANDA)),
+					tipoComanda, cursor.getInt(cursor
+							.getColumnIndex(LocalSQLite.COLUMN_DC_CANTIDAD)),
+					cursor.getFloat(cursor
+							.getColumnIndex(LocalSQLite.COLUMN_DC_PRECIO)),
+					cursor.getString(cursor
+							.getColumnIndex(LocalSQLite.COLUMN_DC_ESTADO)),
+					articuloCantidad, menuComanda);
+
+			detallesComanda.add(detalleComanda);
+		}
+
+		return detallesComanda;
+	}
+
 	public List<PlatoComanda> obtenerPlatosDetalleComanda(int idDetalleComanda) {
 		List<PlatoComanda> platosComanda = new ArrayList<PlatoComanda>();
 
@@ -384,12 +469,60 @@ public class GestionComanda {
 				.getJSONObject(GestionPlato.JSON_ID_PLATO));
 
 		PlatoComanda platoComanda = new PlatoComanda(
-				platoComandaJson.getInt(JSON_ID_COMANDA_MENU),
-				plato,				
+				platoComandaJson.getInt(JSON_ID_COMANDA_MENU), plato,
 				platoComandaJson.getString(JSON_ESTADO),
 				platoComandaJson.getInt(JSON_CANTIDAD));
 
 		return platoComanda;
+	}
+
+	public static DetalleComanda detalleComandaJson2DetalleComanda(
+			JSONObject detalleComandaJson) throws JSONException {
+
+		TipoComanda tipoComanda = GestionTipoComanda
+				.tipoComandaJson2TipoComanda(detalleComandaJson
+						.getJSONObject(GestionTipoComanda.JSON_TIPO_COMANDA));
+
+		ArticuloCantidad articulo = GestionArticulo
+				.articuloCantidadJson2ArticuloCantidad(detalleComandaJson
+						.getJSONObject(GestionArticulo.JSON_ARTICULO));
+
+		MenuComanda menuComanda = GestionComanda
+				.menuComandaJson2MenuComanda(detalleComandaJson
+						.getJSONObject(JSON_MENU_COMANDA));
+
+		DetalleComanda detalleComanda = new DetalleComanda(
+				detalleComandaJson.getInt(JSON_ID_DETALLE_COMANDA),
+				tipoComanda, detalleComandaJson.getInt(JSON_CANTIDAD),
+				(float) detalleComandaJson.getDouble(JSON_PRECIO),
+				detalleComandaJson.getString(JSON_ESTADO), articulo,
+				menuComanda);
+
+		return detalleComanda;
+	}
+
+	public static MenuComanda menuComandaJson2MenuComanda(
+			JSONObject menuComandaJson) throws JSONException {
+
+		MenuLocal menuLocal = GestionMenu.menuJson2Menu(menuComandaJson
+				.getJSONObject(GestionMenu.JSON_MENU));
+
+		List<PlatoComanda> platosComanda = new ArrayList<PlatoComanda>();
+
+		for (int i = 0; i < menuComandaJson.getJSONArray(JSON_PLATOS_COMANDA)
+				.length(); i++) {
+			JSONObject platoComandaJson = menuComandaJson.getJSONArray(
+					JSON_PLATO_COMANDA).getJSONObject(i);
+
+			PlatoComanda platoComanda = platoComandaJson2PlatoComanda(platoComandaJson);
+
+			platosComanda.add(platoComanda);
+
+		}
+
+		MenuComanda menuComanda = new MenuComanda(menuLocal, platosComanda);
+
+		return menuComanda;
 	}
 
 }

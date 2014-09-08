@@ -450,21 +450,26 @@ public class LocalSQLite extends SQLiteOpenHelper {
 	public static final String COLUMN_DC_ID_ARTICULO = "id_articulo";
 
 	private static final String CREATE_TABLE_DETALLE_COMANDA = "CREATE TABLE "
-			+ TABLE_DETALLE_COMANDA
-			+ "("
-			+ COLUMN_DC_ID_DETALLE_COMANDA
-			+ " INTEGER PRIMARY KEY ,"
-			+ COLUMN_DC_ID_TIPO_COMANDA
-			+ " INTEGER NOT NULL ,"
-			+ COLUMN_DC_CANTIDAD
-			+ " INTEGER NOT NULL ,"
-			+ COLUMN_DC_ID_COMANDA
-			+ " INTEGER NOT NULL ,"
-			+ COLUMN_DC_ESTADO
-			+ " TEXT NOT NULL ,"
-			+ COLUMN_DC_ID_ARTICULO
-			+ " INTEGER NOT NULL ,"
-			+ COLUMN_CAM_PRECIO + " REAL NOT NULL )";
+			+ TABLE_DETALLE_COMANDA + "(" + COLUMN_DC_ID_DETALLE_COMANDA
+			+ " INTEGER PRIMARY KEY ," + COLUMN_DC_ID_TIPO_COMANDA
+			+ " INTEGER NOT NULL ," + COLUMN_DC_CANTIDAD
+			+ " INTEGER NOT NULL ," + COLUMN_DC_ID_COMANDA
+			+ " INTEGER NOT NULL ," + COLUMN_DC_ESTADO + " TEXT NOT NULL ,"
+			+ COLUMN_DC_ID_ARTICULO + " INTEGER NOT NULL ," + COLUMN_CAM_PRECIO
+			+ " REAL NOT NULL )";
+
+	// Detalle comanda
+	public static final String TABLE_CAMARERO = "camarero";
+	public static final String COLUMN_CMR_ID_CAMARERO = "id_camarero";
+	public static final String COLUMN_CMR_NOMBRE = "nombre";
+	public static final String COLUMN_CMR_ACTIVO = "activo";
+	public static final String COLUMN_CMR_CONTROL_TOTAL = "control_total";
+
+	private static final String CREATE_TABLE_CAMARERO = "CREATE TABLE "
+			+ TABLE_CAMARERO + "(" + COLUMN_CMR_ID_CAMARERO
+			+ " INTEGER PRIMARY KEY ," + COLUMN_CMR_NOMBRE + " TEXT NOT NULL ,"
+			+ COLUMN_CMR_ACTIVO + " INTEGER NOT NULL ,"
+			+ COLUMN_CMR_CONTROL_TOTAL + " INTEGER NOT NULL  )";
 
 	public LocalSQLite(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -503,6 +508,7 @@ public class LocalSQLite extends SQLiteOpenHelper {
 		database.execSQL(CREATE_TABLE_COMANDA_MENU);
 		database.execSQL(CREATE_TABLE_COMANDA_ARTICULO_PER);
 		database.execSQL(CREATE_TABLE_DETALLE_COMANDA);
+		database.execSQL(CREATE_TABLE_CAMARERO);
 	}
 
 	@Override
