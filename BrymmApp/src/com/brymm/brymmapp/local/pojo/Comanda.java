@@ -13,10 +13,11 @@ public class Comanda implements Parcelable {
 	private String estado;
 	private Float precio;
 	private Mesa mesa;
+	private String fecha;
 	private List<DetalleComanda> detallesComanda;
 
 	public Comanda(int idComanda, String destino, Camarero camarero,
-			String estado, Float precio, Mesa mesa,
+			String estado, Float precio, Mesa mesa,String fecha,
 			List<DetalleComanda> detallesComanda) {
 		super();
 		this.idComanda = idComanda;
@@ -25,6 +26,7 @@ public class Comanda implements Parcelable {
 		this.estado = estado;
 		this.precio = precio;
 		this.mesa = mesa;
+		this.fecha = fecha;
 		this.detallesComanda = detallesComanda;
 	}
 
@@ -74,6 +76,14 @@ public class Comanda implements Parcelable {
 
 	public void setMesa(Mesa mesa) {
 		this.mesa = mesa;
+	}	
+
+	public String getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
 	}
 
 	public List<DetalleComanda> getDetallesComanda() {
@@ -98,6 +108,7 @@ public class Comanda implements Parcelable {
 		dest.writeString(this.estado);
 		dest.writeFloat(this.precio);
 		dest.writeParcelable(this.mesa, flags);
+		dest.writeString(this.fecha);
 		dest.writeTypedList(detallesComanda);
 	}
 
@@ -112,6 +123,7 @@ public class Comanda implements Parcelable {
 		this.estado = in.readString();
 		this.precio = in.readFloat();
 		this.mesa = in.readParcelable(Mesa.class.getClassLoader());
+		this.fecha = in.readString();
 		in.readTypedList(detallesComanda, DetalleComanda.CREATOR);
 	}
 

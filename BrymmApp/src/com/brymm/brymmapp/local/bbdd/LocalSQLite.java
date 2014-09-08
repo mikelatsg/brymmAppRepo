@@ -458,7 +458,7 @@ public class LocalSQLite extends SQLiteOpenHelper {
 			+ COLUMN_DC_ID_ARTICULO + " INTEGER NOT NULL ," + COLUMN_CAM_PRECIO
 			+ " REAL NOT NULL )";
 
-	// Detalle comanda
+	// Camarero
 	public static final String TABLE_CAMARERO = "camarero";
 	public static final String COLUMN_CMR_ID_CAMARERO = "id_camarero";
 	public static final String COLUMN_CMR_NOMBRE = "nombre";
@@ -470,6 +470,26 @@ public class LocalSQLite extends SQLiteOpenHelper {
 			+ " INTEGER PRIMARY KEY ," + COLUMN_CMR_NOMBRE + " TEXT NOT NULL ,"
 			+ COLUMN_CMR_ACTIVO + " INTEGER NOT NULL ,"
 			+ COLUMN_CMR_CONTROL_TOTAL + " INTEGER NOT NULL  )";
+
+	// Comandas
+	public static final String TABLE_COMANDAS = "comandas";
+	public static final String COLUMN_CMN_ID_COMANDA = "id_comandas";
+	public static final String COLUMN_CMN_DESTINO = "destino";
+	public static final String COLUMN_CMN_OBSERVACIONES = "observaciones";
+	public static final String COLUMN_CMN_ID_CAMARERO = "id_camarero";
+	public static final String COLUMN_CMN_PRECIO = "precio";
+	public static final String COLUMN_CMN_ID_MESA = "id_mesa";
+	public static final String COLUMN_CMN_ESTADO = "estado";
+	public static final String COLUMN_CMN_FECHA_ALTA = "fecha_alta";
+
+	private static final String CREATE_TABLE_COMANDAS = "CREATE TABLE "
+			+ TABLE_COMANDAS + "(" + COLUMN_CMN_ID_COMANDA
+			+ " INTEGER PRIMARY KEY ," + COLUMN_CMN_DESTINO
+			+ " TEXT NOT NULL ," + COLUMN_CMN_OBSERVACIONES
+			+ " TEXT NOT NULL ," + COLUMN_CMN_PRECIO + " REAL NOT NULL ,"
+			+ COLUMN_CMN_ID_MESA + " INTEGER NOT NULL ," + COLUMN_CMN_ESTADO
+			+ " TEXT NOT NULL ," + COLUMN_CMN_FECHA_ALTA + " TEXT NOT NULL ,"
+			+ COLUMN_CMN_ID_CAMARERO + " INTEGER NOT NULL  )";
 
 	public LocalSQLite(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -509,6 +529,7 @@ public class LocalSQLite extends SQLiteOpenHelper {
 		database.execSQL(CREATE_TABLE_COMANDA_ARTICULO_PER);
 		database.execSQL(CREATE_TABLE_DETALLE_COMANDA);
 		database.execSQL(CREATE_TABLE_CAMARERO);
+		database.execSQL(CREATE_TABLE_COMANDAS);
 	}
 
 	@Override
