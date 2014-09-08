@@ -1,6 +1,7 @@
 package com.brymm.brymmapp.local.bbdd;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONException;
@@ -8,7 +9,9 @@ import org.json.JSONObject;
 
 import com.brymm.brymmapp.local.pojo.Articulo;
 import com.brymm.brymmapp.local.pojo.ArticuloCantidad;
+import com.brymm.brymmapp.local.pojo.DetalleComanda;
 import com.brymm.brymmapp.local.pojo.Ingrediente;
+import com.brymm.brymmapp.local.pojo.IngredientePerComanda;
 import com.brymm.brymmapp.local.pojo.Plato;
 import com.brymm.brymmapp.local.pojo.PlatoComanda;
 import com.brymm.brymmapp.local.pojo.TipoArticulo;
@@ -26,6 +29,7 @@ public class GestionComanda {
 	public static final String JSON_PLATOS_ESTADO = "platosEstado";
 	public static final String JSON_ESTADO = "estado";
 	public static final String JSON_CANTIDAD = "cantidad";
+	public static final String JSON_ID_COMANDA_MENU = "idComandaMenu";
 
 	private SQLiteDatabase database;
 	private LocalSQLite openHelper;
@@ -55,8 +59,111 @@ public class GestionComanda {
 				new String[] { Integer.toString(idComandaArticuloPer) });
 	}
 
+	public void borrarDetalleComanda(int idDetalleComanda) {
+		if (!database.isOpen()) {
+			database = openHelper.getWritableDatabase();
+		}
+
+		database.delete(LocalSQLite.TABLE_COMANDA_ARTICULO_PER,
+				LocalSQLite.COLUMN_CAM_ID_DETALLE_COMANDA + " = ? ",
+				new String[] { Integer.toString(idDetalleComanda) });
+		database.delete(LocalSQLite.TABLE_COMANDA_MENU,
+				LocalSQLite.COLUMN_CM_ID_DETALLE_COMANDA + " = ? ",
+				new String[] { Integer.toString(idDetalleComanda) });
+		database.delete(LocalSQLite.TABLE_DETALLE_COMANDA,
+				LocalSQLite.COLUMN_DC_ID_DETALLE_COMANDA + " = ? ",
+				new String[] { Integer.toString(idDetalleComanda) });
+	}
+
+	public int guardarDetalleComanda(DetalleComanda detalleComanda,
+			int idComanda) {
+		int resultado = 1;
+
+		if (!database.isOpen()) {
+			database = openHelper.getWritableDatabase();
+		}
+
+		Cursor cursor = database.query(LocalSQLite.TABLE_DETALLE_COMANDA, null,
+				LocalSQLite.COLUMN_DC_ID_DETALLE_COMANDA + " = ?",
+				new String[] { Integer.toString(detalleComanda
+						.getIdDetalleComanda()) }, null, null, null);
+
+		ContentValues content = new ContentValues();
+
+		content.put(LocalSQLite.COLUMN_DC_CANTIDAD,
+				detalleComanda.getCantidad());
+		content.put(LocalSQLite.COLUMN_DC_ESTADO, detalleComanda.getEstado());
+		content.put(LocalSQLite.COLUMN_DC_ID_TIPO_COMANDA, detalleComanda
+				.getTipoComanda().getIdTipoComanda());
+		content.put(LocalSQLite.COLUMN_DC_PRECIO, detalleComanda.getPrecio());
+		content.put(LocalSQLite.COLUMN_DC_ID_COMANDA, idComanda);
+
+		// Asigno el id articulo dependiendo el tipo de comanda
+		if (detalleComanda.getTipoComanda().getIdTipoComanda() == 1) {
+			content.put(LocalSQLite.COLUMN_DC_ID_ARTICULO, detalleComanda
+					.getArticulo().getIdArticulo());
+		} else if (detalleComanda.getTipoComanda().getIdTipoComanda() == 3
+				|| detalleComanda.getTipoComanda().getIdTipoComanda() == 4) {
+			content.put(LocalSQLite.COLUMN_DC_ID_ARTICULO, detalleComanda
+					.getMenuComanda().getMenu().getIdMenu());
+		} else {
+			content.put(LocalSQLite.COLUMN_DC_ID_ARTICULO, 0);
+		}
+
+		if (!cursor.moveToFirst()) {
+			content.put(LocalSQLite.COLUMN_DC_ID_DETALLE_COMANDA,
+					detalleComanda.getIdDetalleComanda());
+
+			if (database.insert(LocalSQLite.TABLE_DETALLE_COMANDA, null,
+					content) < 0) {
+				resultado = -1;
+			}
+		} else {
+
+			if (database.update(LocalSQLite.TABLE_DETALLE_COMANDA, content,
+					LocalSQLite.COLUMN_DC_ID_DETALLE_COMANDA + " = ?",
+					new String[] { Integer.toString(detalleComanda
+							.getIdDetalleComanda()) }) < 0) {
+				resultado = -1;
+			}
+
+		}
+
+		if (resultado > 0) {
+			// Inserto el menu
+			if (detalleComanda.getTipoComanda().getIdTipoComanda() == 3
+					|| detalleComanda.getTipoComanda().getIdTipoComanda() == 4) {
+				Iterator<PlatoComanda> iterator = detalleComanda
+						.getMenuComanda().getPlatos().iterator();
+				while (iterator.hasNext()) {
+					PlatoComanda platoComanda = (PlatoComanda) iterator.next();
+					guardarPlatoComanda(platoComanda,
+							detalleComanda.getIdDetalleComanda());
+				}
+
+			}
+
+			// Inserto el ariculo per
+			if (detalleComanda.getTipoComanda().getIdTipoComanda() == 2) {
+				Iterator<Ingrediente> iterator = detalleComanda.getArticulo()
+						.getIngredientes().iterator();
+				while (iterator.hasNext()) {
+					IngredientePerComanda ingrediente = (IngredientePerComanda) iterator
+							.next();
+					guardarArticuloPerComanda(ingrediente,
+							detalleComanda.getIdDetalleComanda());
+				}
+
+			}
+		}
+
+		cursor.close();
+
+		return resultado;
+	}
+
 	public int guardarPlatoComanda(PlatoComanda platoComanda,
-			int idComandaMenu, int idDetalleComanda) {
+			int idDetalleComanda) {
 
 		int resultado = 1;
 
@@ -64,10 +171,11 @@ public class GestionComanda {
 			database = openHelper.getWritableDatabase();
 		}
 
-		Cursor cursor = database.query(LocalSQLite.TABLE_COMANDA_MENU, null,
-				LocalSQLite.COLUMN_CM_ID_COMANDA_MENU + " = ?",
-				new String[] { Integer.toString(idComandaMenu) }, null, null,
-				null);
+		Cursor cursor = database
+				.query(LocalSQLite.TABLE_COMANDA_MENU, null,
+						LocalSQLite.COLUMN_CM_ID_COMANDA_MENU + " = ?",
+						new String[] { Integer.toString(platoComanda
+								.getidComandaMenu()) }, null, null, null);
 
 		ContentValues content = new ContentValues();
 
@@ -77,7 +185,8 @@ public class GestionComanda {
 		content.put(LocalSQLite.COLUMN_CM_ESTADO, platoComanda.getEstado());
 
 		if (!cursor.moveToFirst()) {
-			content.put(LocalSQLite.COLUMN_CM_ID_COMANDA_MENU, idComandaMenu);
+			content.put(LocalSQLite.COLUMN_CM_ID_COMANDA_MENU,
+					platoComanda.getidComandaMenu());
 
 			if (database.insert(LocalSQLite.TABLE_COMANDA_MENU, null, content) < 0) {
 				resultado = -1;
@@ -87,7 +196,8 @@ public class GestionComanda {
 
 			if (database.update(LocalSQLite.TABLE_COMANDA_MENU, content,
 					LocalSQLite.COLUMN_CM_ID_COMANDA_MENU + " = ?",
-					new String[] { Integer.toString(idComandaMenu) }) < 0) {
+					new String[] { Integer.toString(platoComanda
+							.getidComandaMenu()) }) < 0) {
 				resultado = -1;
 			}
 
@@ -99,8 +209,8 @@ public class GestionComanda {
 
 	}
 
-	public int guardarArticuloPerComanda(Ingrediente ingrediente,
-			int idComandaArticuloPer, int idDetalleComanda) {
+	public int guardarArticuloPerComanda(IngredientePerComanda ingrediente,
+			int idDetalleComanda) {
 
 		int resultado = 1;
 
@@ -110,8 +220,8 @@ public class GestionComanda {
 
 		Cursor cursor = database.query(LocalSQLite.TABLE_COMANDA_ARTICULO_PER,
 				null, LocalSQLite.COLUMN_CAM_ID_COMANDA_ARTICULO_PER + " = ?",
-				new String[] { Integer.toString(idComandaArticuloPer) }, null,
-				null, null);
+				new String[] { Integer.toString(ingrediente
+						.getIdComandaArticuloPer()) }, null, null, null);
 
 		ContentValues content = new ContentValues();
 
@@ -122,7 +232,7 @@ public class GestionComanda {
 
 		if (!cursor.moveToFirst()) {
 			content.put(LocalSQLite.COLUMN_CAM_ID_COMANDA_ARTICULO_PER,
-					idComandaArticuloPer);
+					ingrediente.getIdComandaArticuloPer());
 
 			if (database.insert(LocalSQLite.TABLE_COMANDA_ARTICULO_PER, null,
 					content) < 0) {
@@ -133,8 +243,8 @@ public class GestionComanda {
 
 			if (database.update(LocalSQLite.TABLE_COMANDA_ARTICULO_PER,
 					content, LocalSQLite.COLUMN_CAM_ID_COMANDA_ARTICULO_PER
-							+ " = ?",
-					new String[] { Integer.toString(idComandaArticuloPer) }) < 0) {
+							+ " = ?", new String[] { Integer
+							.toString(ingrediente.getIdComandaArticuloPer()) }) < 0) {
 				resultado = -1;
 			}
 
@@ -248,8 +358,10 @@ public class GestionComanda {
 					.getColumnIndex(LocalSQLite.COLUMN_CM_ID_PLATO)));
 			gestionPlato.cerrarDatabase();
 
-			platoComanda = new PlatoComanda(plato, cursor.getString(cursor
-					.getColumnIndex(LocalSQLite.COLUMN_CM_ESTADO)),
+			platoComanda = new PlatoComanda(cursor.getInt(cursor
+					.getColumnIndex(LocalSQLite.COLUMN_CM_ID_COMANDA_MENU)),
+					plato, cursor.getString(cursor
+							.getColumnIndex(LocalSQLite.COLUMN_CM_ESTADO)),
 					cursor.getInt(cursor
 							.getColumnIndex(LocalSQLite.COLUMN_CM_CANTIDAD)));
 
@@ -271,7 +383,9 @@ public class GestionComanda {
 		Plato plato = GestionPlato.platoJson2Plato(platoComandaJson
 				.getJSONObject(GestionPlato.JSON_ID_PLATO));
 
-		PlatoComanda platoComanda = new PlatoComanda(plato,
+		PlatoComanda platoComanda = new PlatoComanda(
+				platoComandaJson.getInt(JSON_ID_COMANDA_MENU),
+				plato,				
 				platoComandaJson.getString(JSON_ESTADO),
 				platoComandaJson.getInt(JSON_CANTIDAD));
 

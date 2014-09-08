@@ -4,16 +4,32 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class PlatoComanda extends Plato {
+	private int idComandaMenu;
 	private String estado;
 	private int cantidad;
 
-	public PlatoComanda(Plato plato, String estado, int cantidad) {
+	public PlatoComanda(int idComandaMenu, Plato plato, String estado, int cantidad) {
 		super(plato.getIdPlato(), plato.getTipoPlato(), plato.getNombre(),
 				plato.getPrecio());
 
+		this.idComandaMenu = idComandaMenu;
 		this.estado = estado;
 		this.cantidad = cantidad;
 	}
+
+	
+	
+	public int getidComandaMenu() {
+		return idComandaMenu;
+	}
+
+
+
+	public void setidComandaMenu(int idComandaMenu) {
+		this.idComandaMenu = idComandaMenu;
+	}
+
+
 
 	public String getEstado() {
 		return estado;
@@ -39,6 +55,7 @@ public class PlatoComanda extends Plato {
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		super.writeToParcel(dest, flags);
+		dest.writeInt(idComandaMenu);
 		dest.writeString(estado);
 		dest.writeInt(cantidad);
 	}
@@ -49,6 +66,7 @@ public class PlatoComanda extends Plato {
 
 	public void readFromParcel(Parcel in) {
 		super.readFromParcel(in);
+		this.idComandaMenu = in.readInt();
 		this.estado = in.readString();
 		this.cantidad = in.readInt();
 	}

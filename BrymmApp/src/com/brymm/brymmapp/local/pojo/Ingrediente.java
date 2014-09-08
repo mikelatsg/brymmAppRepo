@@ -18,6 +18,14 @@ public class Ingrediente implements Parcelable {
 		this.descripcion = descripcion;
 		this.precio = precio;
 	}
+	
+	public Ingrediente() {
+		super();
+		this.idIngrediente = 0;
+		this.nombre = null;
+		this.descripcion = null;
+		this.precio = 0;
+	}
 
 	public int getIdIngrediente() {
 		return idIngrediente;

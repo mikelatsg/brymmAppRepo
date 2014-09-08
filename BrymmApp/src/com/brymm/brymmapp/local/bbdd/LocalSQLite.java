@@ -437,7 +437,34 @@ public class LocalSQLite extends SQLiteOpenHelper {
 			+ " INTEGER NOT NULL ,"
 			+ COLUMN_CAM_ID_INGREDIENTE
 			+ " INTEGER NOT NULL ,"
-			+ COLUMN_CAM_PRECIO + " INTEGER NOT NULL )";
+			+ COLUMN_CAM_PRECIO + " REAL NOT NULL )";
+
+	// Detalle comanda
+	public static final String TABLE_DETALLE_COMANDA = "detalle_comanda";
+	public static final String COLUMN_DC_ID_DETALLE_COMANDA = "id_detalle_comanda";
+	public static final String COLUMN_DC_ID_TIPO_COMANDA = "id_tipo_comanda";
+	public static final String COLUMN_DC_CANTIDAD = "cantidad";
+	public static final String COLUMN_DC_PRECIO = "precio";
+	public static final String COLUMN_DC_ID_COMANDA = "id_comanda";
+	public static final String COLUMN_DC_ESTADO = "estado";
+	public static final String COLUMN_DC_ID_ARTICULO = "id_articulo";
+
+	private static final String CREATE_TABLE_DETALLE_COMANDA = "CREATE TABLE "
+			+ TABLE_DETALLE_COMANDA
+			+ "("
+			+ COLUMN_DC_ID_DETALLE_COMANDA
+			+ " INTEGER PRIMARY KEY ,"
+			+ COLUMN_DC_ID_TIPO_COMANDA
+			+ " INTEGER NOT NULL ,"
+			+ COLUMN_DC_CANTIDAD
+			+ " INTEGER NOT NULL ,"
+			+ COLUMN_DC_ID_COMANDA
+			+ " INTEGER NOT NULL ,"
+			+ COLUMN_DC_ESTADO
+			+ " TEXT NOT NULL ,"
+			+ COLUMN_DC_ID_ARTICULO
+			+ " INTEGER NOT NULL ,"
+			+ COLUMN_CAM_PRECIO + " REAL NOT NULL )";
 
 	public LocalSQLite(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -475,6 +502,7 @@ public class LocalSQLite extends SQLiteOpenHelper {
 		database.execSQL(CREATE_TABLE_TIPOS_COMANDA);
 		database.execSQL(CREATE_TABLE_COMANDA_MENU);
 		database.execSQL(CREATE_TABLE_COMANDA_ARTICULO_PER);
+		database.execSQL(CREATE_TABLE_DETALLE_COMANDA);
 	}
 
 	@Override

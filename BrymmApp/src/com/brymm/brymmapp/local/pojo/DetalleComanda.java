@@ -1,6 +1,5 @@
 package com.brymm.brymmapp.local.pojo;
 
-import java.util.List;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -12,20 +11,20 @@ public class DetalleComanda implements Parcelable {
 	private int cantidad;
 	private float precio;		
 	private String estado;	
-	private List<ArticuloCantidad> articulos;
-	private List<MenuComanda> menusComanda;		
+	private ArticuloCantidad articulo;
+	private MenuComanda menuComanda;		
 
 	public DetalleComanda(int idDetalleComanda, TipoComanda tipoComanda,
 			int cantidad, float precio, String estado,
-			List<ArticuloCantidad> articulos, List<MenuComanda> menusComanda) {
+			ArticuloCantidad articulo, MenuComanda menuComanda) {
 		super();
 		this.idDetalleComanda = idDetalleComanda;
 		this.tipoComanda = tipoComanda;
 		this.cantidad = cantidad;
 		this.precio = precio;
 		this.estado = estado;
-		this.articulos = articulos;
-		this.menusComanda = menusComanda;
+		this.articulo = articulo;
+		this.menuComanda = menuComanda;
 	}
 
 	public int getIdDetalleComanda() {
@@ -52,12 +51,12 @@ public class DetalleComanda implements Parcelable {
 		this.cantidad = cantidad;
 	}
 
-	public List<MenuComanda> getMenusComanda() {
-		return menusComanda;
+	public MenuComanda getMenuComanda() {
+		return menuComanda;
 	}
 
-	public void setMenusComanda(List<MenuComanda> menusComanda) {
-		this.menusComanda = menusComanda;
+	public void setMenuComanda(MenuComanda menuComanda) {
+		this.menuComanda = menuComanda;
 	}
 
 	public void setPrecio(float precio) {
@@ -81,12 +80,12 @@ public class DetalleComanda implements Parcelable {
 		this.precio = precio;
 	}
 
-	public List<ArticuloCantidad> getArticulos() {
-		return articulos;
+	public ArticuloCantidad getArticulo() {
+		return articulo;
 	}
 
-	public void setArticulos(List<ArticuloCantidad> articulos) {
-		this.articulos = articulos;
+	public void setArticulo(ArticuloCantidad articulo) {
+		this.articulo = articulo;
 	}
 	
 	@Override
@@ -101,9 +100,9 @@ public class DetalleComanda implements Parcelable {
 		dest.writeParcelable(this.tipoComanda, flags);
 		dest.writeInt(this.cantidad);
 		dest.writeFloat(this.precio);
-		dest.writeString(this.estado);		
-		dest.writeTypedList(articulos);
-		dest.writeTypedList(menusComanda);
+		dest.writeString(this.estado);
+		dest.writeParcelable(this.articulo, flags);
+		dest.writeParcelable(this.menuComanda, flags);
 	}
 
 	protected DetalleComanda(Parcel in) {
@@ -116,9 +115,11 @@ public class DetalleComanda implements Parcelable {
 				.getClassLoader());
 		this.cantidad = in.readInt();
 		this.precio = in.readFloat();
-		this.estado = in.readString();		
-		in.readTypedList(articulos, ArticuloCantidad.CREATOR);
-		in.readTypedList(menusComanda, MenuComanda.CREATOR);
+		this.estado = in.readString();	
+		this.articulo = in.readParcelable(ArticuloCantidad.class
+				.getClassLoader());
+		this.menuComanda = in.readParcelable(MenuComanda.class
+				.getClassLoader());
 	}
 
 	public static final Parcelable.Creator<DetalleComanda> CREATOR = new Parcelable.Creator<DetalleComanda>() {
