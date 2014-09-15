@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import com.brymm.brymmapp.LoginActivity;
 import com.brymm.brymmapp.local.bbdd.GestionArticulo;
+import com.brymm.brymmapp.local.bbdd.GestionCamarero;
 import com.brymm.brymmapp.local.bbdd.GestionDiaCierre;
 import com.brymm.brymmapp.local.bbdd.GestionDiaCierreReserva;
 import com.brymm.brymmapp.local.bbdd.GestionDiaSemana;
@@ -31,6 +32,7 @@ import com.brymm.brymmapp.local.bbdd.GestionTipoMenu;
 import com.brymm.brymmapp.local.bbdd.GestionTipoPlato;
 import com.brymm.brymmapp.local.bbdd.GestionTipoServicio;
 import com.brymm.brymmapp.local.pojo.Articulo;
+import com.brymm.brymmapp.local.pojo.Camarero;
 import com.brymm.brymmapp.local.pojo.DiaCierre;
 import com.brymm.brymmapp.local.pojo.DiaCierreReserva;
 import com.brymm.brymmapp.local.pojo.DiaSemana;
@@ -238,6 +240,11 @@ public class ServicioDatosLocal extends Service {
 		JSONArray tiposComanda = datosLocal
 				.getJSONArray(GestionTipoComanda.JSON_TIPOS_COMANDA);
 		guardarTiposComanda(tiposComanda);
+
+		// Se guardan los camareros
+		JSONArray camareros = datosLocal
+				.getJSONArray(GestionCamarero.JSON_CAMAREROS);
+		guardarCamareros(camareros);
 
 	}
 
@@ -530,8 +537,9 @@ public class ServicioDatosLocal extends Service {
 		}
 		gestor.cerrarDatabase();
 	}
-	
-	private void guardarTiposComanda(JSONArray tiposComandaJson) throws JSONException {
+
+	private void guardarTiposComanda(JSONArray tiposComandaJson)
+			throws JSONException {
 		GestionTipoComanda gestor = new GestionTipoComanda(this);
 		gestor.borrarTiposComanda();
 		for (int i = 0; i < tiposComandaJson.length(); i++) {
@@ -541,6 +549,22 @@ public class ServicioDatosLocal extends Service {
 					.tipoComandaJson2TipoComanda(tipoComandaJson);
 
 			gestor.guardarTipoComanda(tipoComanda);
+
+		}
+		gestor.cerrarDatabase();
+	}
+	
+	private void guardarCamareros(JSONArray camarerosJson)
+			throws JSONException {
+		GestionCamarero gestor = new GestionCamarero(this);
+		gestor.borrarCamareros();
+		for (int i = 0; i < camarerosJson.length(); i++) {
+			JSONObject camareroJson = camarerosJson.getJSONObject(i);
+
+			Camarero camarero = GestionCamarero
+					.camareroJson2Camarero(camareroJson);
+
+			gestor.guardarCamarero(camarero);
 
 		}
 		gestor.cerrarDatabase();
