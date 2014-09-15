@@ -9,11 +9,14 @@ import org.json.JSONObject;
 
 import com.brymm.brymmapp.local.pojo.Articulo;
 import com.brymm.brymmapp.local.pojo.ArticuloCantidad;
+import com.brymm.brymmapp.local.pojo.Camarero;
+import com.brymm.brymmapp.local.pojo.Comanda;
 import com.brymm.brymmapp.local.pojo.DetalleComanda;
 import com.brymm.brymmapp.local.pojo.Ingrediente;
 import com.brymm.brymmapp.local.pojo.IngredientePerComanda;
 import com.brymm.brymmapp.local.pojo.MenuComanda;
 import com.brymm.brymmapp.local.pojo.MenuLocal;
+import com.brymm.brymmapp.local.pojo.Mesa;
 import com.brymm.brymmapp.local.pojo.Plato;
 import com.brymm.brymmapp.local.pojo.PlatoComanda;
 import com.brymm.brymmapp.local.pojo.TipoArticulo;
@@ -28,6 +31,8 @@ public class GestionComanda {
 
 	public static final String JSON_COMANDAS = "comandas";
 	public static final String JSON_COMANDA = "comanda";
+	public static final String JSON_DETALLE_COMANDA = "detalleComanda";
+	public static final String JSON_DETALLES_COMANDA = "detallesComanda";
 	public static final String JSON_PLATO_ESTADO = "platoEstado";
 	public static final String JSON_PLATOS_ESTADO = "platosEstado";
 	public static final String JSON_PLATO_COMANDA = "platoComanda";
@@ -35,6 +40,9 @@ public class GestionComanda {
 	public static final String JSON_ESTADO = "estado";
 	public static final String JSON_PRECIO = "precio";
 	public static final String JSON_CANTIDAD = "cantidad";
+	public static final String JSON_FECHA = "fecha";
+	public static final String JSON_OBSERVACIONES = "observaciones";
+	public static final String JSON_DESTINO = "destino";
 	public static final String JSON_ID_COMANDA_MENU = "idComandaMenu";
 	public static final String JSON_ID_DETALLE_COMANDA = "idDetalleComanda";
 	public static final String JSON_MENU_COMANDA = "menuComanda";
@@ -81,6 +89,63 @@ public class GestionComanda {
 		database.delete(LocalSQLite.TABLE_DETALLE_COMANDA,
 				LocalSQLite.COLUMN_DC_ID_DETALLE_COMANDA + " = ? ",
 				new String[] { Integer.toString(idDetalleComanda) });
+	}
+
+	public void guardarComanda(Comanda comanda) {
+		boolean hayError = false;
+
+		if (!database.isOpen()) {
+			database = openHelper.getWritableDatabase();
+		}
+
+		database.beginTransaction();
+
+		Cursor cursor = database.query(LocalSQLite.TABLE_COMANDAS, null,
+				LocalSQLite.COLUMN_CMN_ID_COMANDA + " = ?",
+				new String[] { Integer.toString(comanda.getIdComanda()) },
+				null, null, null);
+
+		ContentValues content = new ContentValues();
+
+		content.put(LocalSQLite.COLUMN_CMN_DESTINO, comanda.getDestino());
+		content.put(LocalSQLite.COLUMN_CMN_ESTADO, comanda.getEstado());
+		content.put(LocalSQLite.COLUMN_CMN_FECHA_ALTA, comanda.getFecha());
+		content.put(LocalSQLite.COLUMN_CMN_ID_CAMARERO, comanda.getCamarero()
+				.getIdCamarero());
+
+		// Comprobamos si es para una mesa
+		int idMesa = 0;
+		if (comanda.getMesa() != null) {
+			idMesa = comanda.getMesa().getIdMesa();
+		}
+		content.put(LocalSQLite.COLUMN_CMN_ID_MESA, idMesa);
+		content.put(LocalSQLite.COLUMN_CMN_OBSERVACIONES,
+				comanda.getObservaciones());
+		content.put(LocalSQLite.COLUMN_CMN_PRECIO, comanda.getPrecio());
+
+		if (!cursor.moveToFirst()) {
+			content.put(LocalSQLite.COLUMN_CMN_ID_COMANDA,
+					comanda.getIdComanda());
+
+			if (database.insert(LocalSQLite.TABLE_COMANDAS, null, content) < 0) {
+				hayError = true;
+			}
+
+			for (DetalleComanda detalleComanda : comanda.getDetallesComanda()) {
+				if (guardarDetalleComanda(detalleComanda,
+						comanda.getIdComanda()) < 0) {
+					hayError = true;
+				}
+			}
+		}
+
+		if (!hayError) {
+			database.setTransactionSuccessful();
+		}
+
+		database.endTransaction();
+
+		cursor.close();
 	}
 
 	public int guardarDetalleComanda(DetalleComanda detalleComanda,
@@ -474,6 +539,41 @@ public class GestionComanda {
 				platoComandaJson.getInt(JSON_CANTIDAD));
 
 		return platoComanda;
+	}
+
+	public static Comanda comandaJson2Comanda(JSONObject comandaJson)
+			throws JSONException {
+		Camarero camarero = GestionCamarero.camareroJson2Camarero(comandaJson
+				.getJSONObject(GestionCamarero.JSON_CAMARERO));
+
+		Mesa mesa = null;
+
+		if (!comandaJson.getString(GestionMesa.JSON_MESA).equals("null")) {
+
+			mesa = GestionMesa.mesaJson2Mesa(comandaJson
+					.getJSONObject(GestionMesa.JSON_MESA));
+		}
+
+		List<DetalleComanda> detallesComanda = new ArrayList<DetalleComanda>();
+
+		for (int i = 0; i < comandaJson.getJSONArray(JSON_DETALLES_COMANDA)
+				.length(); i++) {
+			JSONObject detalleComandaJson = comandaJson.getJSONArray(
+					JSON_DETALLES_COMANDA).getJSONObject(i);
+
+			DetalleComanda detalleComanda = detalleComandaJson2DetalleComanda(detalleComandaJson);
+
+			detallesComanda.add(detalleComanda);
+
+		}
+
+		Comanda comanda = new Comanda(comandaJson.getInt(JSON_ID_COMANDA_MENU),
+				comandaJson.getString(JSON_DESTINO), camarero,
+				comandaJson.getString(JSON_ESTADO),
+				(float) comandaJson.getDouble(JSON_PRECIO), mesa,
+				comandaJson.getString(JSON_FECHA),
+				comandaJson.getString(JSON_OBSERVACIONES), detallesComanda);
+		return comanda;
 	}
 
 	public static DetalleComanda detalleComandaJson2DetalleComanda(

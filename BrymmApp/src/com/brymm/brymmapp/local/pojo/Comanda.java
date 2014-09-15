@@ -14,11 +14,12 @@ public class Comanda implements Parcelable {
 	private Float precio;
 	private Mesa mesa;
 	private String fecha;
+	private String observaciones;
 	private List<DetalleComanda> detallesComanda;
 
 	public Comanda(int idComanda, String destino, Camarero camarero,
-			String estado, Float precio, Mesa mesa,String fecha,
-			List<DetalleComanda> detallesComanda) {
+			String estado, Float precio, Mesa mesa, String fecha,
+			String observaciones, List<DetalleComanda> detallesComanda) {
 		super();
 		this.idComanda = idComanda;
 		this.destino = destino;
@@ -27,6 +28,7 @@ public class Comanda implements Parcelable {
 		this.precio = precio;
 		this.mesa = mesa;
 		this.fecha = fecha;
+		this.observaciones = observaciones;
 		this.detallesComanda = detallesComanda;
 	}
 
@@ -76,7 +78,7 @@ public class Comanda implements Parcelable {
 
 	public void setMesa(Mesa mesa) {
 		this.mesa = mesa;
-	}	
+	}
 
 	public String getFecha() {
 		return fecha;
@@ -84,6 +86,14 @@ public class Comanda implements Parcelable {
 
 	public void setFecha(String fecha) {
 		this.fecha = fecha;
+	}
+
+	public String getObservaciones() {
+		return observaciones;
+	}
+
+	public void setObservaciones(String observaciones) {
+		this.observaciones = observaciones;
 	}
 
 	public List<DetalleComanda> getDetallesComanda() {
@@ -99,16 +109,17 @@ public class Comanda implements Parcelable {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeInt(this.idComanda);
 		dest.writeString(this.destino);
-		dest.writeParcelable(this.camarero, flags);		
+		dest.writeParcelable(this.camarero, flags);
 		dest.writeString(this.estado);
 		dest.writeFloat(this.precio);
 		dest.writeParcelable(this.mesa, flags);
 		dest.writeString(this.fecha);
+		dest.writeString(this.observaciones);
 		dest.writeTypedList(detallesComanda);
 	}
 
@@ -117,13 +128,14 @@ public class Comanda implements Parcelable {
 	}
 
 	public void readFromParcel(Parcel in) {
-		this.idComanda = in.readInt();		
+		this.idComanda = in.readInt();
 		this.destino = in.readString();
-		this.camarero = in.readParcelable(Camarero.class.getClassLoader());		
+		this.camarero = in.readParcelable(Camarero.class.getClassLoader());
 		this.estado = in.readString();
 		this.precio = in.readFloat();
 		this.mesa = in.readParcelable(Mesa.class.getClassLoader());
 		this.fecha = in.readString();
+		this.observaciones = in.readString();
 		in.readTypedList(detallesComanda, DetalleComanda.CREATOR);
 	}
 
