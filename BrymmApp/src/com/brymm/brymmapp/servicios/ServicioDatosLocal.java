@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import com.brymm.brymmapp.LoginActivity;
 import com.brymm.brymmapp.local.bbdd.GestionArticulo;
 import com.brymm.brymmapp.local.bbdd.GestionCamarero;
+import com.brymm.brymmapp.local.bbdd.GestionComanda;
 import com.brymm.brymmapp.local.bbdd.GestionDiaCierre;
 import com.brymm.brymmapp.local.bbdd.GestionDiaCierreReserva;
 import com.brymm.brymmapp.local.bbdd.GestionDiaSemana;
@@ -33,6 +34,7 @@ import com.brymm.brymmapp.local.bbdd.GestionTipoPlato;
 import com.brymm.brymmapp.local.bbdd.GestionTipoServicio;
 import com.brymm.brymmapp.local.pojo.Articulo;
 import com.brymm.brymmapp.local.pojo.Camarero;
+import com.brymm.brymmapp.local.pojo.Comanda;
 import com.brymm.brymmapp.local.pojo.DiaCierre;
 import com.brymm.brymmapp.local.pojo.DiaCierreReserva;
 import com.brymm.brymmapp.local.pojo.DiaSemana;
@@ -245,6 +247,15 @@ public class ServicioDatosLocal extends Service {
 		JSONArray camareros = datosLocal
 				.getJSONArray(GestionCamarero.JSON_CAMAREROS);
 		guardarCamareros(camareros);
+
+		// Se guardan las comandas
+		JSONArray comandasActivas = datosLocal
+				.getJSONArray(GestionComanda.JSON_COMANDAS_ACTIVAS);
+		guardarComandas(comandasActivas);
+		
+		JSONArray comandasCerradas = datosLocal
+				.getJSONArray(GestionComanda.JSON_COMANDAS_CERRADAS);
+		guardarComandas(comandasCerradas);
 
 	}
 
@@ -553,9 +564,8 @@ public class ServicioDatosLocal extends Service {
 		}
 		gestor.cerrarDatabase();
 	}
-	
-	private void guardarCamareros(JSONArray camarerosJson)
-			throws JSONException {
+
+	private void guardarCamareros(JSONArray camarerosJson) throws JSONException {
 		GestionCamarero gestor = new GestionCamarero(this);
 		gestor.borrarCamareros();
 		for (int i = 0; i < camarerosJson.length(); i++) {
@@ -565,6 +575,21 @@ public class ServicioDatosLocal extends Service {
 					.camareroJson2Camarero(camareroJson);
 
 			gestor.guardarCamarero(camarero);
+
+		}
+		gestor.cerrarDatabase();
+	}
+	
+	private void guardarComandas(JSONArray comandasJson) throws JSONException {
+		GestionComanda gestor = new GestionComanda(this);
+		gestor.borrarComandas();
+		for (int i = 0; i < comandasJson.length(); i++) {
+			JSONObject comandaJson = comandasJson.getJSONObject(i);
+
+			Comanda comanda = GestionComanda
+					.comandaJson2Comanda(comandaJson);
+
+			gestor.guardarComanda(comanda);
 
 		}
 		gestor.cerrarDatabase();

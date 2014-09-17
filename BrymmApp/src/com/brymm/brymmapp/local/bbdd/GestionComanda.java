@@ -30,6 +30,8 @@ import android.database.sqlite.SQLiteDatabase;
 public class GestionComanda {
 
 	public static final String JSON_COMANDAS = "comandas";
+	public static final String JSON_COMANDAS_ACTIVAS = "comandasActivas";
+	public static final String JSON_COMANDAS_CERRADAS = "comandasCerradas";
 	public static final String JSON_COMANDA = "comanda";
 	public static final String JSON_DETALLE_COMANDA = "detalleComanda";
 	public static final String JSON_DETALLES_COMANDA = "detallesComanda";
@@ -89,6 +91,17 @@ public class GestionComanda {
 		database.delete(LocalSQLite.TABLE_DETALLE_COMANDA,
 				LocalSQLite.COLUMN_DC_ID_DETALLE_COMANDA + " = ? ",
 				new String[] { Integer.toString(idDetalleComanda) });
+	}
+
+	public void borrarComandas() {
+		if (!database.isOpen()) {
+			database = openHelper.getWritableDatabase();
+		}
+
+		database.delete(LocalSQLite.TABLE_COMANDA_ARTICULO_PER, null, null);
+		database.delete(LocalSQLite.TABLE_COMANDA_MENU, null, null);
+		database.delete(LocalSQLite.TABLE_DETALLE_COMANDA, null, null);
+		database.delete(LocalSQLite.TABLE_COMANDAS, null, null);
 	}
 
 	public void guardarComanda(Comanda comanda) {
