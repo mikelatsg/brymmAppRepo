@@ -40,5 +40,11 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/menu_local_menus"/>
+    <item
+        android:id="@+id/menuLocalComandas"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/menu_local_comandas"/>
+    
 
 </menu>

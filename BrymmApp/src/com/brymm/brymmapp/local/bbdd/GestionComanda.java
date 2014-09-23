@@ -48,6 +48,10 @@ public class GestionComanda {
 	public static final String JSON_ID_COMANDA_MENU = "idComandaMenu";
 	public static final String JSON_ID_DETALLE_COMANDA = "idDetalleComanda";
 	public static final String JSON_MENU_COMANDA = "menuComanda";
+	public static final String ESTADO_ACTIVO = "A";
+	public static final String ESTADO_CERRADA = "C";
+	public static final String ESTADO_TERMINADO_CAMARERO = "CC";
+	public static final String ESTADO_CANCELADO_CAMARERO = "CW";
 
 	private SQLiteDatabase database;
 	private LocalSQLite openHelper;
@@ -342,6 +346,98 @@ public class GestionComanda {
 
 	}
 
+	public Comanda obtenerComanda(int idComanda) {
+		List<DetalleComanda> detallesComanda = new ArrayList<DetalleComanda>();
+
+		detallesComanda = obtenerDetallesComanda(idComanda);
+
+		if (!database.isOpen()) {
+			database = openHelper.getWritableDatabase();
+		}
+
+		Cursor cursor = database.query(LocalSQLite.TABLE_COMANDAS, null,
+				LocalSQLite.COLUMN_CMN_ID_COMANDA + " = ?",
+				new String[] { Integer.toString(idComanda) }, null, null, null);
+
+		Comanda comanda = null;
+
+		while (cursor.moveToFirst()) {
+
+			GestionCamarero gestorCamarero = new GestionCamarero(context);
+			Camarero camarero = gestorCamarero
+					.obtenerCamarero(cursor.getInt(cursor
+							.getColumnIndex(LocalSQLite.COLUMN_CMN_ID_CAMARERO)));
+			gestorCamarero.cerrarDatabase();
+
+			GestionMesa gestorMesa = new GestionMesa(context);
+			Mesa mesa = gestorMesa.obtenerMesa(cursor.getInt(cursor
+					.getColumnIndex(LocalSQLite.COLUMN_CMN_ID_MESA)));
+			gestorMesa.cerrarDatabase();
+
+			comanda = new Comanda(
+					idComanda,
+					cursor.getString(cursor
+							.getColumnIndex(LocalSQLite.COLUMN_CMN_DESTINO)),
+					camarero,
+					cursor.getString(cursor
+							.getColumnIndex(LocalSQLite.COLUMN_CMN_ESTADO)),
+					cursor.getFloat(cursor
+							.getColumnIndex(LocalSQLite.COLUMN_CMN_PRECIO)),
+					mesa,
+					cursor.getString(cursor
+							.getColumnIndex(LocalSQLite.COLUMN_CMN_FECHA_ALTA)),
+					cursor.getString(cursor
+							.getColumnIndex(LocalSQLite.COLUMN_CMN_OBSERVACIONES)),
+					detallesComanda);
+		}
+
+		return comanda;
+	}
+
+	public List<Comanda> obtenerComandasActivas() {
+		List<Comanda> comandas = new ArrayList<Comanda>();
+
+		if (!database.isOpen()) {
+			database = openHelper.getWritableDatabase();
+		}
+
+		Cursor cursor = database.query(LocalSQLite.TABLE_COMANDAS, null,
+				LocalSQLite.COLUMN_CMN_ESTADO + " NOT IN ( ? , ? )",
+				new String[] { ESTADO_TERMINADO_CAMARERO,
+						ESTADO_CANCELADO_CAMARERO }, null, null, null);
+
+		while (cursor.moveToFirst()) {
+			Comanda comanda = obtenerComanda(cursor.getInt(cursor
+					.getColumnIndex(LocalSQLite.COLUMN_CMN_ID_COMANDA)));
+
+			comandas.add(comanda);
+		}
+
+		return comandas;
+	}
+
+	public List<Comanda> obtenerComandasCerradas() {
+		List<Comanda> comandas = new ArrayList<Comanda>();
+
+		if (!database.isOpen()) {
+			database = openHelper.getWritableDatabase();
+		}
+
+		Cursor cursor = database.query(LocalSQLite.TABLE_COMANDAS, null,
+				LocalSQLite.COLUMN_CMN_ESTADO + " IN ( ? , ? )", new String[] {
+						ESTADO_TERMINADO_CAMARERO, ESTADO_CANCELADO_CAMARERO },
+				null, null, null);
+
+		while (cursor.moveToFirst()) {
+			Comanda comanda = obtenerComanda(cursor.getInt(cursor
+					.getColumnIndex(LocalSQLite.COLUMN_CMN_ID_COMANDA)));
+
+			comandas.add(comanda);
+		}
+
+		return comandas;
+	}
+
 	public List<DetalleComanda> obtenerDetallesComanda(int idComanda) {
 		List<DetalleComanda> detallesComanda = new ArrayList<DetalleComanda>();
 
@@ -398,7 +494,11 @@ public class GestionComanda {
 						.getInt(cursor
 								.getColumnIndex(LocalSQLite.COLUMN_DC_ID_DETALLE_COMANDA)));
 
-				menuComanda = new MenuComanda(menu, platosComanda);
+				menuComanda = new MenuComanda(
+						menu,
+						platosComanda,
+						cursor.getInt(cursor
+								.getColumnIndex(LocalSQLite.COLUMN_DC_CANTIDAD)));
 				break;
 			}
 
@@ -600,9 +700,9 @@ public class GestionComanda {
 				.articuloCantidadJson2ArticuloCantidad(detalleComandaJson
 						.getJSONObject(GestionArticulo.JSON_ARTICULO));
 
-		MenuComanda menuComanda = GestionComanda
-				.menuComandaJson2MenuComanda(detalleComandaJson
-						.getJSONObject(JSON_MENU_COMANDA));
+		MenuComanda menuComanda = GestionComanda.menuComandaJson2MenuComanda(
+				detalleComandaJson.getJSONObject(JSON_MENU_COMANDA),
+				detalleComandaJson.getInt(JSON_CANTIDAD));
 
 		DetalleComanda detalleComanda = new DetalleComanda(
 				detalleComandaJson.getInt(JSON_ID_DETALLE_COMANDA),
@@ -615,7 +715,7 @@ public class GestionComanda {
 	}
 
 	public static MenuComanda menuComandaJson2MenuComanda(
-			JSONObject menuComandaJson) throws JSONException {
+			JSONObject menuComandaJson, int cantidad) throws JSONException {
 
 		MenuLocal menuLocal = GestionMenu.menuJson2Menu(menuComandaJson
 				.getJSONObject(GestionMenu.JSON_MENU));
@@ -633,7 +733,8 @@ public class GestionComanda {
 
 		}
 
-		MenuComanda menuComanda = new MenuComanda(menuLocal, platosComanda);
+		MenuComanda menuComanda = new MenuComanda(menuLocal, platosComanda,
+				cantidad);
 
 		return menuComanda;
 	}

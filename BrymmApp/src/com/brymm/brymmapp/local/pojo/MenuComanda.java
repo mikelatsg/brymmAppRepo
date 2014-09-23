@@ -8,13 +8,15 @@ import android.os.Parcelable;
 
 public class MenuComanda implements Parcelable {
 
+	private int cantidad;
 	private MenuLocal menu;
 	private List<PlatoComanda> platosComanda = new ArrayList<PlatoComanda>();
 
-	public MenuComanda(MenuLocal menu, List<PlatoComanda> platosComanda) {
+	public MenuComanda(MenuLocal menu, List<PlatoComanda> platosComanda, int cantidad) {
 		super();
 		this.menu = menu;
 		this.platosComanda = platosComanda;
+		this.cantidad = cantidad;
 	}
 
 	public MenuComanda() {
@@ -41,6 +43,14 @@ public class MenuComanda implements Parcelable {
 		this.platosComanda = platosComanda;
 	}
 
+	public int getCantidad() {
+		return cantidad;
+	}
+
+	public void setCantidad(int cantidad) {
+		this.cantidad = cantidad;
+	}
+
 	@Override
 	public int describeContents() {
 		// TODO Auto-generated method stub
@@ -50,7 +60,8 @@ public class MenuComanda implements Parcelable {
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {		
 		dest.writeParcelable(this.menu, flags);		
-		dest.writeTypedList(platosComanda);
+		dest.writeTypedList(this.platosComanda);
+		dest.writeInt(this.cantidad);
 	}
 
 	protected MenuComanda(Parcel in) {
@@ -60,6 +71,7 @@ public class MenuComanda implements Parcelable {
 	public void readFromParcel(Parcel in) {		
 		this.menu = in.readParcelable(MenuLocal.class.getClassLoader());		
 		in.readTypedList(platosComanda, PlatoComanda.CREATOR);
+		this.cantidad = in.readInt();
 	}
 
 	public static final Parcelable.Creator<MenuComanda> CREATOR = new Parcelable.Creator<MenuComanda>() {

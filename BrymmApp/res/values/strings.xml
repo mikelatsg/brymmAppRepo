@@ -14,6 +14,11 @@
         <item>Rechazado#R</item>
         <item>Terminado#T</item>
     </string-array>
+    
+    <string-array name="estadoComandaArray">
+        <item>Activas#A</item>
+        <item>Cerradas#C</item>        
+    </string-array>
 
     <!-- Array horarios -->
     <string-array name="horariosArray">
@@ -165,6 +170,7 @@
     <string name="menu_local_horarios">Horarios</string>
     <string name="menu_local_reservas">Reservas</string>
     <string name="menu_local_menus">Menus</string>
+    <string name="menu_local_comandas">Comandas</string>
 
     <!-- Menus contextuales -->
     <string name="context_menu_ingrediente_borrar">Borrar</string>
@@ -410,5 +416,16 @@
     <string name="detalle_menu_dia_cancelar">Cancelar</string>
     <string name="lista_menu_dia_anadir">Añadir menu al dia</string>
     <string name="title_activity_detalle_menu_dia">DetalleMenuDiaActivity</string>
+    
+    <!--############### Comandas ################ -->
+    <string name="title_activity_comandas">ComandasActivity</string>
+    
+    <!-- Comanda adapter -->
+    <string name="item_comanda_comanda">Comanda :</string>
+    <string name="item_comanda_camarero">Camarero :</string>
+    <string name="item_comanda_precio">Precio :</string>
+    <string name="item_comanda_estado">Estado :</string>
+    <string name="item_comanda_observaciones">Observaciones :</string>
+    <string name="item_comanda_mesa">Mesa :</string>
 
 </resources>

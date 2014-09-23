@@ -199,6 +199,10 @@
             android:name="com.brymm.brymmapp.local.DetalleMenuDiaActivity"
             android:label="@string/title_activity_detalle_menu_dia" >
         </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.ComandasActivity"
+            android:label="@string/title_activity_comandas" >
+        </activity>
     </application>
 
 </manifest>

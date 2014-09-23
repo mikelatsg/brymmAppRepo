@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.brymm.brymmapp.R;
 import com.brymm.brymmapp.local.ArticulosActivity;
+import com.brymm.brymmapp.local.ComandasActivity;
 import com.brymm.brymmapp.local.HorariosActivity;
 import com.brymm.brymmapp.local.IngredientesActivity;
 import com.brymm.brymmapp.local.MenusActivity;
@@ -40,6 +41,9 @@ public class MenuLocal {
 			return true;
 		case R.id.menuLocalMenus:
 			MenuLocal.irMenus(context);
+			return true;
+		case R.id.menuLocalComandas:
+			MenuLocal.irComandas(context);
 			return true;
 			
 		}
@@ -83,6 +87,11 @@ public class MenuLocal {
 	
 	public static void irMenus(Context context) {
 		Intent intent = new Intent(context, MenusActivity.class);
+		context.startActivity(intent);
+	}
+	
+	public static void irComandas(Context context) {
+		Intent intent = new Intent(context, ComandasActivity.class);
 		context.startActivity(intent);
 	}
 
