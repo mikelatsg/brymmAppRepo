@@ -427,5 +427,16 @@
     <string name="item_comanda_estado">Estado :</string>
     <string name="item_comanda_observaciones">Observaciones :</string>
     <string name="item_comanda_mesa">Mesa :</string>
+    <string name="item_comanda_terminar">Terminar</string>
 
+    <!-- Detalle comanda -->
+    <string name="detalle_comanda_cancelar_comanda">Cancelar</string>
+    <string name="detalle_comanda_terminar">Terminado</string>
+    <string name="detalle_comanda_cerrar">Cerrar</string>
+    
+    <!--Detalle comanda articulo adapter -->    
+    <string name="item_detalle_comanda_articulo_precio_unidad">Precio unidad:</string>
+    <string name="item_detalle_comanda_articulo_precio_total">Precio total:</string>
+    <string name="item_detalle_comanda_articulo_cantidad">Cantidad :</string>
+    
 </resources>

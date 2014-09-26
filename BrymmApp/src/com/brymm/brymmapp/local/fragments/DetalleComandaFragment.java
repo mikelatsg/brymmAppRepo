@@ -1,28 +1,24 @@
 package com.brymm.brymmapp.local.fragments;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.brymm.brymmapp.LoginActivity;
 import com.brymm.brymmapp.R;
-import com.brymm.brymmapp.local.adapters.ArticuloCantidadAdapter;
-import com.brymm.brymmapp.local.bbdd.GestionPedido;
-import com.brymm.brymmapp.local.pojo.ArticuloCantidad;
+import com.brymm.brymmapp.local.adapters.DetalleComandaAdapter;
+import com.brymm.brymmapp.local.bbdd.GestionArticulo;
+import com.brymm.brymmapp.local.bbdd.GestionComanda;
+import com.brymm.brymmapp.local.interfaces.Detalle;
 import com.brymm.brymmapp.local.pojo.Comanda;
 import com.brymm.brymmapp.local.pojo.DetalleComanda;
-import com.brymm.brymmapp.local.pojo.MenuComanda;
-import com.brymm.brymmapp.local.pojo.Pedido;
 import com.brymm.brymmapp.util.Resultado;
 import com.google.gson.JsonObject;
 
@@ -34,36 +30,40 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
-public class DetalleComandaFragment extends Fragment {
+public class DetalleComandaFragment extends Fragment implements Detalle {
 
 	public static final String EXTRA_COMANDA = "extraComanda";
 
-	private ListView lvArticulos;
-	private ListView lvMenus;
-	private Button btAccion, btRechazar, btCancelar;
-	private TextView tvIdComanda, tvCamarero, tvPrecio, tvEstado, tvObservaciones,
-			tvMesa;
+	private ListView lvDetalles;
+	private Button btCerrarComanda, btTerminarCocina, btCancelarComanda;
+	private TextView tvIdComanda, tvCamarero, tvPrecio, tvEstado,
+			tvObservaciones, tvMesa;
+	private Comanda comanda;
 
 	private boolean mDualPane;
 
-	private OnClickListener oclTerminar = new OnClickListener() {
+	private OnClickListener oclCancelarComanda = new OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
-			Pedido pedido = (Pedido) v.getTag();
+			Comanda comanda = (Comanda) v.getTag();
 
-			ModificarEstadoPedido mep = new ModificarEstadoPedido();
-			mep.execute(Integer.toString(pedido.getIdPedido()),
-					GestionPedido.ESTADO_TERMINADO, pedido.getEstado());
+			CancelarComanda cc = new CancelarComanda();
+			cc.execute(comanda.getIdComanda());
 		}
 	};
 
@@ -72,22 +72,20 @@ public class DetalleComandaFragment extends Fragment {
 		@Override
 		public void onClick(View v) {
 			Comanda comanda = (Comanda) v.getTag();
-		}
-	};
-	
-	private OnClickListener oclCancelarCamarero = new OnClickListener() {
 
-		@Override
-		public void onClick(View v) {
-			Comanda comanda = (Comanda) v.getTag();			
+			TerminarComandaCocina tcc = new TerminarComandaCocina();
+			tcc.execute(comanda.getIdComanda());
 		}
 	};
-	
+
 	private OnClickListener oclCerrarCamarero = new OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
-			Comanda comanda = (Comanda) v.getTag();			
+			Comanda comanda = (Comanda) v.getTag();
+
+			CerrarComandaCamarero ccc = new CerrarComandaCamarero();
+			ccc.execute(comanda.getIdComanda());
 		}
 	};
 
@@ -106,13 +104,47 @@ public class DetalleComandaFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 	}
 
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+
+		MenuInflater inflater = getActivity().getMenuInflater();
+		inflater.inflate(R.menu.context_menu_detalle_comanda, menu);
+
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
+				.getMenuInfo();
+
+		DetalleComandaAdapter detalleComandaAdapter = (DetalleComandaAdapter) lvDetalles
+				.getAdapter();
+
+		DetalleComanda detalleComanda = detalleComandaAdapter
+				.getItem(info.position);
+
+		switch (item.getItemId()) {
+		case R.id.contextMenuMenuBorrar:
+			TerminarDetalleComanda tdc = new TerminarDetalleComanda();
+			tdc.execute(detalleComanda.getIdDetalleComanda(),
+					this.comanda.getIdComanda());
+			return true;
+
+		}
+		return super.onContextItemSelected(item);
+	}
+
 	private void inicializar() {
-		lvArticulos = (ListView) getActivity().findViewById(
-				R.id.detalleComandaLvArticulos);
-		btAccion = (Button) getActivity().findViewById(
-				R.id.detalleComandaBtAccion);		
-		btCancelar = (Button) getActivity().findViewById(
-				R.id.detalleComandaBtCancelar);
+		lvDetalles = (ListView) getActivity().findViewById(
+				R.id.detalleComandaLvDetalles);
+		btTerminarCocina = (Button) getActivity().findViewById(
+				R.id.detalleComandaBtTerminarCocina);
+		btCancelarComanda = (Button) getActivity().findViewById(
+				R.id.detalleComandaBtCancelarComanda);
+		btCerrarComanda = (Button) getActivity().findViewById(
+				R.id.detalleComandaBtCerrarComanda);
 
 		tvIdComanda = (TextView) getActivity().findViewById(
 				R.id.detalleComandaTvIdComanda);
@@ -125,93 +157,25 @@ public class DetalleComandaFragment extends Fragment {
 		tvObservaciones = (TextView) getActivity().findViewById(
 				R.id.detalleComandaTvObservaciones);
 		tvMesa = (TextView) getActivity().findViewById(
-				R.id.detalleComandaTvMesa);		
+				R.id.detalleComandaTvMesa);
 
 		/* Se guarda si esta el fragmento de añadir */
 		View anadirFrame = getActivity().findViewById(R.id.detalleComandaFl);
 		mDualPane = anadirFrame != null
 				&& anadirFrame.getVisibility() == View.VISIBLE;
 
-		Comanda comanda = null;
 		if (mDualPane) {
 			Bundle bundle = getArguments();
-			comanda = bundle.getParcelable(EXTRA_COMANDA);
+			this.comanda = bundle.getParcelable(EXTRA_COMANDA);
 		} else {
 			Intent intent = getActivity().getIntent();
-			comanda = intent.getParcelableExtra(EXTRA_COMANDA);
+			this.comanda = intent.getParcelableExtra(EXTRA_COMANDA);
 		}
 
-		tvIdComanda.setText(Integer.toString(comanda.getIdComanda()));
-		tvPrecio.setText(Float.toString(comanda.getPrecio()));
-		tvCamarero.setText(comanda.getCamarero().getNombre());
-		tvEstado.setText(comanda.getEstado());
-
-		// Si no hay mesa se oculta el campo
-		if (comanda.getMesa() != null) {
-			tvMesa.setText(comanda.getMesa().getNombre());
-		} else {
-			tvMesa.setVisibility(View.GONE);
-		}		
-		
-		List<ArticuloCantidad> articulos = new ArrayList<ArticuloCantidad>();
-		List<MenuComanda> menus = new ArrayList<MenuComanda>();
-		
-		for(DetalleComanda detalleComanda: comanda.getDetallesComanda()){
-			switch (detalleComanda.getTipoComanda().getIdTipoComanda()){
-			case 1:
-				articulos.add(detalleComanda.getArticulo());
-				break;
-			case 2:
-				articulos.add(detalleComanda.getArticulo());
-				break;
-			case 3:
-				menus.add(detalleComanda.getMenuComanda());
-				break;
-			case 4:
-				menus.add(detalleComanda.getMenuComanda());
-				break;
-			}
-		}
-		
-		ArticuloCantidadAdapter articuloCantidadAdapter = new ArticuloCantidadAdapter(
-				getActivity(), R.layout.articulo_cantidad_item,
-				articulos);
-
-		lvArticulos.setAdapter(articuloCantidadAdapter);
-
-		Resources res = getActivity().getResources();
-
-		/*
-		 * Se gestiona el valor de los botones en base a el estado de la comanda, y
-		 * se ocultan los botones no necesarios
-		 */
-		/*btCancelar.setOnClickListener(oclCancelar);
-		btAccion.setTag(comanda);		
-		if (comanda.getEstado().equals(GestionPedido.ESTADO_PENDIENTE)) {
-			btAccion.setText(res.getString(R.string.detalle_pedido_aceptar));
-			btAccion.setOnClickListener(oclAceptar);
-
-		} else if (pedido.getEstado().equals(GestionPedido.ESTADO_ACEPTADO)) {
-			btAccion.setText(res.getString(R.string.detalle_pedido_terminar));
-			btAccion.setOnClickListener(oclTerminar);
-
-		} else if (pedido.getEstado().equals(GestionPedido.ESTADO_RECHAZADO)) {
-			btAccion.setVisibility(View.GONE);
-			btRechazar.setVisibility(View.GONE);
-		} else {
-			// Terminado
-			btAccion.setVisibility(View.GONE);
-			btRechazar.setVisibility(View.GONE);
-		}
-
-		btCancelar.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				ocultarDetalle();
-			}
-		});*/
+		// Asigno los listeners a los botones
+		btCancelarComanda.setOnClickListener(oclCancelarComanda);
+		btTerminarCocina.setOnClickListener(oclTerminarCocina);
+		btCerrarComanda.setOnClickListener(oclCerrarCamarero);
 
 	}
 
@@ -223,7 +187,9 @@ public class DetalleComandaFragment extends Fragment {
 			listaFragment = (ListaComandasFragment) getFragmentManager()
 					.findFragmentById(R.id.listaComandasFl);
 
+			listaFragment.actualizarLista(this.comanda.getEstado());
 			listaFragment.ocultarDetalle();
+
 		} else {
 			Intent intent = new Intent();
 			getActivity().setResult(Activity.RESULT_CANCELED, intent);
@@ -231,63 +197,44 @@ public class DetalleComandaFragment extends Fragment {
 		}
 	}
 
-	private void actualizarDatos(String idDetalle) {
-		if (mDualPane) {
-			ListaComandasFragment listaFragment;
-
-			// Make new fragment to show this selection.
-			listaFragment = (ListaComandasFragment) getFragmentManager()
-					.findFragmentById(R.id.listaComandasFl);
-
-			listaFragment.ocultarDetalle();
-			listaFragment.actualizarLista(idDetalle);
-		} else {
-			Intent intent = new Intent();
-			getActivity().setResult(Activity.RESULT_OK, intent);
-			getActivity().finish();
-		}
+	private void actualizarDetalle(int idComanda) {
+		GestionComanda gc = new GestionComanda(getActivity());
+		this.comanda = gc.obtenerComanda(idComanda);
+		gc.cerrarDatabase();
+		actualizarDetalle();
 	}
 
-	private JSONObject terminarPedido(int idPedido, String idEstado) {
-		String respStr;
+	public void actualizarDetalle() {
+		tvIdComanda.setText(Integer.toString(this.comanda.getIdComanda()));
+		tvPrecio.setText(Float.toString(this.comanda.getPrecio()));
+		tvCamarero.setText(this.comanda.getCamarero().getNombre());
+		tvEstado.setText(this.comanda.getEstado());
+		tvObservaciones.setText(this.comanda.getObservaciones());
+
+		// Si no hay mesa se oculta el campo
+		if (this.comanda.getMesa() != null) {
+			tvMesa.setText(this.comanda.getMesa().getNombre());
+		} else {
+			tvMesa.setVisibility(View.GONE);
+		}
+
+		List<DetalleComanda> detallesComanda = new ArrayList<DetalleComanda>();
+
+		DetalleComandaAdapter detalleComandaAdapter = new DetalleComandaAdapter(
+				getActivity(), R.layout.detalle_comanda_menu_item,
+				detallesComanda);
+
+		lvDetalles.setAdapter(detalleComandaAdapter);
+
+		registerForContextMenu(lvDetalles);
+	}
+
+	private JSONObject enviarCancelarComanda(int idComanda) {
 		JSONObject respJSON = null;
-		HttpClient httpClient = new DefaultHttpClient();
 		String url = "";
 
-		try {
-
-			url = LoginActivity.SITE_URL
-					+ "/api/pedidos/terminarPedido/idPedido/" + idPedido
-					+ "/idEstado/" + idEstado + "/format/json";
-
-			HttpGet httpGet = new HttpGet(url);
-			httpGet.setHeader("content-type", "application/json");
-			HttpResponse resp = httpClient.execute(httpGet);
-
-			/*
-			 * Si el codigo de retorno es diferente de 200 se devuelve el objeto
-			 * nulo
-			 */
-			respStr = EntityUtils.toString(resp.getEntity());
-			Log.d("res", respStr);
-			if (resp.getStatusLine().getStatusCode() == LoginActivity.CODE_LOGIN_OK) {
-				respJSON = new JSONObject(respStr);
-			}
-
-		} catch (Exception ex) {
-			respJSON = null;
-		}
-		return respJSON;
-	}
-
-	private JSONObject aceptarPedido(int idPedido, String idEstado,
-			String fechaEntrega) throws IOException, JSONException {
-		JSONObject respJSON = null;
-
-		String url;
-
-		url = new String(LoginActivity.SITE_URL
-				+ "/api/pedidos/aceptarPedido/format/json");
+		url = LoginActivity.SITE_URL
+				+ "/api/comandas/cancelarComanda/format/json";
 
 		try {
 
@@ -297,14 +244,18 @@ public class DetalleComandaFragment extends Fragment {
 			// 2. make POST request to the given URL
 			HttpPost httpPost = new HttpPost(url);
 
+			String json = "";
+
 			JsonObject jsonObject = new JsonObject();
-			jsonObject.addProperty(GestionPedido.JSON_ID_PEDIDO, idPedido);
-			jsonObject.addProperty(GestionPedido.JSON_ESTADO, idEstado);
-			jsonObject.addProperty(GestionPedido.JSON_FECHA_ENTREGA,
-					fechaEntrega);
+			jsonObject.addProperty(GestionComanda.JSON_ID_COMANDA, idComanda);
+
+			jsonObject.addProperty(GestionArticulo.JSON_ID_LOCAL,
+					LoginActivity.getLocal(getActivity()));
+
+			json = jsonObject.toString();
 
 			// 5. set json to StringEntity
-			StringEntity se = new StringEntity(jsonObject.toString());
+			StringEntity se = new StringEntity(json);
 
 			// 6. set httpPost Entity
 			httpPost.setEntity(se);
@@ -317,9 +268,6 @@ public class DetalleComandaFragment extends Fragment {
 			// 8. Execute POST request to the given URL
 			HttpResponse httpResponse = httpclient.execute(httpPost);
 
-			// 9. receive response as inputStream
-			// inputStream = httpResponse.getEntity().getContent();
-
 			String respStr = EntityUtils.toString(httpResponse.getEntity());
 			Log.d("resultado", respStr);
 			respJSON = new JSONObject(respStr);
@@ -331,14 +279,12 @@ public class DetalleComandaFragment extends Fragment {
 		return respJSON;
 	}
 
-	private JSONObject rechazarPedido(int idPedido, String idEstado,
-			String motivo) throws IOException, JSONException {
+	private JSONObject enviarTerminarComandaCocina(int idComanda) {
 		JSONObject respJSON = null;
+		String url = "";
 
-		String url;
-
-		url = new String(LoginActivity.SITE_URL
-				+ "/api/pedidos/rechazarPedido/format/json");
+		url = LoginActivity.SITE_URL
+				+ "/api/comandas/terminarComandaCocina/format/json";
 
 		try {
 
@@ -348,13 +294,18 @@ public class DetalleComandaFragment extends Fragment {
 			// 2. make POST request to the given URL
 			HttpPost httpPost = new HttpPost(url);
 
+			String json = "";
+
 			JsonObject jsonObject = new JsonObject();
-			jsonObject.addProperty(GestionPedido.JSON_ID_PEDIDO, idPedido);
-			jsonObject.addProperty(GestionPedido.JSON_ESTADO, idEstado);
-			jsonObject.addProperty(GestionPedido.JSON_MOTIVO_RECHAZO, motivo);
+			jsonObject.addProperty(GestionComanda.JSON_ID_COMANDA, idComanda);
+
+			jsonObject.addProperty(GestionArticulo.JSON_ID_LOCAL,
+					LoginActivity.getLocal(getActivity()));
+
+			json = jsonObject.toString();
 
 			// 5. set json to StringEntity
-			StringEntity se = new StringEntity(jsonObject.toString());
+			StringEntity se = new StringEntity(json);
 
 			// 6. set httpPost Entity
 			httpPost.setEntity(se);
@@ -367,8 +318,55 @@ public class DetalleComandaFragment extends Fragment {
 			// 8. Execute POST request to the given URL
 			HttpResponse httpResponse = httpclient.execute(httpPost);
 
-			// 9. receive response as inputStream
-			// inputStream = httpResponse.getEntity().getContent();
+			String respStr = EntityUtils.toString(httpResponse.getEntity());
+			Log.d("resultado", respStr);
+			respJSON = new JSONObject(respStr);
+
+		} catch (Exception e) {
+			Log.d("InputStream", e.getLocalizedMessage());
+		}
+
+		return respJSON;
+	}
+
+	private JSONObject enviarCerrarComandaCamarero(int idComanda) {
+		JSONObject respJSON = null;
+		String url = "";
+
+		url = LoginActivity.SITE_URL
+				+ "/api/comandas/cerrarComandaCamarero/format/json";
+
+		try {
+
+			// 1. create HttpClient
+			HttpClient httpclient = new DefaultHttpClient();
+
+			// 2. make POST request to the given URL
+			HttpPost httpPost = new HttpPost(url);
+
+			String json = "";
+
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty(GestionComanda.JSON_ID_COMANDA, idComanda);
+
+			jsonObject.addProperty(GestionArticulo.JSON_ID_LOCAL,
+					LoginActivity.getLocal(getActivity()));
+
+			json = jsonObject.toString();
+
+			// 5. set json to StringEntity
+			StringEntity se = new StringEntity(json);
+
+			// 6. set httpPost Entity
+			httpPost.setEntity(se);
+
+			// 7. Set some headers to inform server about the type of the
+			// content
+			httpPost.setHeader("Accept", "application/json");
+			httpPost.setHeader("Content-type", "application/json");
+
+			// 8. Execute POST request to the given URL
+			HttpResponse httpResponse = httpclient.execute(httpPost);
 
 			String respStr = EntityUtils.toString(httpResponse.getEntity());
 			Log.d("resultado", respStr);
@@ -381,13 +379,61 @@ public class DetalleComandaFragment extends Fragment {
 		return respJSON;
 	}
 
-	public class ModificarEstadoPedido extends
-			AsyncTask<String, Void, Resultado> {
+	private JSONObject enviarTerminarDetalleComanda(int idDetalleComanda) {
+		JSONObject respJSON = null;
+		String url = "";
+
+		url = LoginActivity.SITE_URL
+				+ "/api/comandas/terminarDetalleComandaCocina/format/json";
+
+		try {
+
+			// 1. create HttpClient
+			HttpClient httpclient = new DefaultHttpClient();
+
+			// 2. make POST request to the given URL
+			HttpPost httpPost = new HttpPost(url);
+
+			String json = "";
+
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty(GestionComanda.JSON_ID_DETALLE_COMANDA,
+					idDetalleComanda);
+
+			jsonObject.addProperty(GestionArticulo.JSON_ID_LOCAL,
+					LoginActivity.getLocal(getActivity()));
+
+			json = jsonObject.toString();
+
+			// 5. set json to StringEntity
+			StringEntity se = new StringEntity(json);
+
+			// 6. set httpPost Entity
+			httpPost.setEntity(se);
+
+			// 7. Set some headers to inform server about the type of the
+			// content
+			httpPost.setHeader("Accept", "application/json");
+			httpPost.setHeader("Content-type", "application/json");
+
+			// 8. Execute POST request to the given URL
+			HttpResponse httpResponse = httpclient.execute(httpPost);
+
+			String respStr = EntityUtils.toString(httpResponse.getEntity());
+			Log.d("resultado", respStr);
+			respJSON = new JSONObject(respStr);
+
+		} catch (Exception e) {
+			Log.d("InputStream", e.getLocalizedMessage());
+		}
+
+		return respJSON;
+	}
+
+	public class CancelarComanda extends AsyncTask<Integer, Void, Resultado> {
 
 		ProgressDialog progress;
-		int idPedido;
-		String idEstado;
-		private String estadoActual;
+		int idComanda;
 
 		@Override
 		protected void onPreExecute() {
@@ -398,24 +444,14 @@ public class DetalleComandaFragment extends Fragment {
 		}
 
 		@Override
-		protected Resultado doInBackground(String... params) {
+		protected Resultado doInBackground(Integer... params) {
 			JSONObject respJSON = null;
-			this.idPedido = Integer.parseInt(params[0]);
-			this.idEstado = params[1];
-			this.estadoActual = params[2];
+			this.idComanda = params[0];
 			String mensaje = "";
 			Resultado res = null;
 			try {
-				if (this.idEstado.equals(GestionPedido.ESTADO_TERMINADO)) {
-					respJSON = terminarPedido(this.idPedido, this.idEstado);
-				}
-				if (this.idEstado.equals(GestionPedido.ESTADO_ACEPTADO)) {
-					respJSON = aceptarPedido(this.idPedido, this.idEstado,
-							params[3]);
-				} else {
-					respJSON = rechazarPedido(this.idPedido, this.idEstado,
-							params[3]);
-				}
+
+				respJSON = enviarCancelarComanda(idComanda);
 
 				if (respJSON != null) {
 
@@ -426,14 +462,14 @@ public class DetalleComandaFragment extends Fragment {
 					mensaje = respJSON.getString(Resultado.JSON_MENSAJE);
 
 					if (operacionOk) {
-						Pedido pedido = GestionPedido
-								.pedidoJson2Pedido(respJSON
-										.getJSONObject(GestionPedido.JSON_PEDIDO));
+						Comanda comanda = GestionComanda
+								.comandaJson2Comanda(respJSON
+										.getJSONObject(GestionComanda.JSON_COMANDA));
 
 						// Se modifica el pedido en la bbdd del movil.
-						GestionPedido gp = new GestionPedido(getActivity());
-						gp.guardarPedido(pedido);
-						gp.cerrarDatabase();
+						GestionComanda gc = new GestionComanda(getActivity());
+						gc.guardarComanda(comanda);
+						gc.cerrarDatabase();
 
 					}
 
@@ -458,7 +494,225 @@ public class DetalleComandaFragment extends Fragment {
 						Toast.LENGTH_LONG).show();
 
 				if (resultado.getCodigo() == 1) {
-					actualizarDatos(this.estadoActual);
+					ocultarDetalle();
+				}
+			}
+
+		}
+	}
+
+	public class TerminarComandaCocina extends
+			AsyncTask<Integer, Void, Resultado> {
+
+		ProgressDialog progress;
+		int idComanda;
+
+		@Override
+		protected void onPreExecute() {
+			Resources res = getResources();
+			progress = ProgressDialog.show(getActivity(), "",
+					res.getString(R.string.progress_dialog_pedido));
+			super.onPreExecute();
+		}
+
+		@Override
+		protected Resultado doInBackground(Integer... params) {
+			JSONObject respJSON = null;
+			this.idComanda = params[0];
+			String mensaje = "";
+			Resultado res = null;
+			try {
+
+				respJSON = enviarTerminarComandaCocina(idComanda);
+
+				if (respJSON != null) {
+
+					boolean operacionOk = respJSON
+							.getInt(Resultado.JSON_OPERACION_OK) == 0 ? false
+							: true;
+
+					mensaje = respJSON.getString(Resultado.JSON_MENSAJE);
+
+					if (operacionOk) {
+						Comanda comanda = GestionComanda
+								.comandaJson2Comanda(respJSON
+										.getJSONObject(GestionComanda.JSON_COMANDA));
+
+						// Se modifica el pedido en la bbdd del movil.
+						GestionComanda gc = new GestionComanda(getActivity());
+						gc.guardarComanda(comanda);
+						gc.cerrarDatabase();
+
+					}
+
+					res = new Resultado(
+							respJSON.getInt(Resultado.JSON_OPERACION_OK),
+							mensaje);
+
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return res;
+		}
+
+		@Override
+		protected void onPostExecute(Resultado resultado) {
+			super.onPostExecute(resultado);
+			progress.dismiss();
+
+			if (resultado != null) {
+				Toast.makeText(getActivity(), resultado.getMensaje(),
+						Toast.LENGTH_LONG).show();
+
+				if (resultado.getCodigo() == 1) {
+					actualizarDetalle(idComanda);
+				}
+			}
+
+		}
+	}
+
+	public class CerrarComandaCamarero extends
+			AsyncTask<Integer, Void, Resultado> {
+
+		ProgressDialog progress;
+		int idComanda;
+
+		@Override
+		protected void onPreExecute() {
+			Resources res = getResources();
+			progress = ProgressDialog.show(getActivity(), "",
+					res.getString(R.string.progress_dialog_pedido));
+			super.onPreExecute();
+		}
+
+		@Override
+		protected Resultado doInBackground(Integer... params) {
+			JSONObject respJSON = null;
+			this.idComanda = params[0];
+			String mensaje = "";
+			Resultado res = null;
+			try {
+
+				respJSON = enviarCerrarComandaCamarero(idComanda);
+
+				if (respJSON != null) {
+
+					boolean operacionOk = respJSON
+							.getInt(Resultado.JSON_OPERACION_OK) == 0 ? false
+							: true;
+
+					mensaje = respJSON.getString(Resultado.JSON_MENSAJE);
+
+					if (operacionOk) {
+						Comanda comanda = GestionComanda
+								.comandaJson2Comanda(respJSON
+										.getJSONObject(GestionComanda.JSON_COMANDA));
+
+						// Se modifica el pedido en la bbdd del movil.
+						GestionComanda gc = new GestionComanda(getActivity());
+						gc.guardarComanda(comanda);
+						gc.cerrarDatabase();
+
+					}
+
+					res = new Resultado(
+							respJSON.getInt(Resultado.JSON_OPERACION_OK),
+							mensaje);
+
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return res;
+		}
+
+		@Override
+		protected void onPostExecute(Resultado resultado) {
+			super.onPostExecute(resultado);
+			progress.dismiss();
+
+			if (resultado != null) {
+				Toast.makeText(getActivity(), resultado.getMensaje(),
+						Toast.LENGTH_LONG).show();
+
+				if (resultado.getCodigo() == 1) {
+					actualizarDetalle(idComanda);
+				}
+			}
+
+		}
+	}
+
+	public class TerminarDetalleComanda extends
+			AsyncTask<Integer, Void, Resultado> {
+
+		ProgressDialog progress;
+		int idDetalleComanda;
+		int idComanda;
+
+		@Override
+		protected void onPreExecute() {
+			Resources res = getResources();
+			progress = ProgressDialog.show(getActivity(), "",
+					res.getString(R.string.progress_dialog_pedido));
+			super.onPreExecute();
+		}
+
+		@Override
+		protected Resultado doInBackground(Integer... params) {
+			JSONObject respJSON = null;
+			this.idDetalleComanda = params[0];
+			this.idComanda = params[1];
+			String mensaje = "";
+			Resultado res = null;
+			try {
+
+				respJSON = enviarTerminarDetalleComanda(idDetalleComanda);
+
+				if (respJSON != null) {
+
+					boolean operacionOk = respJSON
+							.getInt(Resultado.JSON_OPERACION_OK) == 0 ? false
+							: true;
+
+					mensaje = respJSON.getString(Resultado.JSON_MENSAJE);
+
+					if (operacionOk) {
+						Comanda comanda = GestionComanda
+								.comandaJson2Comanda(respJSON
+										.getJSONObject(GestionComanda.JSON_COMANDA));
+
+						// Se modifica el pedido en la bbdd del movil.
+						GestionComanda gc = new GestionComanda(getActivity());
+						gc.guardarComanda(comanda);
+						gc.cerrarDatabase();
+
+					}
+
+					res = new Resultado(
+							respJSON.getInt(Resultado.JSON_OPERACION_OK),
+							mensaje);
+
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return res;
+		}
+
+		@Override
+		protected void onPostExecute(Resultado resultado) {
+			super.onPostExecute(resultado);
+			progress.dismiss();
+
+			if (resultado != null) {
+				Toast.makeText(getActivity(), resultado.getMensaje(),
+						Toast.LENGTH_LONG).show();
+
+				if (resultado.getCodigo() == 1) {
+					actualizarDetalle(idComanda);
 				}
 			}
 

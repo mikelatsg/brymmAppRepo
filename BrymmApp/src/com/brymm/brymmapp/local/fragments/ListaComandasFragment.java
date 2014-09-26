@@ -76,7 +76,7 @@ public class ListaComandasFragment extends Fragment {
 			public void onItemClick(AdapterView<?> adapter, View view,
 					int position, long arg3) {
 				Comanda comanda = (Comanda) adapter.getItemAtPosition(position);
-				 mostrarDetalleComanda(comanda);
+				mostrarDetalleComanda(comanda);
 			}
 		});
 
@@ -85,9 +85,17 @@ public class ListaComandasFragment extends Fragment {
 	public void actualizarLista(String estado) {
 		List<Comanda> comandas = new ArrayList<Comanda>();
 		GestionComanda gc = new GestionComanda(getActivity());
-		if (estado == GestionComanda.ESTADO_ACTIVO) {
+		if (estado.equals(GestionComanda.ESTADO_TERMINADO_COCINA)) {
 			comandas = gc.obtenerComandasActivas();
-		} else {
+		} else if (estado.equals(GestionComanda.ESTADO_ENVIADO_COCINA)) {
+			comandas = gc.obtenerComandasActivas();
+		} else if (estado.equals(GestionComanda.ESTADO_ACTIVO)) {
+			comandas = gc.obtenerComandasActivas();
+		} else if (estado.equals(GestionComanda.ESTADO_CANCELADO_CAMARERO)) {
+			comandas = gc.obtenerComandasCerradas();
+		} else if (estado.equals(GestionComanda.ESTADO_TERMINADO_CAMARERO)) {
+			comandas = gc.obtenerComandasCerradas();
+		} else if (estado.equals(GestionComanda.ESTADO_CERRADA)) {
 			comandas = gc.obtenerComandasCerradas();
 		}
 

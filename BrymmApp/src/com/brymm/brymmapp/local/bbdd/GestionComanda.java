@@ -39,6 +39,7 @@ public class GestionComanda {
 	public static final String JSON_PLATOS_ESTADO = "platosEstado";
 	public static final String JSON_PLATO_COMANDA = "platoComanda";
 	public static final String JSON_PLATOS_COMANDA = "platosComanda";
+	public static final String JSON_MENU_LOCAL = "menuLocal";
 	public static final String JSON_ESTADO = "estado";
 	public static final String JSON_PRECIO = "precio";
 	public static final String JSON_CANTIDAD = "cantidad";
@@ -46,12 +47,15 @@ public class GestionComanda {
 	public static final String JSON_OBSERVACIONES = "observaciones";
 	public static final String JSON_DESTINO = "destino";
 	public static final String JSON_ID_COMANDA_MENU = "idComandaMenu";
+	public static final String JSON_ID_COMANDA = "idComanda";
 	public static final String JSON_ID_DETALLE_COMANDA = "idDetalleComanda";
 	public static final String JSON_MENU_COMANDA = "menuComanda";
 	public static final String ESTADO_ACTIVO = "A";
 	public static final String ESTADO_CERRADA = "C";
 	public static final String ESTADO_TERMINADO_CAMARERO = "CC";
 	public static final String ESTADO_CANCELADO_CAMARERO = "CW";
+	public static final String ESTADO_ENVIADO_COCINA = "EC";
+	public static final String ESTADO_TERMINADO_COCINA = "TC";
 
 	private SQLiteDatabase database;
 	private LocalSQLite openHelper;
@@ -143,8 +147,12 @@ public class GestionComanda {
 		if (!cursor.moveToFirst()) {
 			content.put(LocalSQLite.COLUMN_CMN_ID_COMANDA,
 					comanda.getIdComanda());
-
-			if (database.insert(LocalSQLite.TABLE_COMANDAS, null, content) < 0) {
+			try {
+				if (database.insertOrThrow(LocalSQLite.TABLE_COMANDAS, null,
+						content) < 0) {
+					hayError = true;
+				}
+			} catch (Exception e) {
 				hayError = true;
 			}
 
@@ -227,8 +235,10 @@ public class GestionComanda {
 						.getMenuComanda().getPlatos().iterator();
 				while (iterator.hasNext()) {
 					PlatoComanda platoComanda = (PlatoComanda) iterator.next();
-					guardarPlatoComanda(platoComanda,
-							detalleComanda.getIdDetalleComanda());
+					if (guardarPlatoComanda(platoComanda,
+							detalleComanda.getIdDetalleComanda()) < 0) {
+						resultado = -1;
+					}
 				}
 
 			}
@@ -644,7 +654,7 @@ public class GestionComanda {
 			JSONObject platoComandaJson) throws JSONException {
 
 		Plato plato = GestionPlato.platoJson2Plato(platoComandaJson
-				.getJSONObject(GestionPlato.JSON_ID_PLATO));
+				.getJSONObject(GestionPlato.JSON_PLATO));
 
 		PlatoComanda platoComanda = new PlatoComanda(
 				platoComandaJson.getInt(JSON_ID_COMANDA_MENU), plato,
@@ -680,7 +690,7 @@ public class GestionComanda {
 
 		}
 
-		Comanda comanda = new Comanda(comandaJson.getInt(JSON_ID_COMANDA_MENU),
+		Comanda comanda = new Comanda(comandaJson.getInt(JSON_ID_COMANDA),
 				comandaJson.getString(JSON_DESTINO), camarero,
 				comandaJson.getString(JSON_ESTADO),
 				(float) comandaJson.getDouble(JSON_PRECIO), mesa,
@@ -696,13 +706,19 @@ public class GestionComanda {
 				.tipoComandaJson2TipoComanda(detalleComandaJson
 						.getJSONObject(GestionTipoComanda.JSON_TIPO_COMANDA));
 
-		ArticuloCantidad articulo = GestionArticulo
-				.articuloCantidadJson2ArticuloCantidad(detalleComandaJson
-						.getJSONObject(GestionArticulo.JSON_ARTICULO));
+		ArticuloCantidad articulo = null;
+		if (!detalleComandaJson.isNull(GestionArticulo.JSON_ARTICULO)) {
+			articulo = GestionArticulo
+					.articuloCantidadJson2ArticuloCantidad(detalleComandaJson
+							.getJSONObject(GestionArticulo.JSON_ARTICULO));
+		}
 
-		MenuComanda menuComanda = GestionComanda.menuComandaJson2MenuComanda(
-				detalleComandaJson.getJSONObject(JSON_MENU_COMANDA),
-				detalleComandaJson.getInt(JSON_CANTIDAD));
+		MenuComanda menuComanda = null;
+		if (!detalleComandaJson.isNull(JSON_MENU_COMANDA)) {
+			menuComanda = GestionComanda.menuComandaJson2MenuComanda(
+					detalleComandaJson.getJSONObject(JSON_MENU_COMANDA),
+					detalleComandaJson.getInt(JSON_CANTIDAD));
+		}
 
 		DetalleComanda detalleComanda = new DetalleComanda(
 				detalleComandaJson.getInt(JSON_ID_DETALLE_COMANDA),
@@ -718,14 +734,14 @@ public class GestionComanda {
 			JSONObject menuComandaJson, int cantidad) throws JSONException {
 
 		MenuLocal menuLocal = GestionMenu.menuJson2Menu(menuComandaJson
-				.getJSONObject(GestionMenu.JSON_MENU));
+				.getJSONObject(JSON_MENU_LOCAL));
 
 		List<PlatoComanda> platosComanda = new ArrayList<PlatoComanda>();
 
 		for (int i = 0; i < menuComandaJson.getJSONArray(JSON_PLATOS_COMANDA)
 				.length(); i++) {
 			JSONObject platoComandaJson = menuComandaJson.getJSONArray(
-					JSON_PLATO_COMANDA).getJSONObject(i);
+					JSON_PLATOS_COMANDA).getJSONObject(i);
 
 			PlatoComanda platoComanda = platoComandaJson2PlatoComanda(platoComandaJson);
 

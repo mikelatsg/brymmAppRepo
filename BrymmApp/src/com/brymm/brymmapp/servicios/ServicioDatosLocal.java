@@ -251,11 +251,11 @@ public class ServicioDatosLocal extends Service {
 		// Se guardan las comandas
 		JSONArray comandasActivas = datosLocal
 				.getJSONArray(GestionComanda.JSON_COMANDAS_ACTIVAS);
-		guardarComandas(comandasActivas);
-		
+		guardarComandas(comandasActivas, true);
+
 		JSONArray comandasCerradas = datosLocal
 				.getJSONArray(GestionComanda.JSON_COMANDAS_CERRADAS);
-		guardarComandas(comandasCerradas);
+		guardarComandas(comandasCerradas, false);
 
 	}
 
@@ -579,15 +579,17 @@ public class ServicioDatosLocal extends Service {
 		}
 		gestor.cerrarDatabase();
 	}
-	
-	private void guardarComandas(JSONArray comandasJson) throws JSONException {
+
+	private void guardarComandas(JSONArray comandasJson, boolean borrarComandas)
+			throws JSONException {
 		GestionComanda gestor = new GestionComanda(this);
-		gestor.borrarComandas();
+		if (borrarComandas) {
+			gestor.borrarComandas();
+		}
 		for (int i = 0; i < comandasJson.length(); i++) {
 			JSONObject comandaJson = comandasJson.getJSONObject(i);
 
-			Comanda comanda = GestionComanda
-					.comandaJson2Comanda(comandaJson);
+			Comanda comanda = GestionComanda.comandaJson2Comanda(comandaJson);
 
 			gestor.guardarComanda(comanda);
 

@@ -6,7 +6,6 @@ import java.util.List;
 import com.brymm.brymmapp.R;
 import com.brymm.brymmapp.local.bbdd.GestionComanda;
 import com.brymm.brymmapp.local.fragments.ListaComandasFragment;
-import com.brymm.brymmapp.local.fragments.ListaPedidosFragment;
 import com.brymm.brymmapp.menu.MenuLocal;
 
 import android.content.Intent;
@@ -67,7 +66,7 @@ public class ComandasActivity extends FragmentActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 		if (resultCode == RESULT_OK) {
-			ListaPedidosFragment listaFragment = (ListaPedidosFragment) getSupportFragmentManager()
+			ListaComandasFragment listaFragment = (ListaComandasFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.listaComandasFl);
 			listaFragment.actualizarLista(estadoComanda);
 		}
@@ -80,7 +79,7 @@ public class ComandasActivity extends FragmentActivity {
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.comandasDl);
 		navList = (ListView) findViewById(R.id.comandasLvNavegador);
 
-		// Se obtienen los estado de los pedidos para añadirlos al nav
+		// Se obtienen los estado de las comandas para añadirlos al nav
 		String[] estadoComandaArray = getResources().getStringArray(
 				R.array.estadoComandaArray);
 		estadosComanda = new ArrayList<String>();
@@ -99,7 +98,7 @@ public class ComandasActivity extends FragmentActivity {
 
 		// FragmentManager fragmentManager = getSupportFragmentManager();
 
-		Fragment fragment = new ListaPedidosFragment();
+		Fragment fragment = new ListaComandasFragment();
 
 		// En el inicio se pasa el estado pendiente
 		Bundle args = new Bundle();
@@ -107,13 +106,7 @@ public class ComandasActivity extends FragmentActivity {
 				this.idEstadosComanda.get(0));
 		fragment.setArguments(args);
 
-		/*
-		 * fragmentManager.beginTransaction() .replace(R.id.listaPedidosFl,
-		 * fragment).commit();
-		 */
-
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		// ft.replace(R.id.listaPedidosFl, fragment);
 		ft.add(R.id.listaComandasFl, fragment);
 
 		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -129,7 +122,7 @@ public class ComandasActivity extends FragmentActivity {
 		fragment = new ListaComandasFragment();
 
 		FragmentManager fragmentManager = getSupportFragmentManager();
-		// Se pasa el estado de los pedidos a mostrar
+		// Se pasa el estado de las comandas a mostrar
 		Bundle args = new Bundle();
 		args.putString(ListaComandasFragment.EXTRA_ID_ESTADO,
 				this.idEstadosComanda.get(posicion));
