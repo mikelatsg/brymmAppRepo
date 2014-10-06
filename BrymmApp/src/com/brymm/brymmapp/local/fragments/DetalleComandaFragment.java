@@ -149,11 +149,11 @@ public class DetalleComandaFragment extends Fragment implements Detalle {
 		tvIdComanda = (TextView) getActivity().findViewById(
 				R.id.detalleComandaTvIdComanda);
 		tvCamarero = (TextView) getActivity().findViewById(
-				R.id.detallePedidoTvUsuario);
+				R.id.detalleComandaTvCamarero);
 		tvPrecio = (TextView) getActivity().findViewById(
-				R.id.detallePedidoTvPrecio);
+				R.id.detalleComandaTvPrecio);
 		tvEstado = (TextView) getActivity().findViewById(
-				R.id.detallePedidoTvEstado);
+				R.id.detalleComandaTvEstado);
 		tvObservaciones = (TextView) getActivity().findViewById(
 				R.id.detalleComandaTvObservaciones);
 		tvMesa = (TextView) getActivity().findViewById(
@@ -172,10 +172,27 @@ public class DetalleComandaFragment extends Fragment implements Detalle {
 			this.comanda = intent.getParcelableExtra(EXTRA_COMANDA);
 		}
 
+		// Asigno los valores
+		tvIdComanda.setText(Integer.toString(this.comanda.getIdComanda()));
+		tvCamarero.setText(this.comanda.getCamarero().getNombre());
+		tvObservaciones.setText(this.comanda.getObservaciones());
+		tvMesa.setText(this.comanda.getMesa().getNombre());
+		tvEstado.setText(this.comanda.getEstado());
+		tvPrecio.setText(Float.toString(this.comanda.getPrecio()));
+
+		// Creo los detalles
+		DetalleComandaAdapter detalleComandaAdapter = new DetalleComandaAdapter(
+				getActivity(), 1, this.comanda.getDetallesComanda());
+
+		lvDetalles.setAdapter(detalleComandaAdapter);
+
 		// Asigno los listeners a los botones
 		btCancelarComanda.setOnClickListener(oclCancelarComanda);
+		btCancelarComanda.setTag(this.comanda);
 		btTerminarCocina.setOnClickListener(oclTerminarCocina);
+		btTerminarCocina.setTag(this.comanda);
 		btCerrarComanda.setOnClickListener(oclCerrarCamarero);
+		btCerrarComanda.setTag(this.comanda);
 
 	}
 
@@ -187,7 +204,7 @@ public class DetalleComandaFragment extends Fragment implements Detalle {
 			listaFragment = (ListaComandasFragment) getFragmentManager()
 					.findFragmentById(R.id.listaComandasFl);
 
-			listaFragment.actualizarLista(this.comanda.getEstado());
+			//listaFragment.actualizarLista(this.comanda.getEstado());
 			listaFragment.ocultarDetalle();
 
 		} else {
@@ -197,14 +214,14 @@ public class DetalleComandaFragment extends Fragment implements Detalle {
 		}
 	}
 
-	private void actualizarDetalle(int idComanda) {
+	public void actualizarDetalle(int idComanda) {
 		GestionComanda gc = new GestionComanda(getActivity());
 		this.comanda = gc.obtenerComanda(idComanda);
 		gc.cerrarDatabase();
 		actualizarDetalle();
 	}
 
-	public void actualizarDetalle() {
+	private void actualizarDetalle() {
 		tvIdComanda.setText(Integer.toString(this.comanda.getIdComanda()));
 		tvPrecio.setText(Float.toString(this.comanda.getPrecio()));
 		tvCamarero.setText(this.comanda.getCamarero().getNombre());
@@ -220,6 +237,8 @@ public class DetalleComandaFragment extends Fragment implements Detalle {
 
 		List<DetalleComanda> detallesComanda = new ArrayList<DetalleComanda>();
 
+		detallesComanda = this.comanda.getDetallesComanda();
+
 		DetalleComandaAdapter detalleComandaAdapter = new DetalleComandaAdapter(
 				getActivity(), R.layout.detalle_comanda_menu_item,
 				detallesComanda);
@@ -227,6 +246,18 @@ public class DetalleComandaFragment extends Fragment implements Detalle {
 		lvDetalles.setAdapter(detalleComandaAdapter);
 
 		registerForContextMenu(lvDetalles);
+	}
+
+	private void actualizarLista() {
+		if (mDualPane) {
+			ListaComandasFragment listaFragment;
+
+			// Make new fragment to show this selection.
+			listaFragment = (ListaComandasFragment) getFragmentManager()
+					.findFragmentById(R.id.listaComandasFl);
+
+			listaFragment.actualizarLista(GestionComanda.ESTADO_ACTIVO);
+		}
 	}
 
 	private JSONObject enviarCancelarComanda(int idComanda) {
@@ -494,6 +525,7 @@ public class DetalleComandaFragment extends Fragment implements Detalle {
 						Toast.LENGTH_LONG).show();
 
 				if (resultado.getCodigo() == 1) {
+					actualizarLista();
 					ocultarDetalle();
 				}
 			}
@@ -567,6 +599,7 @@ public class DetalleComandaFragment extends Fragment implements Detalle {
 
 				if (resultado.getCodigo() == 1) {
 					actualizarDetalle(idComanda);
+					actualizarLista();
 				}
 			}
 
@@ -638,7 +671,9 @@ public class DetalleComandaFragment extends Fragment implements Detalle {
 						Toast.LENGTH_LONG).show();
 
 				if (resultado.getCodigo() == 1) {
-					actualizarDetalle(idComanda);
+					//actualizarDetalle(idComanda);
+					actualizarLista();
+					ocultarDetalle();
 				}
 			}
 
@@ -713,6 +748,7 @@ public class DetalleComandaFragment extends Fragment implements Detalle {
 
 				if (resultado.getCodigo() == 1) {
 					actualizarDetalle(idComanda);
+					actualizarLista();
 				}
 			}
 

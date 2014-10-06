@@ -20,6 +20,7 @@ public class GestionArticulo {
 
 	public static final String JSON_ARTICULOS = "articulos";
 	public static final String JSON_ARTICULO = "articulo";
+	public static final String JSON_ARTICULO_CANTIDAD = "articuloCantidad";
 	public static final String JSON_ID_ARTICULO = "idArticulo";
 	public static final String JSON_TIPO_ARTICULO = "tipoArticulo";
 	public static final String JSON_NOMBRE = "nombre";
@@ -395,6 +396,41 @@ public class GestionArticulo {
 
 		ArticuloCantidad articuloCantidad = new ArticuloCantidad(articulo,
 				articuloCantidadJson.getInt(JSON_CANTIDAD));
+
+		return articuloCantidad;
+	}
+	
+	public static ArticuloCantidad articuloCantidadJson2ArticuloCantidad(
+			JSONObject articuloCantidadJson, int cantidad) throws JSONException {
+
+		TipoArticulo tipoArticulo = GestionTipoArticulo
+				.tipoArticuloJson2TipoArticulo(articuloCantidadJson
+						.getJSONObject(JSON_TIPO_ARTICULO));
+
+		List<Ingrediente> ingredientes = new ArrayList<Ingrediente>();
+
+		for (int i = 0; i < articuloCantidadJson
+				.getJSONArray(JSON_INGREDIENTES).length(); i++) {
+			JSONObject ingredienteJson = articuloCantidadJson.getJSONArray(
+					JSON_INGREDIENTES).getJSONObject(i);
+
+			Ingrediente ingrediente = GestionIngrediente
+					.ingredienteJson2Ingrediente(ingredienteJson);
+
+			ingredientes.add(ingrediente);
+
+		}
+
+		Articulo articulo = new Articulo(
+				articuloCantidadJson.getInt(JSON_ID_ARTICULO), tipoArticulo,
+				articuloCantidadJson.getString(JSON_NOMBRE),
+				articuloCantidadJson.getString(JSON_DESCRIPCION),
+				(float) articuloCantidadJson.getDouble(JSON_PRECIO),
+				articuloCantidadJson.getInt(JSON_VALIDO_PEDIDOS) == 1,
+				ingredientes);
+
+		ArticuloCantidad articuloCantidad = new ArticuloCantidad(articulo,
+				cantidad);
 
 		return articuloCantidad;
 	}

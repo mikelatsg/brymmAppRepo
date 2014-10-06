@@ -60,6 +60,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 public class ServicioDatosLocal extends Service {
 
@@ -251,6 +252,7 @@ public class ServicioDatosLocal extends Service {
 		// Se guardan las comandas
 		JSONArray comandasActivas = datosLocal
 				.getJSONArray(GestionComanda.JSON_COMANDAS_ACTIVAS);
+		//Log.d("K",comandasActivas.toString());
 		guardarComandas(comandasActivas, true);
 
 		JSONArray comandasCerradas = datosLocal

@@ -102,9 +102,10 @@ public class ListaComandasFragment extends Fragment {
 		gc.cerrarDatabase();
 
 		ComandaAdapter comandaAdapter = new ComandaAdapter(getActivity(),
-				R.layout.comanda_item, comandas);
-
+				R.layout.comanda_item, comandas);		
+		
 		lvComandas.setAdapter(comandaAdapter);
+				
 	}
 
 	private void mostrarDetalleComanda(Comanda comanda) {
@@ -138,11 +139,11 @@ public class ListaComandasFragment extends Fragment {
 
 	public void ocultarDetalle() {
 		if (mDualPane) {
-			DetallePedidoFragment detalleFragment;
+			DetalleComandaFragment detalleFragment;
 
 			// Make new fragment to show this selection.
-			detalleFragment = (DetallePedidoFragment) getFragmentManager()
-					.findFragmentById(R.id.detallePedidoFl);
+			detalleFragment = (DetalleComandaFragment) getFragmentManager()
+					.findFragmentById(R.id.detalleComandaFl);
 
 			// Execute a transaction, replacing any existing fragment
 			// with this one inside the frame.

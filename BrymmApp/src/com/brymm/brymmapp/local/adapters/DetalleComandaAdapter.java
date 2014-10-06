@@ -121,7 +121,7 @@ public class DetalleComandaAdapter extends ArrayAdapter<DetalleComanda> {
 		// Obtengo el detalle
 		DetalleComanda detalleComanda = detallesComanda.get(position);
 
-		Resources res = convertView.getResources();
+		Resources res = null;
 
 		// Compruebo el tipo de detalle para cargar una vista o otra.
 		switch (detalleComanda.getTipoComanda().getIdTipoComanda()) {
@@ -131,10 +131,20 @@ public class DetalleComandaAdapter extends ArrayAdapter<DetalleComanda> {
 			convertView = li.inflate(R.layout.detalle_comanda_articulo_item,
 					parent, false);
 
+			res = convertView.getResources();
+
 			inicializarArticuloComanda(convertView);
 
 			// Asigno los valores.
-			tvNombre.setText(detalleComanda.getArticulo().getNombre());
+			// Diferencio entre los articulos y los articulos personalizados
+			if (detalleComanda.getArticulo().getIdArticulo() == 0) {
+				tvNombre.setText(detalleComanda.getArticulo().getNombre()
+						+ " - "
+						+ detalleComanda.getArticulo().getTipoArticulo()
+								.getDescripcion());
+			} else {
+				tvNombre.setText(detalleComanda.getArticulo().getNombre());
+			}
 			tvCantidad.setText(Integer.toString(detalleComanda.getArticulo()
 					.getCantidad()));
 			tvPrecio.setText(Float.toString(detalleComanda.getPrecio()
@@ -163,6 +173,8 @@ public class DetalleComandaAdapter extends ArrayAdapter<DetalleComanda> {
 			// Asigno el xml de los menus
 			convertView = li.inflate(R.layout.detalle_comanda_menu_item,
 					parent, false);
+
+			res = convertView.getResources();
 			inicializarMenuComanda(convertView);
 
 			tvNombre.setText(detalleComanda.getMenuComanda().getMenu()
@@ -197,12 +209,17 @@ public class DetalleComandaAdapter extends ArrayAdapter<DetalleComanda> {
 				tvCantidadPlato.setText(Integer.toString(platoComanda
 						.getCantidad()));
 
+				TextView tvEstadoPlato = new TextView(context);
+				tvEstadoPlato.setText(platoComanda.getEstado());
+				
 				tvNombrePlato.setLayoutParams(param);
 				tvCantidadPlato.setLayoutParams(param);
+				tvEstadoPlato.setLayoutParams(param);
 
 				// Añado los textview al layout creado
 				llPlatosComanda.addView(tvNombrePlato);
 				llPlatosComanda.addView(tvCantidadPlato);
+				llPlatosComanda.addView(tvEstadoPlato);
 
 				// Si el estado es enviado cocina, creo el boton terminar cocina
 				if (platoComanda.getEstado().equals(
@@ -218,12 +235,13 @@ public class DetalleComandaAdapter extends ArrayAdapter<DetalleComanda> {
 
 				// Añado el layout creado al layout principal, en la parte de
 				// abajo.
-				LinearLayout.LayoutParams paramLayoutPrincipal = (LayoutParams) llPlatosComanda
-						.getLayoutParams();
+				// LinearLayout.LayoutParams paramLayoutPrincipal =
+				// (LayoutParams) llPlatosComanda
+				// .getLayoutParams();
 
-				paramLayoutPrincipal.gravity = Gravity.BOTTOM;
+				// paramLayoutPrincipal.gravity = Gravity.BOTTOM;
 
-				llPrincipal.addView(llPlatosComanda, paramLayoutPrincipal);
+				llPrincipal.addView(llPlatosComanda);
 			}
 
 			break;
@@ -289,6 +307,7 @@ public class DetalleComandaAdapter extends ArrayAdapter<DetalleComanda> {
 
 		ProgressDialog progress;
 		int idComandaMenu;
+		int idComanda;
 
 		@Override
 		protected void onPreExecute() {
@@ -324,6 +343,8 @@ public class DetalleComandaAdapter extends ArrayAdapter<DetalleComanda> {
 					gestor.guardarComanda(comanda);
 					gestor.cerrarDatabase();
 
+					this.idComanda = comanda.getIdComanda();
+					
 				}
 
 				res = new Resultado(
@@ -351,7 +372,7 @@ public class DetalleComandaAdapter extends ArrayAdapter<DetalleComanda> {
 					Detalle detalleFragment = (Detalle) fragmentManager
 							.findFragmentById(R.id.detalleComandaFl);
 
-					detalleFragment.actualizarDetalle();
+					detalleFragment.actualizarDetalle(this.idComanda);
 
 				}
 			}
