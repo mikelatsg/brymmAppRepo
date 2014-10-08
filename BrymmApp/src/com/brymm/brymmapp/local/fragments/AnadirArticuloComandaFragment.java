@@ -29,6 +29,7 @@ import com.brymm.brymmapp.usuario.pojo.ArticuloLocal;
 import com.brymm.brymmapp.usuario.pojo.ArticuloLocalCantidad;
 import com.brymm.brymmapp.util.Resultado;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -73,6 +74,15 @@ public class AnadirArticuloComandaFragment extends Fragment {
 			dialogoCantidad(articulo);
 		}
 	};
+	
+	private OnClickListener oclCerrar = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			cerrar();
+
+		}
+	};
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -114,6 +124,7 @@ public class AnadirArticuloComandaFragment extends Fragment {
 
 		lvArticulos.setOnItemClickListener(oicl);
 		actualizarLista();
+		btCerrar.setOnClickListener(oclCerrar);
 
 	}
 
@@ -202,6 +213,26 @@ public class AnadirArticuloComandaFragment extends Fragment {
 		});
 		custom.show();
 
+	}
+	
+	private void cerrar() {
+		if (mDualPane) {
+			CrearComandaFragment crearFragment;
+
+			// Make new fragment to show this selection.
+			crearFragment = (CrearComandaFragment) getFragmentManager()
+					.findFragmentById(R.id.listaComandasFl);
+
+			crearFragment.ocultarDetalle();
+
+		} else {
+
+			Intent intent = new Intent();
+			intent.putExtra(CrearComandaFragment.EXTRA_COMANDA, this.comanda);
+			getActivity().setResult(Activity.RESULT_OK, intent);
+			getActivity().finish();
+
+		}
 	}
 
 }

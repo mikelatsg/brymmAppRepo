@@ -39,7 +39,7 @@ public class GestionTipoArticuloLocal {
 		}
 		database.delete(LocalSQLite.TABLE_TIPOS_ARTICULO_LOCAL, null, null);
 	}
-	
+
 	public void borrarTipoArticuloLocal(int idTipoArticuloLocal) {
 		if (!database.isOpen()) {
 			database = openHelper.getWritableDatabase();
@@ -105,7 +105,39 @@ public class GestionTipoArticuloLocal {
 
 		while (cursor.moveToNext()) {
 
-			TipoArticuloLocal tipoArticuloLocal = obtenerTipoArticuloLocal(cursor.getInt(cursor
+			TipoArticuloLocal tipoArticuloLocal = obtenerTipoArticuloLocal(cursor
+					.getInt(cursor
+							.getColumnIndex(LocalSQLite.COLUMN_TAL_ID_TIPO_ARTICULO)));
+
+			tiposArticuloLocal.add(tipoArticuloLocal);
+		}
+
+		cursor.close();
+		return tiposArticuloLocal;
+	}
+
+	public List<TipoArticuloLocal> obtenerTiposArticuloLocalPersonalizables() {
+		List<TipoArticuloLocal> tiposArticuloLocal = new ArrayList<TipoArticuloLocal>();
+
+		String sql = "SELECT ta.*,tal." + LocalSQLite.COLUMN_TAL_PRECIO + " ,"
+				+ " tal." + LocalSQLite.COLUMN_TAL_PERSONALIZAR + " ,"
+				+ " tal." + LocalSQLite.COLUMN_TAL_ID_TIPO_ARTICULO_LOCAL
+				+ " FROM " + LocalSQLite.TABLE_TIPOS_ARTICULO + " ta ,"
+				+ LocalSQLite.TABLE_TIPOS_ARTICULO_LOCAL + " tal "
+				+ " WHERE ta." + LocalSQLite.COLUMN_TA_ID_TIPO_ARTICULO
+				+ " = tal." + LocalSQLite.COLUMN_TAL_ID_TIPO_ARTICULO
+				+ " AND tal." + LocalSQLite.COLUMN_TAL_PERSONALIZAR + " = ?"
+				+ " ORDER BY ta." + LocalSQLite.COLUMN_TAL_ID_TIPO_ARTICULO;
+		if (!database.isOpen()) {
+			database = openHelper.getWritableDatabase();
+		}
+		Cursor cursor = database.rawQuery(sql,
+				new String[] { Integer.toString(1) });
+
+		while (cursor.moveToNext()) {
+
+			TipoArticuloLocal tipoArticuloLocal = obtenerTipoArticuloLocal(cursor
+					.getInt(cursor
 							.getColumnIndex(LocalSQLite.COLUMN_TAL_ID_TIPO_ARTICULO)));
 
 			tiposArticuloLocal.add(tipoArticuloLocal);

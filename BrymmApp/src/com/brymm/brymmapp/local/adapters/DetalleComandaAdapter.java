@@ -1,4 +1,4 @@
-package com.brymm.brymmapp.local.adapters;
+ package com.brymm.brymmapp.local.adapters;
 
 import java.io.IOException;
 import java.util.List;

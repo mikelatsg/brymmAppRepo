@@ -16,25 +16,16 @@ import org.json.JSONObject;
 import com.brymm.brymmapp.LoginActivity;
 import com.brymm.brymmapp.R;
 import com.brymm.brymmapp.local.AnadirArticuloComandaActivity;
-import com.brymm.brymmapp.local.DetalleComandaActivity;
+import com.brymm.brymmapp.local.AnadirArticuloPerComandaActivity;
 import com.brymm.brymmapp.local.adapters.DetalleComandaAdapter;
-import com.brymm.brymmapp.local.adapters.DetalleComandaAdapter.TerminarPlato;
 import com.brymm.brymmapp.local.bbdd.GestionArticulo;
-import com.brymm.brymmapp.local.bbdd.GestionIngrediente;
 import com.brymm.brymmapp.local.bbdd.GestionMesa;
-import com.brymm.brymmapp.local.bbdd.GestionTipoArticulo;
 import com.brymm.brymmapp.local.interfaces.ListaEstado;
 import com.brymm.brymmapp.local.pojo.Articulo;
 import com.brymm.brymmapp.local.pojo.Comanda;
 import com.brymm.brymmapp.local.pojo.DetalleComanda;
-import com.brymm.brymmapp.local.pojo.Ingrediente;
 import com.brymm.brymmapp.local.pojo.Mesa;
-import com.brymm.brymmapp.local.pojo.PlatoComanda;
-import com.brymm.brymmapp.local.pojo.TipoArticulo;
 import com.brymm.brymmapp.util.Resultado;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -51,9 +42,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
@@ -65,6 +54,7 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 	public static final String EXTRA_COMANDA = "extraComanda";
 
 	public static final int REQUEST_CODE_ANADIR_ARTICULO = 1;
+	public static final int REQUEST_CODE_ANADIR_ARTICULO_PER = 2;
 
 	private Button btEnviar, btCancelar, btAnadirArticulo, btAnadirArticuloPer,
 			btAnadirMenu;
@@ -89,6 +79,14 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 		@Override
 		public void onClick(View v) {
 			mostrarAnadirArticulo();
+		}
+	};
+	
+	private OnClickListener oclMostrarAnadirArticuloPer = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			mostrarAnadirArticuloPer();
 		}
 	};
 
@@ -182,6 +180,7 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 		cambioRadioButton();
 
 		btAnadirArticulo.setOnClickListener(oclMostrarAnadirArticulo);
+		btAnadirArticulo.setOnClickListener(oclMostrarAnadirArticuloPer);
 
 	}
 
@@ -209,13 +208,31 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 
 	@Override
 	public void actualizarLista(String estado) {
-		// TODO Auto-generated method stub
+		actualizarComanda();
 
 	}
 
 	@Override
 	public void ocultarDetalle() {
-		// TODO Auto-generated method stub
+		if (mDualPane) {
+			Fragment detalleFragment;
+
+			// Make new fragment to show this selection.
+			detalleFragment = (Fragment) getFragmentManager()
+					.findFragmentById(R.id.detalleComandaFl);
+
+			// Execute a transaction, replacing any existing fragment
+			// with this one inside the frame.
+			if (detalleFragment != null) {
+
+				FragmentTransaction ft = getFragmentManager()
+						.beginTransaction();
+				ft.remove(detalleFragment);
+
+				ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+				ft.commit();
+			}
+		}
 
 	}
 
@@ -257,6 +274,35 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 					AnadirArticuloComandaActivity.class);
 			intent.putExtra(EXTRA_COMANDA, this.comanda);
 			startActivityForResult(intent, REQUEST_CODE_ANADIR_ARTICULO);
+		}
+
+	}
+	
+	private void mostrarAnadirArticuloPer() {
+		if (mDualPane) {
+			AnadirArticuloPerComandaFragment anadirFragment;
+
+			// Make new fragment to show this selection.
+			anadirFragment = new AnadirArticuloPerComandaFragment();
+
+			Bundle bundle = new Bundle();
+			bundle.putParcelable(EXTRA_COMANDA, this.comanda);
+			anadirFragment.setArguments(bundle);
+
+			// Execute a transaction, replacing any existing fragment
+			// with this one inside the frame.
+			FragmentTransaction ft = getFragmentManager().beginTransaction();
+			ft.replace(R.id.detalleComandaFl, anadirFragment);
+
+			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+			ft.commit();
+
+		} else {
+
+			Intent intent = new Intent(getActivity(),
+					AnadirArticuloPerComandaActivity.class);
+			intent.putExtra(EXTRA_COMANDA, this.comanda);
+			startActivityForResult(intent, REQUEST_CODE_ANADIR_ARTICULO_PER);
 		}
 
 	}

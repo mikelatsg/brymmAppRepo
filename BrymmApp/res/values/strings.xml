@@ -453,6 +453,16 @@
     
     <!-- Anadir articulo comanda -->
     <string name="title_activity_anadir_articulo_comanda">AnadirArticuloComandaActivity</string>
-    <string name="anadir_articulo_comanda_cerrar">Cerrar</string>    
+    <string name="anadir_articulo_comanda_cerrar">Cerrar</string>
+    
+    <!-- Anadir articulo personalizado comanda -->
+    <string name="title_activity_anadir_articulo_per_comanda">AnadirArticuloPerComandaActivity</string>
+    <string name="anadir_articulo_per_comanda_cerrar">Cerrar</string>
+    <string name="anadir_articulo_per_comanda_anadir">Anadir</string>
+    
+    <!-- Anadir menu comanda -->
+    <string name="title_activity_anadir_menu_comanda">AnadirMenuComandaActivity</string>
+    <string name="anadir_menu_comanda_cerrar">Cerrar</string>
+    <string name="anadir_menu_comanda_anadir">Anadir</string>
     
 </resources>
