@@ -5,7 +5,9 @@ import java.util.List;
 
 import com.brymm.brymmapp.R;
 import com.brymm.brymmapp.local.bbdd.GestionComanda;
+import com.brymm.brymmapp.local.fragments.CrearComandaFragment;
 import com.brymm.brymmapp.local.fragments.ListaComandasFragment;
+import com.brymm.brymmapp.local.interfaces.ListaEstado;
 import com.brymm.brymmapp.menu.MenuLocal;
 
 import android.content.Intent;
@@ -118,23 +120,40 @@ public class ComandasActivity extends FragmentActivity {
 
 	private void cambiarFragment(int posicion) {
 
-		Fragment fragment = null;
-		fragment = new ListaComandasFragment();
-
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		// Se pasa el estado de las comandas a mostrar
 		Bundle args = new Bundle();
-		args.putString(ListaComandasFragment.EXTRA_ID_ESTADO,
-				this.idEstadosComanda.get(posicion));
-		fragment.setArguments(args);
+		Fragment fragment = null;
+		switch (posicion) {
+		case 0:
+		case 1:
+			fragment = null;
+			fragment = new ListaComandasFragment();
 
-		// Se guarda el estado
-		this.estadoComanda = this.idEstadosComanda.get(posicion);
+			args.putString(ListaComandasFragment.EXTRA_ID_ESTADO,
+					this.idEstadosComanda.get(posicion));
+			fragment.setArguments(args);
 
-		fragmentManager.beginTransaction()
-				.replace(R.id.listaComandasFl, fragment).commit();
+			// Se guarda el estado
+			this.estadoComanda = this.idEstadosComanda.get(posicion);
 
-		ListaComandasFragment listaFragment = (ListaComandasFragment) getSupportFragmentManager()
+			fragmentManager.beginTransaction()
+					.replace(R.id.listaComandasFl, fragment).commit();			
+			break;
+		case 2:
+
+			fragment = null;
+			fragment = new CrearComandaFragment();
+			// Se guarda el estado
+			this.estadoComanda = this.idEstadosComanda.get(posicion);
+
+			fragmentManager.beginTransaction()
+					.replace(R.id.listaComandasFl, fragment).commit();
+
+			break;
+		}
+		
+		ListaEstado listaFragment = (ListaComandasFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.listaComandasFl);
 
 		listaFragment.ocultarDetalle();

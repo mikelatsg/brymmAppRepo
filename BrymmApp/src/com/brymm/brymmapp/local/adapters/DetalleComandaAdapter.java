@@ -31,7 +31,6 @@ import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +47,7 @@ public class DetalleComandaAdapter extends ArrayAdapter<DetalleComanda> {
 	private List<DetalleComanda> detallesComanda;
 
 	private TextView tvNombre, tvPrecio, tvCantidad, tvPrecioUnitario,
-			tvIngredientes;
+			tvIngredientes, tvEstadoDetalle;
 
 	private OnClickListener oclTerminarPlato = new OnClickListener() {
 
@@ -81,10 +80,14 @@ public class DetalleComandaAdapter extends ArrayAdapter<DetalleComanda> {
 		tvCantidad = (TextView) convertView
 				.findViewById(R.id.itemDetalleComandaMenuTvCantidad);
 
+		tvEstadoDetalle = (TextView) convertView
+				.findViewById(R.id.itemDetalleComandaMenuTvEstado);
+
 		// se pone focusable a false para que funcione el menu contextual
 		tvNombre.setFocusable(false);
 		tvPrecio.setFocusable(false);
 		tvCantidad.setFocusable(false);
+		tvEstadoDetalle.setFocusable(false);
 		tvPrecioUnitario.setFocusable(false);
 	}
 
@@ -104,11 +107,15 @@ public class DetalleComandaAdapter extends ArrayAdapter<DetalleComanda> {
 		tvIngredientes = (TextView) convertView
 				.findViewById(R.id.itemDetalleComandaArticuloTvIngredientes);
 
+		tvEstadoDetalle = (TextView) convertView
+				.findViewById(R.id.itemDetalleComandaArticuloTvEstado);
+
 		// se pone focusable a false para que funcione el menu contextual
 		tvNombre.setFocusable(false);
 		tvPrecio.setFocusable(false);
 		tvCantidad.setFocusable(false);
 		tvPrecioUnitario.setFocusable(false);
+		tvEstadoDetalle.setFocusable(false);
 	}
 
 	@Override
@@ -147,10 +154,11 @@ public class DetalleComandaAdapter extends ArrayAdapter<DetalleComanda> {
 			}
 			tvCantidad.setText(Integer.toString(detalleComanda.getArticulo()
 					.getCantidad()));
-			tvPrecio.setText(Float.toString(detalleComanda.getPrecio()
-					* detalleComanda.getCantidad()));
-			tvPrecioUnitario
-					.setText(Float.toString(detalleComanda.getPrecio()));
+			tvPrecio.setText(Float.toString(detalleComanda.getPrecio()));
+			tvPrecioUnitario.setText(Float.toString(detalleComanda.getPrecio()
+					/ detalleComanda.getCantidad()));
+
+			tvEstadoDetalle.setText(detalleComanda.getEstado());
 
 			StringBuilder stringIngredientes = new StringBuilder();
 			for (Ingrediente ingrediente : detalleComanda.getArticulo()
@@ -167,6 +175,7 @@ public class DetalleComandaAdapter extends ArrayAdapter<DetalleComanda> {
 			} else {
 				tvIngredientes.setVisibility(View.GONE);
 			}
+
 			break;
 		case 3:
 		case 4:
@@ -187,6 +196,8 @@ public class DetalleComandaAdapter extends ArrayAdapter<DetalleComanda> {
 					+ Float.toString((detalleComanda.getPrecio() * detalleComanda
 							.getCantidad())));
 			tvCantidad.setText(Integer.toString(detalleComanda.getCantidad()));
+
+			tvEstadoDetalle.setText(detalleComanda.getEstado());
 
 			// Obtengo el linearlayout principal.
 			LinearLayout llPrincipal = (LinearLayout) convertView
@@ -211,7 +222,7 @@ public class DetalleComandaAdapter extends ArrayAdapter<DetalleComanda> {
 
 				TextView tvEstadoPlato = new TextView(context);
 				tvEstadoPlato.setText(platoComanda.getEstado());
-				
+
 				tvNombrePlato.setLayoutParams(param);
 				tvCantidadPlato.setLayoutParams(param);
 				tvEstadoPlato.setLayoutParams(param);
@@ -344,7 +355,7 @@ public class DetalleComandaAdapter extends ArrayAdapter<DetalleComanda> {
 					gestor.cerrarDatabase();
 
 					this.idComanda = comanda.getIdComanda();
-					
+
 				}
 
 				res = new Resultado(

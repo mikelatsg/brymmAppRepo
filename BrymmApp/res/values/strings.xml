@@ -17,7 +17,8 @@
     
     <string-array name="estadoComandaArray">
         <item>Activas#A</item>
-        <item>Cerradas#C</item>        
+        <item>Cerradas#C</item>
+        <item>Nueva comanda#N</item>        
     </string-array>
 
     <!-- Array horarios -->
@@ -431,12 +432,27 @@
 
     <!-- Detalle comanda -->
     <string name="detalle_comanda_cancelar_comanda">Cancelar</string>
-    <string name="detalle_comanda_terminar">Terminado</string>
+    <string name="detalle_comanda_terminar">Terminar</string>
     <string name="detalle_comanda_cerrar">Cerrar</string>
     
     <!--Detalle comanda articulo adapter -->    
     <string name="item_detalle_comanda_articulo_precio_unidad">Precio unidad:</string>
     <string name="item_detalle_comanda_articulo_precio_total">Precio total:</string>
     <string name="item_detalle_comanda_articulo_cantidad">Cantidad :</string>
+    
+    <!--Crear comandas -->    
+    <string name="crear_comanda_enviar_comanda">Enviar comanda</string>
+    <string name="crear_comanda_anadir_articulo">Añadir articulo</string>
+    <string name="crear_comanda_anadir_articulo_per">Añadir articulo Personalizado</string>
+    <string name="crear_comanda_anadir_menu">Añadir menu</string>
+    <string name="crear_comanda_cancelar_comanda">Cancelar comanda</string>
+    <string name="crear_comanda_observaciones">Observaciones</string>
+    <string name="crear_comanda_precio">Precio :</string>
+    <string name="crear_comanda_mesa">Mesa</string>
+    <string name="crear_comanda_nombre_de">A nombre de</string>
+    
+    <!-- Anadir articulo comanda -->
+    <string name="title_activity_anadir_articulo_comanda">AnadirArticuloComandaActivity</string>
+    <string name="anadir_articulo_comanda_cerrar">Cerrar</string>    
     
 </resources>

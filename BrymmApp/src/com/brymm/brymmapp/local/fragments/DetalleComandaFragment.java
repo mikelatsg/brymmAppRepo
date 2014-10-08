@@ -1,5 +1,6 @@
 package com.brymm.brymmapp.local.fragments;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.brymm.brymmapp.LoginActivity;
@@ -126,7 +128,7 @@ public class DetalleComandaFragment extends Fragment implements Detalle {
 				.getItem(info.position);
 
 		switch (item.getItemId()) {
-		case R.id.contextMenuMenuBorrar:
+		case R.id.contextMenuDetalleComandaTerminar:
 			TerminarDetalleComanda tdc = new TerminarDetalleComanda();
 			tdc.execute(detalleComanda.getIdDetalleComanda(),
 					this.comanda.getIdComanda());
@@ -186,6 +188,8 @@ public class DetalleComandaFragment extends Fragment implements Detalle {
 
 		lvDetalles.setAdapter(detalleComandaAdapter);
 
+		registerForContextMenu(lvDetalles);
+
 		// Asigno los listeners a los botones
 		btCancelarComanda.setOnClickListener(oclCancelarComanda);
 		btCancelarComanda.setTag(this.comanda);
@@ -204,7 +208,7 @@ public class DetalleComandaFragment extends Fragment implements Detalle {
 			listaFragment = (ListaComandasFragment) getFragmentManager()
 					.findFragmentById(R.id.listaComandasFl);
 
-			//listaFragment.actualizarLista(this.comanda.getEstado());
+			// listaFragment.actualizarLista(this.comanda.getEstado());
 			listaFragment.ocultarDetalle();
 
 		} else {
@@ -410,12 +414,14 @@ public class DetalleComandaFragment extends Fragment implements Detalle {
 		return respJSON;
 	}
 
-	private JSONObject enviarTerminarDetalleComanda(int idDetalleComanda) {
+	private JSONObject enviarTerminarDetalle(int idDetalleComanda)
+			throws IOException, JSONException {
 		JSONObject respJSON = null;
-		String url = "";
 
-		url = LoginActivity.SITE_URL
-				+ "/api/comandas/terminarDetalleComandaCocina/format/json";
+		String url;
+
+		url = new String(LoginActivity.SITE_URL
+				+ "/api/comandas/terminarDetalleComanda/format/json");
 
 		try {
 
@@ -671,7 +677,7 @@ public class DetalleComandaFragment extends Fragment implements Detalle {
 						Toast.LENGTH_LONG).show();
 
 				if (resultado.getCodigo() == 1) {
-					//actualizarDetalle(idComanda);
+					// actualizarDetalle(idComanda);
 					actualizarLista();
 					ocultarDetalle();
 				}
@@ -704,7 +710,7 @@ public class DetalleComandaFragment extends Fragment implements Detalle {
 			Resultado res = null;
 			try {
 
-				respJSON = enviarTerminarDetalleComanda(idDetalleComanda);
+				respJSON = enviarTerminarDetalle(idDetalleComanda);
 
 				if (respJSON != null) {
 

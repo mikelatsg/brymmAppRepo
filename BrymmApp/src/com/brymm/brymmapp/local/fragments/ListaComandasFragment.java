@@ -7,6 +7,7 @@ import com.brymm.brymmapp.R;
 import com.brymm.brymmapp.local.DetalleComandaActivity;
 import com.brymm.brymmapp.local.adapters.ComandaAdapter;
 import com.brymm.brymmapp.local.bbdd.GestionComanda;
+import com.brymm.brymmapp.local.interfaces.ListaEstado;
 import com.brymm.brymmapp.local.pojo.Comanda;
 
 import android.content.Intent;
@@ -23,7 +24,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-public class ListaComandasFragment extends Fragment {
+public class ListaComandasFragment extends Fragment implements ListaEstado {
 
 	public static final String EXTRA_ID_ESTADO = "extraIdEstado";
 	public static final int REQUEST_CODE_DETALLE = 1;

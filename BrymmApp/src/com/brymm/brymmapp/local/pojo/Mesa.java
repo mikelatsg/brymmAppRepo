@@ -39,6 +39,10 @@ public class Mesa implements Parcelable{
 		this.nombre = nombre;
 	}
 	
+	public String toString(){
+		return this.nombre;
+	}
+	
 	@Override
 	public int describeContents() {
 		// TODO Auto-generated method stub

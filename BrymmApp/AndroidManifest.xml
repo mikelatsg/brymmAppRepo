@@ -204,6 +204,10 @@
             android:name="com.brymm.brymmapp.local.ComandasActivity"
             android:label="@string/title_activity_comandas" >
         </activity>
+        <activity
+            android:name="com.brymm.brymmapp.local.AnadirArticuloComandaActivity"
+            android:label="@string/title_activity_anadir_articulo_comanda" >
+        </activity>
     </application>
 
 </manifest>
