@@ -120,8 +120,6 @@ public class AnadirArticuloPerComandaFragment extends Fragment {
 			cb.setTag(ingrediente);
 			llPrincipal.addView(cb);
 			checks.add(cb);
-
-			llPrincipal.addView(cb);
 		}
 
 		btAnadir.setOnClickListener(oclAnadir);
@@ -194,6 +192,7 @@ public class AnadirArticuloPerComandaFragment extends Fragment {
 		for (CheckBox check : checks) {
 			if (check.isChecked()) {
 				ingredientes.add((Ingrediente) check.getTag());
+				precio += ((Ingrediente) check.getTag()).getPrecio();
 			}
 		}
 		articulo = new Articulo(0, tipoArticuloLocal, "Articulo per",

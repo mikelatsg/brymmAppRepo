@@ -180,7 +180,7 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 		cambioRadioButton();
 
 		btAnadirArticulo.setOnClickListener(oclMostrarAnadirArticulo);
-		btAnadirArticulo.setOnClickListener(oclMostrarAnadirArticuloPer);
+		btAnadirArticuloPer.setOnClickListener(oclMostrarAnadirArticuloPer);
 
 	}
 

@@ -138,7 +138,7 @@ public class GestionTipoArticuloLocal {
 
 			TipoArticuloLocal tipoArticuloLocal = obtenerTipoArticuloLocal(cursor
 					.getInt(cursor
-							.getColumnIndex(LocalSQLite.COLUMN_TAL_ID_TIPO_ARTICULO)));
+							.getColumnIndex(LocalSQLite.COLUMN_TAL_ID_TIPO_ARTICULO_LOCAL)));
 
 			tiposArticuloLocal.add(tipoArticuloLocal);
 		}
@@ -151,7 +151,7 @@ public class GestionTipoArticuloLocal {
 		TipoArticuloLocal tipoArticuloLocal = null;
 
 		String sql = "SELECT ta.*,tal." + LocalSQLite.COLUMN_TAL_PRECIO
-				+ " tal." + LocalSQLite.COLUMN_TAL_PERSONALIZAR + " tal."
+				+ " ,tal." + LocalSQLite.COLUMN_TAL_PERSONALIZAR + " ,tal."
 				+ LocalSQLite.COLUMN_TAL_ID_TIPO_ARTICULO_LOCAL + " FROM "
 				+ LocalSQLite.TABLE_TIPOS_ARTICULO + " ta ,"
 				+ LocalSQLite.TABLE_TIPOS_ARTICULO_LOCAL + " tal "

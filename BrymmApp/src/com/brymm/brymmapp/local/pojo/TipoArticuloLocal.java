@@ -42,6 +42,10 @@ public class TipoArticuloLocal extends TipoArticulo implements Parcelable {
 	public void setIdTipoArticuloLocal(int idTipoArticuloLocal) {
 		this.idTipoArticuloLocal = idTipoArticuloLocal;
 	}
+	
+	public String toString(){
+		return this.getTipoArticulo();
+	}
 
 	@Override
 	public int describeContents() {
