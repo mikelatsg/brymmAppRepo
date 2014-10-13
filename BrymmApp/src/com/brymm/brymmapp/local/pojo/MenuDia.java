@@ -30,6 +30,10 @@ public class MenuDia implements Parcelable {
 		this.platos = null;
 	}
 
+	public String toString(){
+		return this.menu.getNombre();
+	}
+	
 	public int getIdMenuDia() {
 		return idMenuDia;
 	}

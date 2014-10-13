@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.brymm.brymmapp.R;
 import com.brymm.brymmapp.local.bbdd.GestionIngrediente;
+import com.brymm.brymmapp.local.bbdd.GestionMenu;
 import com.brymm.brymmapp.local.bbdd.GestionMenuDia;
 import com.brymm.brymmapp.local.bbdd.GestionTipoArticuloLocal;
 import com.brymm.brymmapp.local.bbdd.GestionTipoComanda;
@@ -18,7 +19,9 @@ import com.brymm.brymmapp.local.pojo.DetalleComanda;
 import com.brymm.brymmapp.local.pojo.Ingrediente;
 import com.brymm.brymmapp.local.pojo.MenuComanda;
 import com.brymm.brymmapp.local.pojo.MenuDia;
+import com.brymm.brymmapp.local.pojo.MenuLocal;
 import com.brymm.brymmapp.local.pojo.Plato;
+import com.brymm.brymmapp.local.pojo.PlatoComanda;
 import com.brymm.brymmapp.local.pojo.TipoArticuloLocal;
 import com.brymm.brymmapp.local.pojo.TipoComanda;
 
@@ -27,6 +30,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -45,8 +49,9 @@ public class AnadirMenuComandaFragment extends Fragment {
 	private Spinner spMenus;
 
 	private Button btCerrar, btAnadir;
+	private EditText etCantidadMenu;
+	private LinearLayout llPlatos;
 	private int RESOURCE_PLATOS = 0;
-	
 
 	private boolean mDualPane;
 	private Comanda comanda;
@@ -55,7 +60,8 @@ public class AnadirMenuComandaFragment extends Fragment {
 
 		@Override
 		public void onClick(View v) {
-
+			MenuComanda menuComanda = obtenerMenuComanda();
+			anadirMenu(menuComanda);
 		}
 	};
 
@@ -89,9 +95,8 @@ public class AnadirMenuComandaFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		View root = inflater.inflate(
-				R.layout.fragment_anadir_articulos_per_comanda, container,
-				false);
+		View root = inflater.inflate(R.layout.fragment_anadir_menu_comanda,
+				container, false);
 		return root;
 	}
 
@@ -110,6 +115,14 @@ public class AnadirMenuComandaFragment extends Fragment {
 
 		spMenus = (Spinner) getActivity().findViewById(
 				R.id.anadirMenuComandaSpMenus);
+
+		etCantidadMenu = (EditText) getActivity().findViewById(
+				R.id.anadirMenuComandaEtCantidadMenu);
+		
+		llPlatos = (LinearLayout) getActivity().findViewById(
+				R.id.anadirMenuComandaLlPlatos);
+		
+		
 
 		/* Se guarda si esta el fragmento de crear comanda */
 		View anadirFrame = getActivity().findViewById(R.id.listaComandasFl);
@@ -141,9 +154,9 @@ public class AnadirMenuComandaFragment extends Fragment {
 		Calendar c = Calendar.getInstance();
 
 		String fecha = Integer.toString(c.get(Calendar.YEAR)) + "-"
-				+ Integer.toString(c.get(Calendar.MONTH)) + "-"
-				+ Integer.toString(c.get(Calendar.DAY_OF_MONTH));
-
+				+ Integer.toString(c.get(Calendar.MONTH) + 1) + "-"
+				+ Integer.toString(c.get(Calendar.DAY_OF_MONTH));		
+		
 		List<MenuDia> menusDia = new ArrayList<MenuDia>();
 		GestionMenuDia gestor = new GestionMenuDia(getActivity());
 		menusDia = gestor.obtenerMenusDia(fecha);
@@ -157,18 +170,12 @@ public class AnadirMenuComandaFragment extends Fragment {
 	}
 
 	private void actualizarPlatosMenu() {
-		// Si existe el LinearLayout de los platos lo borro.
-		LinearLayout llPlatos = (LinearLayout) getActivity().findViewById(
-				RESOURCE_PLATOS);
+		// Vacio el linear layout platos
+		llPlatos.removeAllViews();		
 
-		if (llPlatos != null) {
-			llPlatos.setVisibility(View.GONE);
-		}
+		checks = new ArrayList<CheckBox>();
 
 		/* Añadir los ingredientes dinamicamente */
-		// Obtengo el linearlayout principal.
-		LinearLayout llPrincipal = (LinearLayout) getActivity().findViewById(
-				R.id.anadirMenuComandaLlPrincipal);
 
 		// Obtengo los platos del menu
 		GestionMenuDia gestor = new GestionMenuDia(getActivity());
@@ -177,16 +184,11 @@ public class AnadirMenuComandaFragment extends Fragment {
 				.obtenerPlatosMenuDia(menuDia.getIdMenuDia());
 		gestor.cerrarDatabase();
 
-		// Creo un linearlayout para meter los checks
-		LayoutInflater inflater = LayoutInflater.from(getActivity());
-		llPlatos = (LinearLayout) inflater
-				.inflate(RESOURCE_PLATOS, null, false);
-
 		// Generar dinamicamente los platos.
 		for (Plato plato : platos) {
 			LinearLayout llPlato = new LinearLayout(getActivity());
 			llPlato.setOrientation(LinearLayout.HORIZONTAL);
-					
+
 			EditText et = new EditText(getActivity());
 			et.setText("0");
 			et.setId(plato.getIdPlato());
@@ -199,23 +201,57 @@ public class AnadirMenuComandaFragment extends Fragment {
 
 			llPlatos.addView(llPlato);
 		}
-		llPrincipal.addView(llPlatos);
+		//llPrincipal.addView(llPlatos);
+	}
+
+	private MenuComanda obtenerMenuComanda() {
+		// Se obtiene el menu seleccionado
+		int idMenu = ((MenuDia) spMenus.getSelectedItem()).getMenu()
+				.getIdMenu();
+		GestionMenu gm = new GestionMenu(getActivity());
+		MenuLocal menu = gm.obtenerMenu(idMenu);
+		gm.cerrarDatabase();
+
+		// Se obtienen los platos seleccionados
+		List<PlatoComanda> platosComanda = new ArrayList<PlatoComanda>();
+		for (CheckBox checkBox : this.checks) {
+			if (checkBox.isChecked()) {
+				Plato plato = (Plato) checkBox.getTag();
+				EditText etTemporal = (EditText) getActivity().findViewById(
+						plato.getIdPlato());
+
+				PlatoComanda platoComanda = new PlatoComanda(0, plato, "",
+						Integer.parseInt(etTemporal.getText().toString()));
+
+				platosComanda.add(platoComanda);
+			}
+		}
+
+		MenuComanda menuComanda = new MenuComanda(menu, platosComanda,
+				Integer.parseInt(etCantidadMenu.getText().toString()));
+		return menuComanda;
 	}
 
 	private void anadirMenu(MenuComanda menuComanda) {
 		GestionTipoComanda gtc = new GestionTipoComanda(getActivity());
 		TipoComanda tipoComanda;
+		Float precioDetalle = (float) 0;
+		//Obtengo el tipo comanda y el precio dependiendo de si es carta o no
 		if (menuComanda.getMenu().isCarta()) {
 			tipoComanda = gtc.obtenerTipoComanda(4);
+			for (PlatoComanda platoComanda : menuComanda.getPlatos()) {
+				precioDetalle = platoComanda.getPrecio()
+						* platoComanda.getCantidad();
+			}
 		} else {
 			tipoComanda = gtc.obtenerTipoComanda(3);
+			precioDetalle = menuComanda.getCantidad()
+					* menuComanda.getMenu().getPrecio();
 		}
 		gtc.cerrarDatabase();
 
 		DetalleComanda detalleComanda = new DetalleComanda(0, tipoComanda,
-				menuComanda.getCantidad(), menuComanda.getCantidad()
-						* menuComanda.getMenu().getPrecio(), "", null,
-				menuComanda);
+				menuComanda.getCantidad(), precioDetalle, "", null, menuComanda);
 
 		List<DetalleComanda> detallesComanda = null;
 		// Si es nulo inicializo los detalles.

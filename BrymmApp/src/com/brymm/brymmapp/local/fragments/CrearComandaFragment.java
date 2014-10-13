@@ -90,6 +90,14 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 		}
 	};
 
+	private OnClickListener oclMostrarAnadirMenu = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			mostrarAnadirMenu();
+		}
+	};
+	
 	private OnClickListener oclRadio = new OnClickListener() {
 
 		@Override
@@ -181,6 +189,7 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 
 		btAnadirArticulo.setOnClickListener(oclMostrarAnadirArticulo);
 		btAnadirArticuloPer.setOnClickListener(oclMostrarAnadirArticuloPer);
+		btAnadirMenu.setOnClickListener(oclMostrarAnadirMenu);
 
 	}
 
@@ -303,6 +312,35 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 					AnadirArticuloPerComandaActivity.class);
 			intent.putExtra(EXTRA_COMANDA, this.comanda);
 			startActivityForResult(intent, REQUEST_CODE_ANADIR_ARTICULO_PER);
+		}
+
+	}
+	
+	private void mostrarAnadirMenu() {
+		if (mDualPane) {
+			AnadirMenuComandaFragment anadirFragment;
+
+			// Make new fragment to show this selection.
+			anadirFragment = new AnadirMenuComandaFragment();
+
+			Bundle bundle = new Bundle();
+			bundle.putParcelable(EXTRA_COMANDA, this.comanda);
+			anadirFragment.setArguments(bundle);
+
+			// Execute a transaction, replacing any existing fragment
+			// with this one inside the frame.
+			FragmentTransaction ft = getFragmentManager().beginTransaction();
+			ft.replace(R.id.detalleComandaFl, anadirFragment);
+
+			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+			ft.commit();
+
+		} else {
+
+			Intent intent = new Intent(getActivity(),
+					AnadirMenuComandaFragment.class);
+			intent.putExtra(EXTRA_COMANDA, this.comanda);
+			startActivityForResult(intent, REQUEST_CODE_ANADIR_ARTICULO);
 		}
 
 	}
