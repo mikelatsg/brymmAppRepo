@@ -106,12 +106,13 @@ public class ListaMenusDiaFragment extends Fragment implements ListaEstado {
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
-				.getMenuInfo();
-		MenuDiaAdapter menuDiaAdapter = (MenuDiaAdapter) lvMenus.getAdapter();
-		MenuDia menuDia = menuDiaAdapter.getItem(info.position);
+				.getMenuInfo();						
 
 		switch (item.getItemId()) {
 		case R.id.contextMenuMenuDiaBorrar:
+			MenuDiaAdapter menuDiaAdapter = (MenuDiaAdapter) lvMenus.getAdapter();
+			MenuDia menuDia = menuDiaAdapter.getItem(info.position);
+			
 			BorrarMenuDia bm = new BorrarMenuDia();
 			bm.execute(menuDia.getIdMenuDia());
 			return true;

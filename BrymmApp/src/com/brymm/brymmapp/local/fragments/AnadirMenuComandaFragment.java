@@ -118,11 +118,9 @@ public class AnadirMenuComandaFragment extends Fragment {
 
 		etCantidadMenu = (EditText) getActivity().findViewById(
 				R.id.anadirMenuComandaEtCantidadMenu);
-		
+
 		llPlatos = (LinearLayout) getActivity().findViewById(
 				R.id.anadirMenuComandaLlPlatos);
-		
-		
 
 		/* Se guarda si esta el fragmento de crear comanda */
 		View anadirFrame = getActivity().findViewById(R.id.listaComandasFl);
@@ -155,8 +153,8 @@ public class AnadirMenuComandaFragment extends Fragment {
 
 		String fecha = Integer.toString(c.get(Calendar.YEAR)) + "-"
 				+ Integer.toString(c.get(Calendar.MONTH) + 1) + "-"
-				+ Integer.toString(c.get(Calendar.DAY_OF_MONTH));		
-		
+				+ Integer.toString(c.get(Calendar.DAY_OF_MONTH));
+
 		List<MenuDia> menusDia = new ArrayList<MenuDia>();
 		GestionMenuDia gestor = new GestionMenuDia(getActivity());
 		menusDia = gestor.obtenerMenusDia(fecha);
@@ -171,7 +169,7 @@ public class AnadirMenuComandaFragment extends Fragment {
 
 	private void actualizarPlatosMenu() {
 		// Vacio el linear layout platos
-		llPlatos.removeAllViews();		
+		llPlatos.removeAllViews();
 
 		checks = new ArrayList<CheckBox>();
 
@@ -201,7 +199,7 @@ public class AnadirMenuComandaFragment extends Fragment {
 
 			llPlatos.addView(llPlato);
 		}
-		//llPrincipal.addView(llPlatos);
+		// llPrincipal.addView(llPlatos);
 	}
 
 	private MenuComanda obtenerMenuComanda() {
@@ -236,7 +234,7 @@ public class AnadirMenuComandaFragment extends Fragment {
 		GestionTipoComanda gtc = new GestionTipoComanda(getActivity());
 		TipoComanda tipoComanda;
 		Float precioDetalle = (float) 0;
-		//Obtengo el tipo comanda y el precio dependiendo de si es carta o no
+		// Obtengo el tipo comanda y el precio dependiendo de si es carta o no
 		if (menuComanda.getMenu().isCarta()) {
 			tipoComanda = gtc.obtenerTipoComanda(4);
 			for (PlatoComanda platoComanda : menuComanda.getPlatos()) {
@@ -245,8 +243,7 @@ public class AnadirMenuComandaFragment extends Fragment {
 			}
 		} else {
 			tipoComanda = gtc.obtenerTipoComanda(3);
-			precioDetalle = menuComanda.getCantidad()
-					* menuComanda.getMenu().getPrecio();
+			precioDetalle = menuComanda.getMenu().getPrecio();
 		}
 		gtc.cerrarDatabase();
 
@@ -262,7 +259,8 @@ public class AnadirMenuComandaFragment extends Fragment {
 		}
 
 		float precio = this.comanda.getPrecio();
-		precio = precio + (detalleComanda.getPrecio());
+		precio = precio
+				+ (detalleComanda.getPrecio() * detalleComanda.getCantidad());
 		this.comanda.setPrecio(precio);
 
 		detallesComanda.add(detalleComanda);

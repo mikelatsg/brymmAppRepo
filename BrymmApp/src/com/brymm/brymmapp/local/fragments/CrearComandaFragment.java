@@ -19,6 +19,7 @@ import com.brymm.brymmapp.local.AnadirArticuloComandaActivity;
 import com.brymm.brymmapp.local.AnadirArticuloPerComandaActivity;
 import com.brymm.brymmapp.local.adapters.DetalleComandaAdapter;
 import com.brymm.brymmapp.local.bbdd.GestionArticulo;
+import com.brymm.brymmapp.local.bbdd.GestionComanda;
 import com.brymm.brymmapp.local.bbdd.GestionMesa;
 import com.brymm.brymmapp.local.interfaces.ListaEstado;
 import com.brymm.brymmapp.local.pojo.Articulo;
@@ -26,6 +27,9 @@ import com.brymm.brymmapp.local.pojo.Comanda;
 import com.brymm.brymmapp.local.pojo.DetalleComanda;
 import com.brymm.brymmapp.local.pojo.Mesa;
 import com.brymm.brymmapp.util.Resultado;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -70,7 +74,13 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 
 		@Override
 		public void onClick(View v) {
-
+			//Compruebo si hay algo antes de enviar
+			if (comanda.getPrecio() > 0){
+				asignarDatosComanda();
+				CrearComanda cc = new CrearComanda();
+				cc.execute();
+			}
+			
 		}
 	};
 
@@ -193,6 +203,22 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 
 	}
 
+	private void asignarDatosComanda(){
+		//Compruebo si es para una mesa o un destino
+		if (rbMesa.isChecked()){
+			int idMesa = ((Mesa)spMesas.getSelectedItem()).getIdMesa();
+			GestionMesa gm = new GestionMesa(getActivity());
+			Mesa mesa = gm.obtenerMesa(idMesa);
+			gm.cerrarDatabase();
+			
+			this.comanda.setMesa(mesa);
+		}
+		
+		if (rbNombreDe.isChecked()){
+			this.comanda.setDestino(etNombreDe.getText().toString());
+		}
+	}
+	
 	public void actualizarComanda() {
 		tvPrecio.setText(Float.toString(this.comanda.getPrecio()));
 		// Marco si es mesa o envio.
@@ -251,10 +277,12 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 		// Muestro la lista de mesas o el campo a nombre de...
 		if (rbMesa.isChecked()) {
 			spMesas.setVisibility(View.VISIBLE);
+			this.comanda.setDestino("");
 		}
 
 		if (rbNombreDe.isChecked()) {
 			etNombreDe.setVisibility(View.VISIBLE);
+			this.comanda.setMesa(null);
 		}
 	}
 
@@ -345,13 +373,13 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 
 	}
 
-	private JSONObject enviarArticulo() throws IOException, JSONException {
+	private JSONObject enviarComanda() throws IOException, JSONException {
 		JSONObject respJSON = null;
 
 		String url;
 
 		url = new String(LoginActivity.SITE_URL
-				+ "/api/articulos/nuevoArticulo/format/json");
+				+ "/api/comandas/nuevaComanda/format/json");
 
 		try {
 
@@ -359,18 +387,23 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 			HttpClient httpclient = new DefaultHttpClient();
 
 			// 2. make POST request to the given URL
-			HttpPost httpPost = new HttpPost(url);
+			HttpPost httpPost = new HttpPost(url);			
 
-			String json = "";
-
-			// 4. convert JSONObject to JSON to String
-			// json = crearArticuloJson();
-
+			Gson gson = new Gson();
+			
+			JsonElement jsonElementComanda = gson.toJsonTree(this.comanda);
+						
+			JsonObject jsonObject = new JsonObject();
+			
+			jsonObject.add(GestionComanda.JSON_COMANDA, jsonElementComanda);
+			jsonObject.addProperty(GestionArticulo.JSON_ID_LOCAL,
+					LoginActivity.getLocal(getActivity()));						
+			
 			// 5. set json to StringEntity
-			StringEntity se = new StringEntity(json);
-
+			StringEntity se = new StringEntity(jsonObject.toString(),"UTF8");
+			
 			// 6. set httpPost Entity
-			httpPost.setEntity(se);
+			httpPost.setEntity(se);						
 
 			// 7. Set some headers to inform server about the type of the
 			// content
@@ -394,7 +427,7 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 		return respJSON;
 	}
 
-	public class EnviarArticulo extends AsyncTask<Void, Void, Resultado> {
+	public class CrearComanda extends AsyncTask<Void, Void, Resultado> {
 
 		ProgressDialog progress;
 
@@ -412,24 +445,25 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 			String mensaje = "";
 			Resultado res = null;
 			try {
-				respJSON = enviarArticulo();
+				respJSON = enviarComanda();
 
 				boolean operacionOk = respJSON
 						.getInt(Resultado.JSON_OPERACION_OK) == 0 ? false
 						: true;
 
 				mensaje = respJSON.getString(Resultado.JSON_MENSAJE);
+				Log.d("mensaje",mensaje);
 
 				if (operacionOk) {
 					// Si la operacion ha ido ok se guarda en la bbdd del movil
-					Articulo articulo = GestionArticulo
-							.articuloJson2Articulo(respJSON
-									.getJSONObject(GestionArticulo.JSON_ARTICULO));
+					Comanda comanda = GestionComanda
+							.comandaJson2Comanda((respJSON
+									.getJSONObject(GestionComanda.JSON_COMANDA)));
 
-					GestionArticulo ga = new GestionArticulo(getActivity());
+					GestionComanda gc = new GestionComanda(getActivity());
 
-					ga.guardarArticulo(articulo);
-					ga.cerrarDatabase();
+					gc.guardarComanda(comanda);
+					gc.cerrarDatabase();
 
 				}
 
