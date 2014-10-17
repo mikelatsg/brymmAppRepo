@@ -13,9 +13,7 @@ import org.json.JSONObject;
 import com.brymm.brymmapp.LoginActivity;
 import com.brymm.brymmapp.R;
 import com.brymm.brymmapp.local.AnadirTipoArticuloActivity;
-import com.brymm.brymmapp.local.IngredientesActivity;
 import com.brymm.brymmapp.local.adapters.TipoArticuloAdapter;
-import com.brymm.brymmapp.local.bbdd.GestionIngrediente;
 import com.brymm.brymmapp.local.bbdd.GestionTipoArticuloLocal;
 import com.brymm.brymmapp.local.interfaces.Lista;
 import com.brymm.brymmapp.local.pojo.TipoArticuloLocal;
@@ -37,8 +35,6 @@ import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -183,7 +179,7 @@ public class ListaTiposArticuloFragment extends Fragment implements Lista{
 			// Execute a transaction, replacing any existing fragment
 			// with this one inside the frame.
 			FragmentTransaction ft = getFragmentManager().beginTransaction();
-			ft.replace(R.id.anadirTiposArticulosFl, anadirFragment);
+			ft.replace(R.id.anadirArticulosFl, anadirFragment);
 			// ft.add(R.id.anadirTiposArticulosFl, anadirFragment);
 
 			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);

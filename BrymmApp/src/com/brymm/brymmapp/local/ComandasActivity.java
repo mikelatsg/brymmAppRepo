@@ -3,6 +3,7 @@ package com.brymm.brymmapp.local;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.brymm.brymmapp.LoginActivity;
 import com.brymm.brymmapp.R;
 import com.brymm.brymmapp.local.bbdd.GestionComanda;
 import com.brymm.brymmapp.local.fragments.CrearComandaFragment;
@@ -11,6 +12,7 @@ import com.brymm.brymmapp.local.interfaces.ListaEstado;
 import com.brymm.brymmapp.menu.MenuLocal;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -24,6 +26,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 public class ComandasActivity extends FragmentActivity {
 
@@ -119,6 +122,7 @@ public class ComandasActivity extends FragmentActivity {
 	}
 
 	private void cambiarFragment(int posicion) {
+		boolean fragmentCambiado = true;
 
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		// Se pasa el estado de las comandas a mostrar
@@ -138,27 +142,36 @@ public class ComandasActivity extends FragmentActivity {
 			this.estadoComanda = this.idEstadosComanda.get(posicion);
 
 			fragmentManager.beginTransaction()
-					.replace(R.id.listaComandasFl, fragment).commit();			
+					.replace(R.id.listaComandasFl, fragment).commit();
 			break;
 		case 2:
 
-			fragment = null;
-			fragment = new CrearComandaFragment();
-			// Se guarda el estado
-			this.estadoComanda = this.idEstadosComanda.get(posicion);
+			// Comprubo si se trata de un camarero
+			if (LoginActivity.esSesionCamarero(this)) {
+				fragment = null;
+				fragment = new CrearComandaFragment();
+				// Se guarda el estado
+				this.estadoComanda = this.idEstadosComanda.get(posicion);
 
-			fragmentManager.beginTransaction()
-					.replace(R.id.listaComandasFl, fragment).commit();
-
+				fragmentManager.beginTransaction()
+						.replace(R.id.listaComandasFl, fragment).commit();
+			} else {
+				Resources res = this.getResources();
+				fragmentCambiado = false;
+				Toast.makeText(this,
+						res.getString(R.string.crear_comanda_err_camarero),
+						Toast.LENGTH_LONG).show();
+			}
 			break;
 		}
-		
-		ListaEstado listaFragment = (ListaEstado) getSupportFragmentManager()
-				.findFragmentById(R.id.listaComandasFl);
 
-		listaFragment.ocultarDetalle();
-
-		navList.setItemChecked(posicion, true);
+		// Compruebo si se ha cambiado el fragment antes de actualizar ...
+		if (fragmentCambiado) {
+			ListaEstado listaFragment = (ListaEstado) getSupportFragmentManager()
+					.findFragmentById(R.id.listaComandasFl);
+			listaFragment.ocultarDetalle();
+			navList.setItemChecked(posicion, true);
+		}
 
 		mDrawerLayout.closeDrawer(navList);
 

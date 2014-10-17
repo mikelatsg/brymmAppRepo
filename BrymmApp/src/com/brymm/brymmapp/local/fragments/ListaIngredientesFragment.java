@@ -1,4 +1,4 @@
-package com.brymm.brymmapp.local;
+package com.brymm.brymmapp.local.fragments;
 
 import java.util.List;
 
@@ -11,29 +11,27 @@ import org.json.JSONObject;
 
 import com.brymm.brymmapp.LoginActivity;
 import com.brymm.brymmapp.R;
+import com.brymm.brymmapp.local.AnadirModificarIngredienteActivity;
 import com.brymm.brymmapp.local.adapters.IngredienteAdapter;
 import com.brymm.brymmapp.local.bbdd.GestionIngrediente;
+import com.brymm.brymmapp.local.interfaces.Lista;
 import com.brymm.brymmapp.local.pojo.Ingrediente;
-import com.brymm.brymmapp.menu.MenuLocal;
-import com.brymm.brymmapp.usuario.LocalesFavoritosActivity;
-import com.brymm.brymmapp.usuario.DireccionesActivity.BorrarDireccion;
-import com.brymm.brymmapp.usuario.adapters.DireccionAdapter;
-import com.brymm.brymmapp.usuario.bbdd.GestionLocalFavorito;
-import com.brymm.brymmapp.usuario.pojo.Direccion;
 import com.brymm.brymmapp.util.Resultado;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.ContextMenu;
-import android.view.Menu;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -41,43 +39,25 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
-public class IngredientesActivity extends Activity {
-
-	private final static int REQUEST_CODE_ANADIR_INGREDIENTE = 1;
-	private final static int REQUEST_CODE_MODIFICAR_INGREDIENTE = 2;
+public class ListaIngredientesFragment extends Fragment implements Lista {	
 
 	private Button btAnadir;
 	private ListView lvIngredientes;
+	private boolean mDualPane;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_ingredientes);
+		View root = inflater.inflate(R.layout.fragment_lista_ingredientes,
+				container, false);
+		return root;
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
 		inicializar();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.local, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (MenuLocal.gestionMenu(item.getItemId(), this)) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == RESULT_OK) {
-			actualizarListaIngredientes();
-		}
-
+		super.onActivityCreated(savedInstanceState);
 	}
 
 	@Override
@@ -85,7 +65,7 @@ public class IngredientesActivity extends Activity {
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 
-		MenuInflater inflater = getMenuInflater();
+		MenuInflater inflater = getActivity().getMenuInflater();
 		inflater.inflate(R.menu.context_menu_ingrediente, menu);
 
 	}
@@ -112,10 +92,17 @@ public class IngredientesActivity extends Activity {
 
 	private void inicializar() {
 
-		btAnadir = (Button) findViewById(R.id.ingredientesBtAnadir);
-		lvIngredientes = (ListView) findViewById(R.id.ingredientesLvIngrediente);
+		btAnadir = (Button) getActivity().findViewById(
+				R.id.ingredientesBtAnadir);
+		lvIngredientes = (ListView) getActivity().findViewById(
+				R.id.ingredientesLvIngrediente);
 
-		actualizarListaIngredientes();
+		/* Se guarda si esta el fragmento de añadir */
+		View anadirFrame = getActivity().findViewById(R.id.anadirArticulosFl);
+		mDualPane = anadirFrame != null
+				&& anadirFrame.getVisibility() == View.VISIBLE;
+
+		actualizarLista();
 
 		btAnadir.setOnClickListener(new OnClickListener() {
 
@@ -129,31 +116,64 @@ public class IngredientesActivity extends Activity {
 
 	}
 
-	private void actualizarListaIngredientes() {
-		// Se obtienen los ingredientes
-		GestionIngrediente gi = new GestionIngrediente(this);
-		List<Ingrediente> ingredientes = gi.obtenerIngredientes();
-		gi.cerrarDatabase();
-
-		// Se genera el adaptador del listView
-		IngredienteAdapter ingredienteAdapter = new IngredienteAdapter(this,
-				R.layout.ingrediente_item, ingredientes);
-
-		lvIngredientes.setAdapter(ingredienteAdapter);
-	}
-
 	private void irAnadirIngrediente() {
-		Intent intent = new Intent(this,
-				AnadirModificarIngredienteActivity.class);
-		startActivityForResult(intent, REQUEST_CODE_ANADIR_INGREDIENTE);
+		if (mDualPane) {
+			AnadirModificarIngredienteFragment anadirFragment;
+
+			// Make new fragment to show this selection.
+			anadirFragment = new AnadirModificarIngredienteFragment();
+
+			// Execute a transaction, replacing any existing fragment
+			// with this one inside the frame.
+			FragmentTransaction ft = getFragmentManager().beginTransaction();
+			ft.replace(R.id.anadirArticulosFl, anadirFragment);
+			// ft.add(R.id.anadirTiposArticulosFl, anadirFragment);
+
+			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+			ft.commit();
+			// }
+
+		} else {
+
+			Intent intent = new Intent(getActivity(),
+					AnadirModificarIngredienteActivity.class);
+			startActivity(intent);
+		}
 	}
 
 	private void irModificarIngrediente(Ingrediente ingrediente) {
-		Intent intent = new Intent(this,
-				AnadirModificarIngredienteActivity.class);
-		intent.putExtra(AnadirModificarIngredienteActivity.EXTRA_INGREDIENTE,
-				ingrediente);
-		startActivityForResult(intent, REQUEST_CODE_MODIFICAR_INGREDIENTE);
+
+		if (mDualPane) {
+			AnadirModificarIngredienteFragment anadirFragment;
+
+			// Make new fragment to show this selection.
+			anadirFragment = new AnadirModificarIngredienteFragment();
+
+			Bundle args = new Bundle();
+			args.putParcelable(
+					AnadirModificarIngredienteActivity.EXTRA_INGREDIENTE,
+					ingrediente);
+			anadirFragment.setArguments(args);
+
+			// Execute a transaction, replacing any existing fragment
+			// with this one inside the frame.
+			FragmentTransaction ft = getFragmentManager().beginTransaction();
+			ft.replace(R.id.anadirArticulosFl, anadirFragment);
+			// ft.add(R.id.anadirTiposArticulosFl, anadirFragment);
+
+			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+			ft.commit();
+			// }
+
+		} else {
+
+			Intent intent = new Intent(getActivity(),
+					AnadirModificarIngredienteActivity.class);
+			intent.putExtra(
+					AnadirModificarIngredienteActivity.EXTRA_INGREDIENTE,
+					ingrediente);
+			startActivity(intent);
+		}
 	}
 
 	private JSONObject borrarIngrediente(int idIngrediente) {
@@ -176,7 +196,7 @@ public class IngredientesActivity extends Activity {
 			 */
 			respStr = EntityUtils.toString(resp.getEntity());
 			Log.d("res", respStr);
-			if (resp.getStatusLine().getStatusCode() == LoginActivity.CODE_LOGIN_OK) {				
+			if (resp.getStatusLine().getStatusCode() == LoginActivity.CODE_LOGIN_OK) {
 				respJSON = new JSONObject(respStr);
 			}
 
@@ -194,7 +214,8 @@ public class IngredientesActivity extends Activity {
 		@Override
 		protected void onPreExecute() {
 			Resources res = getResources();
-			progress = ProgressDialog.show(IngredientesActivity.this, "",
+			progress = ProgressDialog.show(
+					ListaIngredientesFragment.this.getActivity(), "",
 					res.getString(R.string.progress_dialog_pedido));
 			super.onPreExecute();
 		}
@@ -219,7 +240,7 @@ public class IngredientesActivity extends Activity {
 					if (operacionOk) {
 						// Se borra el ingrediente de la bbdd del movil.
 						GestionIngrediente gi = new GestionIngrediente(
-								IngredientesActivity.this);
+								getActivity());
 						gi.borrarIngrediente(this.idIngrediente);
 						gi.cerrarDatabase();
 					}
@@ -241,15 +262,36 @@ public class IngredientesActivity extends Activity {
 			progress.dismiss();
 
 			if (resultado != null) {
-				Toast.makeText(IngredientesActivity.this,
+				Toast.makeText(getActivity(),
 						resultado.getMensaje(), Toast.LENGTH_LONG).show();
 
 				if (resultado.getCodigo() == 1) {
-					actualizarListaIngredientes();
+					actualizarLista();
 				}
 			}
 
 		}
+	}
+
+	@Override
+	public void actualizarLista() {
+		// Se obtienen los ingredientes
+		GestionIngrediente gi = new GestionIngrediente(getActivity());
+		List<Ingrediente> ingredientes = gi.obtenerIngredientes();
+		gi.cerrarDatabase();
+
+		// Se genera el adaptador del listView
+		IngredienteAdapter ingredienteAdapter = new IngredienteAdapter(
+				getActivity(), R.layout.ingrediente_item, ingredientes);
+
+		lvIngredientes.setAdapter(ingredienteAdapter);
+
+	}
+
+	@Override
+	public void ocultarDetalle() {
+		// TODO Auto-generated method stub
+
 	}
 
 }

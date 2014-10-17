@@ -8,19 +8,18 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".TiposArticuloActivity" >
+    tools:context=".ListaIngredientesFragment" >
 
-    <fragment
-        android:id="@+id/listaTiposArticulosFr"
-        android:name="com.brymm.brymmapp.local.fragments.ListaTiposArticuloFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:layout_weight="1" />
+    <Button
+        android:id="@+id/ingredientesBtAnadir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ingredientes_anadir" />
 
-    <FrameLayout
-        android:id="@+id/anadirTiposArticulosFl"
+    <ListView
+        android:id="@+id/ingredientesLvIngrediente"
         android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:layout_weight="1" />
+        android:layout_height="wrap_content" >
+    </ListView>
 
 </LinearLayout>

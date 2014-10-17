@@ -32,7 +32,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
-public class AnadirArticuloPerComandaFragment extends Fragment implements AnadibleComanda{
+public class AnadirArticuloPerComandaFragment extends Fragment implements
+		AnadibleComanda {
 
 	private Spinner spTiposArticulo;
 
@@ -196,6 +197,8 @@ public class AnadirArticuloPerComandaFragment extends Fragment implements Anadib
 				precio += ((Ingrediente) check.getTag()).getPrecio();
 			}
 		}
+
+		precio += tipoArticuloLocal.getPrecio();
 		articulo = new Articulo(0, tipoArticuloLocal, "Articulo per",
 				"Articulo per", precio, false, ingredientes);
 		return articulo;
@@ -266,11 +269,11 @@ public class AnadirArticuloPerComandaFragment extends Fragment implements Anadib
 			List<DetalleComanda> detallesComanda = new ArrayList<DetalleComanda>();
 			this.comanda = null;
 
-			this.comanda = new Comanda(0, "", null, "", (float) 0, null, "", "",
-					detallesComanda);
+			this.comanda = new Comanda(0, "", null, "", (float) 0, null, "",
+					"", detallesComanda);
 
-		} 
-		
+		}
+
 	}
 
 }

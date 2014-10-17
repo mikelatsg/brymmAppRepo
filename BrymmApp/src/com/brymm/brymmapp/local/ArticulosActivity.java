@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.brymm.brymmapp.R;
 import com.brymm.brymmapp.local.fragments.ListaArticulosFragment;
+import com.brymm.brymmapp.local.fragments.ListaIngredientesFragment;
 import com.brymm.brymmapp.local.fragments.ListaTiposArticuloFragment;
 import com.brymm.brymmapp.local.interfaces.Lista;
 import com.brymm.brymmapp.menu.MenuLocal;
@@ -114,23 +115,21 @@ public class ArticulosActivity extends FragmentActivity {
 
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		// Se pasa el estado de las comandas a mostrar
-		Bundle args = new Bundle();
 		Fragment fragment = null;
 		switch (posicion) {
-		case 0:		
-			break;
-		case 1:
-			fragment = null;
-			fragment = new ListaTiposArticuloFragment();
+		case 0:					
+			fragment = new ListaIngredientesFragment();
 
-			fragment.setArguments(args);
+			fragmentManager.beginTransaction()
+					.replace(R.id.listaArticulosFl, fragment).commit();	
+			break;
+		case 1:			
+			fragment = new ListaTiposArticuloFragment();
 
 			fragmentManager.beginTransaction()
 					.replace(R.id.listaArticulosFl, fragment).commit();			
 			break;
 		case 2:
-
-			fragment = null;
 			fragment = new ListaArticulosFragment();
 			// Se guarda el estado			
 

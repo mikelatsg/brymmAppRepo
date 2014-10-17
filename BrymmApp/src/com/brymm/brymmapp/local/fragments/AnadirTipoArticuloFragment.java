@@ -17,6 +17,7 @@ import com.brymm.brymmapp.LoginActivity;
 import com.brymm.brymmapp.R;
 import com.brymm.brymmapp.local.bbdd.GestionTipoArticulo;
 import com.brymm.brymmapp.local.bbdd.GestionTipoArticuloLocal;
+import com.brymm.brymmapp.local.interfaces.Lista;
 import com.brymm.brymmapp.local.pojo.TipoArticulo;
 import com.brymm.brymmapp.local.pojo.TipoArticuloLocal;
 import com.brymm.brymmapp.util.Resultado;
@@ -24,6 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -33,21 +35,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.View.OnFocusChangeListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 public class AnadirTipoArticuloFragment extends Fragment {
@@ -98,7 +93,7 @@ public class AnadirTipoArticuloFragment extends Fragment {
 		 * vez)
 		 */
 		View listaFragment = getActivity().findViewById(
-				R.id.listaTiposArticulosFr);
+				R.id.listaArticulosFl);
 		mDualPane = listaFragment != null
 				&& listaFragment.getVisibility() == View.VISIBLE;
 
@@ -195,7 +190,7 @@ public class AnadirTipoArticuloFragment extends Fragment {
 		} else {
 			Intent intent = new Intent();
 			getActivity()
-					.setResult(getActivity().RESULT_CANCELED, intent);
+					.setResult(Activity.RESULT_CANCELED, intent);
 			getActivity().finish();
 		}
 	}
@@ -354,7 +349,7 @@ public class AnadirTipoArticuloFragment extends Fragment {
 				if (resultado.getCodigo() == 1) {
 					if (mDualPane) {
 						Fragment anadirFragment = getFragmentManager()
-								.findFragmentById(R.id.anadirTiposArticulosFl);
+								.findFragmentById(R.id.anadirArticulosFl);
 						// Se quita el fragment que contiene el formulario
 						FragmentTransaction ft = getFragmentManager()
 								.beginTransaction();
@@ -363,14 +358,14 @@ public class AnadirTipoArticuloFragment extends Fragment {
 						ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 						ft.commit();
 
-						ListaTiposArticuloFragment listaFragment = (ListaTiposArticuloFragment) getFragmentManager()
-								.findFragmentById(R.id.listaTiposArticulosFr);
+						Lista listaFragment = (Lista) getFragmentManager()
+								.findFragmentById(R.id.listaArticulosFl);
 
 						listaFragment.actualizarLista();
 					} else {
 						Intent intent = new Intent();
 						getActivity()
-								.setResult(getActivity().RESULT_OK, intent);
+								.setResult(Activity.RESULT_OK, intent);
 						getActivity().finish();
 					}
 

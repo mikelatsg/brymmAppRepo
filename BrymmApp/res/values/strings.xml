@@ -168,9 +168,7 @@
     <string name="menu_usuario_locales_favoritos">Locales favoritos</string>
     <string name="menu_usuario_ultimas_reservas">Ultimas reservas</string>
 
-    <!-- Menu local -->
-    <string name="menu_local_ingredientes">Ingredientes</string>
-    <string name="menu_local_tipos_articulo">Tipos articulo</string>
+    <!-- Menu local -->    
     <string name="menu_local_articulos">Articulos</string>
     <string name="menu_local_pedidos">Pedidos</string>
     <string name="menu_local_servicios">Servicios</string>
@@ -178,6 +176,7 @@
     <string name="menu_local_reservas">Reservas</string>
     <string name="menu_local_menus">Menus</string>
     <string name="menu_local_comandas">Comandas</string>
+    
 
     <!-- Menus contextuales -->
     <string name="context_menu_ingrediente_borrar">Borrar</string>
@@ -456,6 +455,7 @@
     <string name="crear_comanda_precio">Precio :</string>
     <string name="crear_comanda_mesa">Mesa</string>
     <string name="crear_comanda_nombre_de">A nombre de</string>
+    <string name="crear_comanda_err_camarero">Opción solo disponible para camareros.</string>
     
     <!-- Anadir articulo comanda -->
     <string name="title_activity_anadir_articulo_comanda">AnadirArticuloComandaActivity</string>
