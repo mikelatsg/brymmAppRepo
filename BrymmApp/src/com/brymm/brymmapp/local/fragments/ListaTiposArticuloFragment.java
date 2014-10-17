@@ -17,6 +17,7 @@ import com.brymm.brymmapp.local.IngredientesActivity;
 import com.brymm.brymmapp.local.adapters.TipoArticuloAdapter;
 import com.brymm.brymmapp.local.bbdd.GestionIngrediente;
 import com.brymm.brymmapp.local.bbdd.GestionTipoArticuloLocal;
+import com.brymm.brymmapp.local.interfaces.Lista;
 import com.brymm.brymmapp.local.pojo.TipoArticuloLocal;
 import com.brymm.brymmapp.util.Resultado;
 
@@ -43,7 +44,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
-public class ListaTiposArticuloFragment extends Fragment {
+public class ListaTiposArticuloFragment extends Fragment implements Lista{
 
 	private ListView lvTiposArticulo;
 
@@ -104,7 +105,7 @@ public class ListaTiposArticuloFragment extends Fragment {
 
 		/* Se guarda si esta el fragmento de añadir */
 		View anadirFrame = getActivity().findViewById(
-				R.id.anadirTiposArticulosFl);
+				R.id.anadirArticulosFl);
 		mDualPane = anadirFrame != null
 				&& anadirFrame.getVisibility() == View.VISIBLE;
 
@@ -122,7 +123,7 @@ public class ListaTiposArticuloFragment extends Fragment {
 
 	}
 
-	protected void actualizarLista() {
+	public void actualizarLista() {
 		List<TipoArticuloLocal> tiposArticulo = new ArrayList<TipoArticuloLocal>();
 		GestionTipoArticuloLocal gtal = new GestionTipoArticuloLocal(
 				getActivity());
@@ -151,7 +152,7 @@ public class ListaTiposArticuloFragment extends Fragment {
 			// Execute a transaction, replacing any existing fragment
 			// with this one inside the frame.
 			FragmentTransaction ft = getFragmentManager().beginTransaction();
-			ft.replace(R.id.anadirTiposArticulosFl, anadirFragment);
+			ft.replace(R.id.anadirArticulosFl, anadirFragment);
 			// ft.add(R.id.anadirTiposArticulosFl, anadirFragment);
 
 			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -293,6 +294,30 @@ public class ListaTiposArticuloFragment extends Fragment {
 			}
 
 		}
+	}
+
+	@Override
+	public void ocultarDetalle() {
+		if (mDualPane) {
+			Fragment anadirFragment;
+
+			// Make new fragment to show this selection.
+			anadirFragment = (Fragment) getFragmentManager()
+					.findFragmentById(R.id.anadirArticulosFl);
+
+			// Execute a transaction, replacing any existing fragment
+			// with this one inside the frame.
+			if (anadirFragment != null) {
+
+				FragmentTransaction ft = getFragmentManager()
+						.beginTransaction();
+				ft.remove(anadirFragment);
+
+				ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+				ft.commit();
+			}
+		}
+		
 	}
 
 }

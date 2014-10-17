@@ -20,6 +20,12 @@
         <item>Cerradas#C</item>
         <item>Nueva comanda#N</item>        
     </string-array>
+    
+    <string-array name="articulosArray">
+        <item>Ingredientes#0</item>
+        <item>Tipos articulo#1</item>
+        <item>Articulos#2</item>        
+    </string-array>
 
     <!-- Array horarios -->
     <string-array name="horariosArray">

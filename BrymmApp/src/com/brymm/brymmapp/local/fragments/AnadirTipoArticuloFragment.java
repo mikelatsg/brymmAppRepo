@@ -180,7 +180,7 @@ public class AnadirTipoArticuloFragment extends Fragment {
 	private void cerrarFormulario(){
 		if (mDualPane) {
 			Fragment anadirFragment = getFragmentManager()
-					.findFragmentById(R.id.anadirTiposArticulosFl);
+					.findFragmentById(R.id.anadirArticulosFl);
 			// Se quita el fragment que contiene el formulario
 			FragmentTransaction ft = getFragmentManager()
 					.beginTransaction();
@@ -189,8 +189,8 @@ public class AnadirTipoArticuloFragment extends Fragment {
 			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 			ft.commit();
 
-			ListaTiposArticuloFragment listaFragment = (ListaTiposArticuloFragment) getFragmentManager()
-					.findFragmentById(R.id.listaTiposArticulosFr);
+			/*ListaTiposArticuloFragment listaFragment = (ListaTiposArticuloFragment) getFragmentManager()
+					.findFragmentById(R.id.listaArticulosFl);*/
 
 		} else {
 			Intent intent = new Intent();

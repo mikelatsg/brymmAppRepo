@@ -21,8 +21,8 @@ import com.brymm.brymmapp.local.adapters.DetalleComandaAdapter;
 import com.brymm.brymmapp.local.bbdd.GestionArticulo;
 import com.brymm.brymmapp.local.bbdd.GestionComanda;
 import com.brymm.brymmapp.local.bbdd.GestionMesa;
+import com.brymm.brymmapp.local.interfaces.AnadibleComanda;
 import com.brymm.brymmapp.local.interfaces.ListaEstado;
-import com.brymm.brymmapp.local.pojo.Articulo;
 import com.brymm.brymmapp.local.pojo.Comanda;
 import com.brymm.brymmapp.local.pojo.DetalleComanda;
 import com.brymm.brymmapp.local.pojo.Mesa;
@@ -31,7 +31,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -74,13 +73,21 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 
 		@Override
 		public void onClick(View v) {
-			//Compruebo si hay algo antes de enviar
-			if (comanda.getPrecio() > 0){
+			// Compruebo si hay algo antes de enviar
+			if (comanda.getPrecio() > 0) {
 				asignarDatosComanda();
 				CrearComanda cc = new CrearComanda();
 				cc.execute();
 			}
-			
+
+		}
+	};
+
+	private OnClickListener oclCancelarComanda = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			inicializarComanda();
 		}
 	};
 
@@ -91,7 +98,7 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 			mostrarAnadirArticulo();
 		}
 	};
-	
+
 	private OnClickListener oclMostrarAnadirArticuloPer = new OnClickListener() {
 
 		@Override
@@ -107,7 +114,7 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 			mostrarAnadirMenu();
 		}
 	};
-	
+
 	private OnClickListener oclRadio = new OnClickListener() {
 
 		@Override
@@ -130,12 +137,30 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 		super.onActivityCreated(savedInstanceState);
 	}
 
-	private void inicializar() {
-
+	private void inicializarComanda() {
 		List<DetalleComanda> detallesComanda = new ArrayList<DetalleComanda>();
+		this.comanda = null;
 
 		this.comanda = new Comanda(0, "", null, "", (float) 0, null, "", "",
 				detallesComanda);
+
+		// Vacio el detalle
+		if (mDualPane) {
+			AnadibleComanda detalleFragment;
+
+			detalleFragment = (AnadibleComanda) getFragmentManager()
+					.findFragmentById(R.id.detalleComandaFl);
+			
+			if (detalleFragment != null) {
+				detalleFragment.vaciarDetalle();
+			}
+		}
+
+		actualizarComanda();
+
+	}
+
+	private void inicializar() {
 
 		btEnviar = (Button) getActivity().findViewById(
 				R.id.crearComandaBtEnviarComanda);
@@ -173,9 +198,10 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 		 * Se guarda si esta en modo dual (con la lista y el formulario a la
 		 * vez)
 		 */
-		View listaFragment = getActivity().findViewById(R.id.listaComandasFl);
-		mDualPane = listaFragment != null
-				&& listaFragment.getVisibility() == View.VISIBLE;
+		View detalleFragment = getActivity()
+				.findViewById(R.id.detalleComandaFl);
+		mDualPane = detalleFragment != null
+				&& detalleFragment.getVisibility() == View.VISIBLE;
 
 		List<Mesa> mesas = new ArrayList<Mesa>();
 
@@ -190,49 +216,54 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 
 		// Se envian los datos al servidor cuando se hace click en enviar
 		btEnviar.setOnClickListener(oclEnviarComanda);
+		btCancelar.setOnClickListener(oclCancelarComanda);
 
 		rbMesa.setOnClickListener(oclRadio);
 		rbNombreDe.setOnClickListener(oclRadio);
 
 		rbMesa.setChecked(true);
-		cambioRadioButton();
 
 		btAnadirArticulo.setOnClickListener(oclMostrarAnadirArticulo);
 		btAnadirArticuloPer.setOnClickListener(oclMostrarAnadirArticuloPer);
 		btAnadirMenu.setOnClickListener(oclMostrarAnadirMenu);
 
+		inicializarComanda();
+		cambioRadioButton();
+
 	}
 
-	private void asignarDatosComanda(){
-		//Compruebo si es para una mesa o un destino
-		if (rbMesa.isChecked()){
-			int idMesa = ((Mesa)spMesas.getSelectedItem()).getIdMesa();
+	private void asignarDatosComanda() {
+		// Compruebo si es para una mesa o un destino
+		if (rbMesa.isChecked()) {
+			int idMesa = ((Mesa) spMesas.getSelectedItem()).getIdMesa();
 			GestionMesa gm = new GestionMesa(getActivity());
 			Mesa mesa = gm.obtenerMesa(idMesa);
 			gm.cerrarDatabase();
-			
+
 			this.comanda.setMesa(mesa);
 		}
-		
-		if (rbNombreDe.isChecked()){
+
+		if (rbNombreDe.isChecked()) {
 			this.comanda.setDestino(etNombreDe.getText().toString());
 		}
+		
+		this.comanda.setObservaciones(etObservaciones.getText().toString());
 	}
-	
+
 	public void actualizarComanda() {
 		tvPrecio.setText(Float.toString(this.comanda.getPrecio()));
 		// Marco si es mesa o envio.
-		rbMesa.setChecked(true);
+		/*rbMesa.setChecked(true);
 		if (this.comanda.getMesa() == null) {
 			rbNombreDe.setChecked(true);
-		}
+		}*/
 		List<DetalleComanda> detallesComanda = this.comanda
 				.getDetallesComanda();
 		if (detallesComanda != null) {
 			DetalleComandaAdapter detalleComandaAdapter = new DetalleComandaAdapter(
 					getActivity(), R.layout.detalle_comanda_articulo_item,
 					detallesComanda);
-			
+
 			lvDetalles.setAdapter(detalleComandaAdapter);
 		}
 	}
@@ -253,8 +284,8 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 			Fragment detalleFragment;
 
 			// Make new fragment to show this selection.
-			detalleFragment = (Fragment) getFragmentManager()
-					.findFragmentById(R.id.detalleComandaFl);
+			detalleFragment = (Fragment) getFragmentManager().findFragmentById(
+					R.id.detalleComandaFl);
 
 			// Execute a transaction, replacing any existing fragment
 			// with this one inside the frame.
@@ -314,7 +345,7 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 		}
 
 	}
-	
+
 	private void mostrarAnadirArticuloPer() {
 		if (mDualPane) {
 			AnadirArticuloPerComandaFragment anadirFragment;
@@ -343,7 +374,7 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 		}
 
 	}
-	
+
 	private void mostrarAnadirMenu() {
 		if (mDualPane) {
 			AnadirMenuComandaFragment anadirFragment;
@@ -387,23 +418,23 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 			HttpClient httpclient = new DefaultHttpClient();
 
 			// 2. make POST request to the given URL
-			HttpPost httpPost = new HttpPost(url);			
+			HttpPost httpPost = new HttpPost(url);
 
 			Gson gson = new Gson();
-			
+
 			JsonElement jsonElementComanda = gson.toJsonTree(this.comanda);
-						
+
 			JsonObject jsonObject = new JsonObject();
-			
+
 			jsonObject.add(GestionComanda.JSON_COMANDA, jsonElementComanda);
 			jsonObject.addProperty(GestionArticulo.JSON_ID_LOCAL,
-					LoginActivity.getLocal(getActivity()));						
-			
+					LoginActivity.getLocal(getActivity()));
+
 			// 5. set json to StringEntity
-			StringEntity se = new StringEntity(jsonObject.toString(),"UTF8");
-			
+			StringEntity se = new StringEntity(jsonObject.toString(), "UTF8");
+
 			// 6. set httpPost Entity
-			httpPost.setEntity(se);						
+			httpPost.setEntity(se);
 
 			// 7. Set some headers to inform server about the type of the
 			// content
@@ -452,7 +483,7 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 						: true;
 
 				mensaje = respJSON.getString(Resultado.JSON_MENSAJE);
-				Log.d("mensaje",mensaje);
+				Log.d("mensaje", mensaje);
 
 				if (operacionOk) {
 					// Si la operacion ha ido ok se guarda en la bbdd del movil
@@ -487,25 +518,24 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 
 				if (resultado.getCodigo() == 1) {
 					if (mDualPane) {
-						Fragment anadirFragment = getFragmentManager()
-								.findFragmentById(R.id.anadirArticulosFl);
-						// Se quita el fragment que contiene el formulario
-						FragmentTransaction ft = getFragmentManager()
-								.beginTransaction();
-						ft.remove(anadirFragment);
+						/*
+						 * Fragment anadirFragment = getFragmentManager()
+						 * .findFragmentById(R.id.anadirArticulosFl); // Se
+						 * quita el fragment que contiene el formulario
+						 * FragmentTransaction ft = getFragmentManager()
+						 * .beginTransaction(); ft.remove(anadirFragment);
+						 * 
+						 * ft.setTransition(FragmentTransaction.
+						 * TRANSIT_FRAGMENT_FADE); ft.commit();
+						 */
 
-						ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-						ft.commit();
-
-						ListaArticulosFragment listaFragment = (ListaArticulosFragment) getFragmentManager()
-								.findFragmentById(R.id.listaArticulosFr);
-
-						listaFragment.actualizarLista();
-					} else {
-						Intent intent = new Intent();
-						getActivity().setResult(Activity.RESULT_OK, intent);
-						getActivity().finish();
-					}
+						inicializarComanda();
+						actualizarComanda();
+					} /*
+					 * else { Intent intent = new Intent();
+					 * getActivity().setResult(Activity.RESULT_OK, intent);
+					 * getActivity().finish(); }
+					 */
 
 				}
 			}

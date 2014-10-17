@@ -12,6 +12,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class GestionTipoArticuloLocal {
 
@@ -98,6 +99,8 @@ public class GestionTipoArticuloLocal {
 				+ " WHERE ta." + LocalSQLite.COLUMN_TA_ID_TIPO_ARTICULO
 				+ " = tal." + LocalSQLite.COLUMN_TAL_ID_TIPO_ARTICULO
 				+ " ORDER BY ta." + LocalSQLite.COLUMN_TAL_ID_TIPO_ARTICULO;
+		Log.d("con",sql);
+		
 		if (!database.isOpen()) {
 			database = openHelper.getWritableDatabase();
 		}
@@ -107,7 +110,7 @@ public class GestionTipoArticuloLocal {
 
 			TipoArticuloLocal tipoArticuloLocal = obtenerTipoArticuloLocal(cursor
 					.getInt(cursor
-							.getColumnIndex(LocalSQLite.COLUMN_TAL_ID_TIPO_ARTICULO)));
+							.getColumnIndex(LocalSQLite.COLUMN_TAL_ID_TIPO_ARTICULO_LOCAL)));
 
 			tiposArticuloLocal.add(tipoArticuloLocal);
 		}

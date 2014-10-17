@@ -7,6 +7,7 @@ import com.brymm.brymmapp.R;
 import com.brymm.brymmapp.local.bbdd.GestionIngrediente;
 import com.brymm.brymmapp.local.bbdd.GestionTipoArticuloLocal;
 import com.brymm.brymmapp.local.bbdd.GestionTipoComanda;
+import com.brymm.brymmapp.local.interfaces.AnadibleComanda;
 import com.brymm.brymmapp.local.pojo.Articulo;
 import com.brymm.brymmapp.local.pojo.ArticuloCantidad;
 import com.brymm.brymmapp.local.pojo.Comanda;
@@ -31,7 +32,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
-public class AnadirArticuloPerComandaFragment extends Fragment {
+public class AnadirArticuloPerComandaFragment extends Fragment implements AnadibleComanda{
 
 	private Spinner spTiposArticulo;
 
@@ -257,6 +258,19 @@ public class AnadirArticuloPerComandaFragment extends Fragment {
 			getActivity().finish();
 
 		}
+	}
+
+	@Override
+	public void vaciarDetalle() {
+		if (mDualPane) {
+			List<DetalleComanda> detallesComanda = new ArrayList<DetalleComanda>();
+			this.comanda = null;
+
+			this.comanda = new Comanda(0, "", null, "", (float) 0, null, "", "",
+					detallesComanda);
+
+		} 
+		
 	}
 
 }

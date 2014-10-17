@@ -178,7 +178,13 @@ public class DetalleComandaFragment extends Fragment implements Detalle {
 		tvIdComanda.setText(Integer.toString(this.comanda.getIdComanda()));
 		tvCamarero.setText(this.comanda.getCamarero().getNombre());
 		tvObservaciones.setText(this.comanda.getObservaciones());
-		tvMesa.setText(this.comanda.getMesa().getNombre());
+		
+		//Compruebo si la mesa es nula
+		if (this.comanda.getMesa() != null) {
+			tvMesa.setText(this.comanda.getMesa().getNombre());
+		}else{
+			tvMesa.setText("");
+		}
 		tvEstado.setText(this.comanda.getEstado());
 		tvPrecio.setText(Float.toString(this.comanda.getPrecio()));
 

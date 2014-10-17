@@ -12,7 +12,6 @@ import com.brymm.brymmapp.local.HomeLocalActivity;
 import com.brymm.brymmapp.servicios.ServicioDatosLocal;
 import com.brymm.brymmapp.servicios.ServicioDatosUsuario;
 import com.brymm.brymmapp.usuario.BuscadorLocalesActivity;
-import com.brymm.brymmapp.usuario.HomeUsuarioActivity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,7 +23,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;

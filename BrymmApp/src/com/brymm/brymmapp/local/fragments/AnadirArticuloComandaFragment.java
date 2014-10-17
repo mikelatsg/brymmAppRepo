@@ -19,6 +19,7 @@ import com.brymm.brymmapp.local.adapters.ArticuloComandaAdapter;
 import com.brymm.brymmapp.local.bbdd.GestionArticulo;
 import com.brymm.brymmapp.local.bbdd.GestionComanda;
 import com.brymm.brymmapp.local.bbdd.GestionTipoComanda;
+import com.brymm.brymmapp.local.interfaces.AnadibleComanda;
 import com.brymm.brymmapp.local.pojo.Articulo;
 import com.brymm.brymmapp.local.pojo.ArticuloCantidad;
 import com.brymm.brymmapp.local.pojo.Comanda;
@@ -55,7 +56,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class AnadirArticuloComandaFragment extends Fragment {
+public class AnadirArticuloComandaFragment extends Fragment implements AnadibleComanda {
 
 	private ListView lvArticulos;
 
@@ -233,6 +234,19 @@ public class AnadirArticuloComandaFragment extends Fragment {
 			getActivity().finish();
 
 		}
+	}
+
+	@Override
+	public void vaciarDetalle() {
+		if (mDualPane) {
+			List<DetalleComanda> detallesComanda = new ArrayList<DetalleComanda>();
+			this.comanda = null;
+
+			this.comanda = new Comanda(0, "", null, "", (float) 0, null, "", "",
+					detallesComanda);
+
+		} 
+		
 	}
 
 }

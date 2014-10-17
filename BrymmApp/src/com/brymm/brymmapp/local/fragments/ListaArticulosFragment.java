@@ -16,6 +16,7 @@ import com.brymm.brymmapp.local.AnadirArticuloLocalActivity;
 import com.brymm.brymmapp.local.AnadirTipoArticuloActivity;
 import com.brymm.brymmapp.local.adapters.ArticuloAdapter;
 import com.brymm.brymmapp.local.bbdd.GestionArticulo;
+import com.brymm.brymmapp.local.interfaces.Lista;
 import com.brymm.brymmapp.local.pojo.Articulo;
 import com.brymm.brymmapp.util.Resultado;
 
@@ -40,7 +41,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
-public class ListaArticulosFragment extends Fragment {
+public class ListaArticulosFragment extends Fragment implements Lista{
 
 	private ListView lvArticulos;
 
@@ -282,6 +283,30 @@ public class ListaArticulosFragment extends Fragment {
 			}
 
 		}
+	}
+
+	@Override
+	public void ocultarDetalle() {
+		if (mDualPane) {
+			Fragment anadirFragment;
+
+			// Make new fragment to show this selection.
+			anadirFragment = (Fragment) getFragmentManager()
+					.findFragmentById(R.id.anadirArticulosFl);
+
+			// Execute a transaction, replacing any existing fragment
+			// with this one inside the frame.
+			if (anadirFragment != null) {
+
+				FragmentTransaction ft = getFragmentManager()
+						.beginTransaction();
+				ft.remove(anadirFragment);
+
+				ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+				ft.commit();
+			}
+		}
+		
 	}
 
 }

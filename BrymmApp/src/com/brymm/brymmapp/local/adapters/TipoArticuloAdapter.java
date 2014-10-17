@@ -58,9 +58,9 @@ public class TipoArticuloAdapter extends ArrayAdapter<TipoArticuloLocal> {
 		Resources res = context.getResources();
 
 		TipoArticuloLocal tipoArticulo = tiposArticulo.get(position);
-
-		tvTipoArticulo.setText(tipoArticulo.getTipoArticulo());
+		
 		tvPrecio.setText(Float.toString(tipoArticulo.getPrecio()));
+		tvTipoArticulo.setText(tipoArticulo.getTipoArticulo());
 
 		cbPersonalizar.setChecked(false);
 		if (tipoArticulo.isPersonalizar()) {

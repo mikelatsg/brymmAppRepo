@@ -12,6 +12,7 @@ import com.brymm.brymmapp.local.bbdd.GestionMenu;
 import com.brymm.brymmapp.local.bbdd.GestionMenuDia;
 import com.brymm.brymmapp.local.bbdd.GestionTipoArticuloLocal;
 import com.brymm.brymmapp.local.bbdd.GestionTipoComanda;
+import com.brymm.brymmapp.local.interfaces.AnadibleComanda;
 import com.brymm.brymmapp.local.pojo.Articulo;
 import com.brymm.brymmapp.local.pojo.ArticuloCantidad;
 import com.brymm.brymmapp.local.pojo.Comanda;
@@ -44,7 +45,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class AnadirMenuComandaFragment extends Fragment {
+public class AnadirMenuComandaFragment extends Fragment implements AnadibleComanda {
 
 	private Spinner spMenus;
 
@@ -298,6 +299,19 @@ public class AnadirMenuComandaFragment extends Fragment {
 			getActivity().finish();
 
 		}
+	}
+
+	@Override
+	public void vaciarDetalle() {
+		if (mDualPane) {
+			List<DetalleComanda> detallesComanda = new ArrayList<DetalleComanda>();
+			this.comanda = null;
+
+			this.comanda = new Comanda(0, "", null, "", (float) 0, null, "", "",
+					detallesComanda);
+
+		} 
+		
 	}
 
 }

@@ -153,7 +153,7 @@ public class ComandasActivity extends FragmentActivity {
 			break;
 		}
 		
-		ListaEstado listaFragment = (ListaComandasFragment) getSupportFragmentManager()
+		ListaEstado listaFragment = (ListaEstado) getSupportFragmentManager()
 				.findFragmentById(R.id.listaComandasFl);
 
 		listaFragment.ocultarDetalle();

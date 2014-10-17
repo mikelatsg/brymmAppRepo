@@ -101,7 +101,7 @@ public class AnadirArticuloFragment extends Fragment {
 		 * Se guarda si esta en modo dual (con la lista y el formulario a la
 		 * vez)
 		 */
-		View listaFragment = getActivity().findViewById(R.id.listaArticulosFr);
+		View listaFragment = getActivity().findViewById(R.id.listaArticulosFl);
 		mDualPane = listaFragment != null
 				&& listaFragment.getVisibility() == View.VISIBLE;
 
@@ -403,7 +403,7 @@ public class AnadirArticuloFragment extends Fragment {
 						ft.commit();
 
 						ListaArticulosFragment listaFragment = (ListaArticulosFragment) getFragmentManager()
-								.findFragmentById(R.id.listaArticulosFr);
+								.findFragmentById(R.id.listaArticulosFl);
 
 						listaFragment.actualizarLista();
 					} else {
