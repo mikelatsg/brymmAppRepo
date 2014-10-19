@@ -14,17 +14,15 @@
         <item>Rechazado#R</item>
         <item>Terminado#T</item>
     </string-array>
-    
     <string-array name="estadoComandaArray">
         <item>Activas#A</item>
         <item>Cerradas#C</item>
-        <item>Nueva comanda#N</item>        
+        <item>Nueva comanda#N</item>
     </string-array>
-    
     <string-array name="articulosArray">
         <item>Ingredientes#0</item>
         <item>Tipos articulo#1</item>
-        <item>Articulos#2</item>        
+        <item>Articulos#2</item>
     </string-array>
 
     <!-- Array horarios -->
@@ -168,7 +166,7 @@
     <string name="menu_usuario_locales_favoritos">Locales favoritos</string>
     <string name="menu_usuario_ultimas_reservas">Ultimas reservas</string>
 
-    <!-- Menu local -->    
+    <!-- Menu local -->
     <string name="menu_local_articulos">Articulos</string>
     <string name="menu_local_pedidos">Pedidos</string>
     <string name="menu_local_servicios">Servicios</string>
@@ -176,7 +174,6 @@
     <string name="menu_local_reservas">Reservas</string>
     <string name="menu_local_menus">Menus</string>
     <string name="menu_local_comandas">Comandas</string>
-    
 
     <!-- Menus contextuales -->
     <string name="context_menu_ingrediente_borrar">Borrar</string>
@@ -422,10 +419,10 @@
     <string name="detalle_menu_dia_cancelar">Cancelar</string>
     <string name="lista_menu_dia_anadir">Añadir menu al dia</string>
     <string name="title_activity_detalle_menu_dia">DetalleMenuDiaActivity</string>
-    
-    <!--############### Comandas ################ -->
+
+    <!-- ############### Comandas ################ -->
     <string name="title_activity_comandas">ComandasActivity</string>
-    
+
     <!-- Comanda adapter -->
     <string name="item_comanda_comanda">Comanda :</string>
     <string name="item_comanda_camarero">Camarero :</string>
@@ -439,13 +436,13 @@
     <string name="detalle_comanda_cancelar_comanda">Cancelar</string>
     <string name="detalle_comanda_terminar">Terminar</string>
     <string name="detalle_comanda_cerrar">Cerrar</string>
-    
-    <!--Detalle comanda articulo adapter -->    
+
+    <!-- Detalle comanda articulo adapter -->
     <string name="item_detalle_comanda_articulo_precio_unidad">Precio unidad:</string>
     <string name="item_detalle_comanda_articulo_precio_total">Precio total:</string>
     <string name="item_detalle_comanda_articulo_cantidad">Cantidad :</string>
-    
-    <!--Crear comandas -->    
+
+    <!-- Crear comandas -->
     <string name="crear_comanda_enviar_comanda">Enviar comanda</string>
     <string name="crear_comanda_anadir_articulo">Añadir articulo</string>
     <string name="crear_comanda_anadir_articulo_per">Añadir articulo Personalizado</string>
@@ -456,19 +453,20 @@
     <string name="crear_comanda_mesa">Mesa</string>
     <string name="crear_comanda_nombre_de">A nombre de</string>
     <string name="crear_comanda_err_camarero">Opción solo disponible para camareros.</string>
-    
+
     <!-- Anadir articulo comanda -->
     <string name="title_activity_anadir_articulo_comanda">AnadirArticuloComandaActivity</string>
     <string name="anadir_articulo_comanda_cerrar">Cerrar</string>
-    
+
     <!-- Anadir articulo personalizado comanda -->
     <string name="title_activity_anadir_articulo_per_comanda">AnadirArticuloPerComandaActivity</string>
     <string name="anadir_articulo_per_comanda_cerrar">Cerrar</string>
     <string name="anadir_articulo_per_comanda_anadir">Anadir</string>
-    
+    <string name="anadir_articulo_per_comanda_no_ingrediente_sel">No has selleccionado ningún ingrediente</string>
+
     <!-- Anadir menu comanda -->
     <string name="title_activity_anadir_menu_comanda">AnadirMenuComandaActivity</string>
     <string name="anadir_menu_comanda_cerrar">Cerrar</string>
     <string name="anadir_menu_comanda_anadir">Anadir</string>
-    
+
 </resources>

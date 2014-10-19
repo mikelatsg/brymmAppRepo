@@ -759,6 +759,7 @@ public final class R {
         public static final int anadir_articulo_local_valido_pedidos=0x7f0600a2;
         public static final int anadir_articulo_per_comanda_anadir=0x7f06012d;
         public static final int anadir_articulo_per_comanda_cerrar=0x7f06012c;
+        public static final int anadir_articulo_per_comanda_no_ingrediente_sel=0x7f06012e;
         public static final int anadir_articulo_personalizado_aceptar=0x7f06003b;
         public static final int anadir_articulo_personalizado_articulo_personalizado=0x7f06003e;
         public static final int anadir_articulo_personalizado_cancelar=0x7f06003c;
@@ -786,8 +787,8 @@ public final class R {
         public static final int anadir_horario_pedido_hora_inicio=0x7f0600d0;
         public static final int anadir_menu_aceptar=0x7f060108;
         public static final int anadir_menu_cancelar=0x7f060109;
-        public static final int anadir_menu_comanda_anadir=0x7f060130;
-        public static final int anadir_menu_comanda_cerrar=0x7f06012f;
+        public static final int anadir_menu_comanda_anadir=0x7f060131;
+        public static final int anadir_menu_comanda_cerrar=0x7f060130;
         public static final int anadir_menu_nombre=0x7f060107;
         public static final int anadir_menu_precio=0x7f060106;
         public static final int anadir_mesa_aceptar=0x7f0600e1;
@@ -864,7 +865,7 @@ public final class R {
         public static final int crear_comanda_anadir_articulo_per=0x7f060121;
         public static final int crear_comanda_anadir_menu=0x7f060122;
         public static final int crear_comanda_cancelar_comanda=0x7f060123;
-        /** Crear comandas 
+        /**  Crear comandas 
          */
         public static final int crear_comanda_enviar_comanda=0x7f06011f;
         public static final int crear_comanda_err_camarero=0x7f060128;
@@ -947,7 +948,7 @@ public final class R {
         public static final int item_comanda_terminar=0x7f060118;
         public static final int item_detalle_comanda_articulo_cantidad=0x7f06011e;
         public static final int item_detalle_comanda_articulo_precio_total=0x7f06011d;
-        /** Detalle comanda articulo adapter 
+        /**  Detalle comanda articulo adapter 
          */
         public static final int item_detalle_comanda_articulo_precio_unidad=0x7f06011c;
         public static final int item_horario_local_hora_fin=0x7f0600cd;
@@ -1096,7 +1097,7 @@ public final class R {
         public static final int title_activity_anadir_menu=0x7f06010a;
         /**  Anadir menu comanda 
          */
-        public static final int title_activity_anadir_menu_comanda=0x7f06012e;
+        public static final int title_activity_anadir_menu_comanda=0x7f06012f;
         public static final int title_activity_anadir_mesa=0x7f0600de;
         /**  Anadir ingrediente 
          */
@@ -1108,7 +1109,7 @@ public final class R {
          */
         public static final int title_activity_articulos=0x7f060097;
         public static final int title_activity_buscador_locales=0x7f060014;
-        /** ############### Comandas ################ 
+        /**  ############### Comandas ################ 
          */
         public static final int title_activity_comandas=0x7f060111;
         public static final int title_activity_detalle_menu_dia=0x7f060110;

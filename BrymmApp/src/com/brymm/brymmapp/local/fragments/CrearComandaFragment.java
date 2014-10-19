@@ -19,10 +19,12 @@ import com.brymm.brymmapp.local.AnadirArticuloComandaActivity;
 import com.brymm.brymmapp.local.AnadirArticuloPerComandaActivity;
 import com.brymm.brymmapp.local.adapters.DetalleComandaAdapter;
 import com.brymm.brymmapp.local.bbdd.GestionArticulo;
+import com.brymm.brymmapp.local.bbdd.GestionCamarero;
 import com.brymm.brymmapp.local.bbdd.GestionComanda;
 import com.brymm.brymmapp.local.bbdd.GestionMesa;
 import com.brymm.brymmapp.local.interfaces.AnadibleComanda;
 import com.brymm.brymmapp.local.interfaces.ListaEstado;
+import com.brymm.brymmapp.local.pojo.Camarero;
 import com.brymm.brymmapp.local.pojo.Comanda;
 import com.brymm.brymmapp.local.pojo.DetalleComanda;
 import com.brymm.brymmapp.local.pojo.Mesa;
@@ -141,7 +143,13 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 		List<DetalleComanda> detallesComanda = new ArrayList<DetalleComanda>();
 		this.comanda = null;
 
-		this.comanda = new Comanda(0, "", null, "", (float) 0, null, "", "",
+		// Se obtiene el camarero
+		GestionCamarero gestionCamarero = new GestionCamarero(getActivity());
+		Camarero camarero = gestionCamarero.obtenerCamarero(LoginActivity
+				.getCamarero(getActivity()));
+		gestionCamarero.cerrarDatabase();
+
+		this.comanda = new Comanda(0, "", camarero, "", (float) 0, null, "", "",
 				detallesComanda);
 
 		// Vacio el detalle
@@ -150,7 +158,7 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 
 			detalleFragment = (AnadibleComanda) getFragmentManager()
 					.findFragmentById(R.id.detalleComandaFl);
-			
+
 			if (detalleFragment != null) {
 				detalleFragment.vaciarDetalle();
 			}
@@ -246,17 +254,17 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 		if (rbNombreDe.isChecked()) {
 			this.comanda.setDestino(etNombreDe.getText().toString());
 		}
-		
+
 		this.comanda.setObservaciones(etObservaciones.getText().toString());
 	}
 
 	public void actualizarComanda() {
 		tvPrecio.setText(Float.toString(this.comanda.getPrecio()));
 		// Marco si es mesa o envio.
-		/*rbMesa.setChecked(true);
-		if (this.comanda.getMesa() == null) {
-			rbNombreDe.setChecked(true);
-		}*/
+		/*
+		 * rbMesa.setChecked(true); if (this.comanda.getMesa() == null) {
+		 * rbNombreDe.setChecked(true); }
+		 */
 		List<DetalleComanda> detallesComanda = this.comanda
 				.getDetallesComanda();
 		if (detallesComanda != null) {

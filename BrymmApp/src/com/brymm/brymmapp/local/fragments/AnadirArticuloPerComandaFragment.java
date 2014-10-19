@@ -19,6 +19,7 @@ import com.brymm.brymmapp.local.pojo.TipoComanda;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class AnadirArticuloPerComandaFragment extends Fragment implements
 		AnadibleComanda {
@@ -46,7 +48,23 @@ public class AnadirArticuloPerComandaFragment extends Fragment implements
 
 		@Override
 		public void onClick(View v) {
-			dialogoCantidad();
+
+			// Se comprueba si ha seleccionado algún ingrediente
+			boolean algunIngredienteSeleccionado = false;
+			for (CheckBox check : checks) {
+				if (check.isChecked()) {
+					algunIngredienteSeleccionado = true;
+				}
+			}
+			if (algunIngredienteSeleccionado) {
+				dialogoCantidad();
+			} else {
+				Resources res = getActivity().getResources();
+				Toast.makeText(
+						getActivity(),
+						R.string.anadir_articulo_per_comanda_no_ingrediente_sel,
+						Toast.LENGTH_LONG).show();
+			}
 
 		}
 	};
