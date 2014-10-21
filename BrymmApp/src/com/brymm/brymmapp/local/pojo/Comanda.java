@@ -103,6 +103,18 @@ public class Comanda implements Parcelable {
 	public void setDetallesComanda(List<DetalleComanda> detallesComanda) {
 		this.detallesComanda = detallesComanda;
 	}
+	
+	public String toString(){
+		String text = "";
+		text += Integer.toString(this.idComanda);
+		text +=  " - ";
+		if (this.mesa != null){
+			text += this.mesa.getNombre();
+		}else{
+			text += this.destino;
+		}
+		return text;
+	}
 
 	@Override
 	public int describeContents() {

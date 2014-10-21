@@ -6,9 +6,11 @@ import java.util.List;
 import com.brymm.brymmapp.LoginActivity;
 import com.brymm.brymmapp.R;
 import com.brymm.brymmapp.local.bbdd.GestionComanda;
+import com.brymm.brymmapp.local.fragments.AnadirAComandaFragment;
 import com.brymm.brymmapp.local.fragments.CrearComandaFragment;
 import com.brymm.brymmapp.local.fragments.ListaComandasFragment;
 import com.brymm.brymmapp.local.interfaces.ListaEstado;
+import com.brymm.brymmapp.local.pojo.Comanda;
 import com.brymm.brymmapp.menu.MenuLocal;
 
 import android.content.Intent;
@@ -71,9 +73,41 @@ public class ComandasActivity extends FragmentActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 		if (resultCode == RESULT_OK) {
-			ListaComandasFragment listaFragment = (ListaComandasFragment) getSupportFragmentManager()
-					.findFragmentById(R.id.listaComandasFl);
-			listaFragment.actualizarLista(estadoComanda);
+			switch (requestCode) {
+			case CrearComandaFragment.REQUEST_CODE_ANADIR_ARTICULO:
+			case CrearComandaFragment.REQUEST_CODE_ANADIR_ARTICULO_PER:
+			case CrearComandaFragment.REQUEST_CODE_ANADIR_MENU:
+				Comanda comanda = data
+						.getParcelableExtra(CrearComandaFragment.EXTRA_COMANDA);
+				boolean esCrear = data.getBooleanExtra(
+						CrearComandaFragment.EXTRA_CREAR, true);
+				if (esCrear){
+					CrearComandaFragment crearFragment;
+
+					// Make new fragment to show this selection.
+					crearFragment = (CrearComandaFragment) getSupportFragmentManager()
+							.findFragmentById(R.id.listaComandasFl);					
+					
+					crearFragment.setComanda(comanda);
+					crearFragment.actualizarComanda();
+				}else{
+					AnadirAComandaFragment anadirFragment;
+
+					// Make new fragment to show this selection.
+					anadirFragment = (AnadirAComandaFragment) getSupportFragmentManager()
+							.findFragmentById(R.id.listaComandasFl);					
+					
+					anadirFragment.setComanda(comanda);
+					anadirFragment.actualizarComanda();
+				}
+				break;
+			default:
+				ListaComandasFragment listaFragment = (ListaComandasFragment) getSupportFragmentManager()
+						.findFragmentById(R.id.listaComandasFl);
+				listaFragment.actualizarLista(estadoComanda);
+				break;
+			}
+
 		}
 
 		super.onActivityResult(requestCode, resultCode, data);
@@ -150,6 +184,25 @@ public class ComandasActivity extends FragmentActivity {
 			if (LoginActivity.esSesionCamarero(this)) {
 				fragment = null;
 				fragment = new CrearComandaFragment();
+				// Se guarda el estado
+				this.estadoComanda = this.idEstadosComanda.get(posicion);
+
+				fragmentManager.beginTransaction()
+						.replace(R.id.listaComandasFl, fragment).commit();
+			} else {
+				Resources res = this.getResources();
+				fragmentCambiado = false;
+				Toast.makeText(this,
+						res.getString(R.string.crear_comanda_err_camarero),
+						Toast.LENGTH_LONG).show();
+			}
+			break;
+		case 3:
+
+			// Comprubo si se trata de un camarero
+			if (LoginActivity.esSesionCamarero(this)) {
+				fragment = null;
+				fragment = new AnadirAComandaFragment();
 				// Se guarda el estado
 				this.estadoComanda = this.idEstadosComanda.get(posicion);
 

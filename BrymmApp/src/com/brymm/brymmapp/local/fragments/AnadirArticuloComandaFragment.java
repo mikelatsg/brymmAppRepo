@@ -3,66 +3,40 @@ package com.brymm.brymmapp.local.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
-
-import com.brymm.brymmapp.LoginActivity;
 import com.brymm.brymmapp.R;
-import com.brymm.brymmapp.local.AnadirArticuloLocalActivity;
-import com.brymm.brymmapp.local.AnadirTipoArticuloActivity;
-import com.brymm.brymmapp.local.adapters.ArticuloAdapter;
 import com.brymm.brymmapp.local.adapters.ArticuloComandaAdapter;
 import com.brymm.brymmapp.local.bbdd.GestionArticulo;
-import com.brymm.brymmapp.local.bbdd.GestionComanda;
 import com.brymm.brymmapp.local.bbdd.GestionTipoComanda;
 import com.brymm.brymmapp.local.interfaces.AnadibleComanda;
 import com.brymm.brymmapp.local.pojo.Articulo;
 import com.brymm.brymmapp.local.pojo.ArticuloCantidad;
 import com.brymm.brymmapp.local.pojo.Comanda;
 import com.brymm.brymmapp.local.pojo.DetalleComanda;
-import com.brymm.brymmapp.local.pojo.Mesa;
 import com.brymm.brymmapp.local.pojo.TipoComanda;
-import com.brymm.brymmapp.usuario.pojo.ArticuloLocal;
-import com.brymm.brymmapp.usuario.pojo.ArticuloLocalCantidad;
-import com.brymm.brymmapp.util.Resultado;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class AnadirArticuloComandaFragment extends Fragment implements AnadibleComanda {
+public class AnadirArticuloComandaFragment extends Fragment implements
+		AnadibleComanda {
 
 	private ListView lvArticulos;
 
 	private Button btCerrar;
 
-	private boolean mDualPane;
+	private boolean mDualPane, esCrear;
 	private Comanda comanda;
 
 	OnItemClickListener oicl = new OnItemClickListener() {
@@ -75,7 +49,7 @@ public class AnadirArticuloComandaFragment extends Fragment implements AnadibleC
 			dialogoCantidad(articulo);
 		}
 	};
-	
+
 	private OnClickListener oclCerrar = new OnClickListener() {
 
 		@Override
@@ -121,6 +95,8 @@ public class AnadirArticuloComandaFragment extends Fragment implements AnadibleC
 			Intent intent = getActivity().getIntent();
 			this.comanda = intent
 					.getParcelableExtra(CrearComandaFragment.EXTRA_COMANDA);
+			this.esCrear = intent.getBooleanExtra(
+					CrearComandaFragment.EXTRA_CREAR, true);
 		}
 
 		lvArticulos.setOnItemClickListener(oicl);
@@ -156,10 +132,9 @@ public class AnadirArticuloComandaFragment extends Fragment implements AnadibleC
 		if (this.comanda.getDetallesComanda() == null) {
 			detallesComanda = new ArrayList<DetalleComanda>();
 		} else {
-			detallesComanda = this.comanda
-					.getDetallesComanda();
+			detallesComanda = this.comanda.getDetallesComanda();
 		}
-		
+
 		float precio = this.comanda.getPrecio();
 		precio = precio + (detalleComanda.getPrecio());
 		this.comanda.setPrecio(precio);
@@ -169,14 +144,25 @@ public class AnadirArticuloComandaFragment extends Fragment implements AnadibleC
 
 		// Con la pantalla dividida actualizo el pedido.
 		if (mDualPane) {
-			CrearComandaFragment crearFragment;
+			if (this.esCrear) {
+				CrearComandaFragment crearFragment;
 
-			// Make new fragment to show this selection.
-			crearFragment = (CrearComandaFragment) getFragmentManager()
-					.findFragmentById(R.id.listaComandasFl);
+				// Make new fragment to show this selection.
+				crearFragment = (CrearComandaFragment) getFragmentManager()
+						.findFragmentById(R.id.listaComandasFl);
 
-			crearFragment.setComanda(this.comanda);
-			crearFragment.actualizarComanda();
+				crearFragment.setComanda(this.comanda);
+				crearFragment.actualizarComanda();
+			} else {
+				AnadirAComandaFragment anadirFragment;
+
+				// Make new fragment to show this selection.
+				anadirFragment = (AnadirAComandaFragment) getFragmentManager()
+						.findFragmentById(R.id.listaComandasFl);
+
+				anadirFragment.setComanda(this.comanda);
+				anadirFragment.actualizarComanda();
+			}
 
 		}
 	}
@@ -215,7 +201,7 @@ public class AnadirArticuloComandaFragment extends Fragment implements AnadibleC
 		custom.show();
 
 	}
-	
+
 	private void cerrar() {
 		if (mDualPane) {
 			CrearComandaFragment crearFragment;
@@ -230,6 +216,7 @@ public class AnadirArticuloComandaFragment extends Fragment implements AnadibleC
 
 			Intent intent = new Intent();
 			intent.putExtra(CrearComandaFragment.EXTRA_COMANDA, this.comanda);
+			intent.putExtra(CrearComandaFragment.EXTRA_CREAR, this.esCrear);
 			getActivity().setResult(Activity.RESULT_OK, intent);
 			getActivity().finish();
 
@@ -242,11 +229,11 @@ public class AnadirArticuloComandaFragment extends Fragment implements AnadibleC
 			List<DetalleComanda> detallesComanda = new ArrayList<DetalleComanda>();
 			this.comanda = null;
 
-			this.comanda = new Comanda(0, "", null, "", (float) 0, null, "", "",
-					detallesComanda);
+			this.comanda = new Comanda(0, "", null, "", (float) 0, null, "",
+					"", detallesComanda);
 
-		} 
-		
+		}
+
 	}
 
 }

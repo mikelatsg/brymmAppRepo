@@ -2,36 +2,27 @@ package com.brymm.brymmapp.local.fragments;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import com.brymm.brymmapp.R;
-import com.brymm.brymmapp.local.bbdd.GestionIngrediente;
 import com.brymm.brymmapp.local.bbdd.GestionMenu;
 import com.brymm.brymmapp.local.bbdd.GestionMenuDia;
-import com.brymm.brymmapp.local.bbdd.GestionTipoArticuloLocal;
 import com.brymm.brymmapp.local.bbdd.GestionTipoComanda;
 import com.brymm.brymmapp.local.interfaces.AnadibleComanda;
-import com.brymm.brymmapp.local.pojo.Articulo;
-import com.brymm.brymmapp.local.pojo.ArticuloCantidad;
 import com.brymm.brymmapp.local.pojo.Comanda;
 import com.brymm.brymmapp.local.pojo.DetalleComanda;
-import com.brymm.brymmapp.local.pojo.Ingrediente;
 import com.brymm.brymmapp.local.pojo.MenuComanda;
 import com.brymm.brymmapp.local.pojo.MenuDia;
 import com.brymm.brymmapp.local.pojo.MenuLocal;
 import com.brymm.brymmapp.local.pojo.Plato;
 import com.brymm.brymmapp.local.pojo.PlatoComanda;
-import com.brymm.brymmapp.local.pojo.TipoArticuloLocal;
 import com.brymm.brymmapp.local.pojo.TipoComanda;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,9 +34,11 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class AnadirMenuComandaFragment extends Fragment implements AnadibleComanda {
+public class AnadirMenuComandaFragment extends Fragment implements
+		AnadibleComanda {
 
 	private Spinner spMenus;
 
@@ -54,15 +47,24 @@ public class AnadirMenuComandaFragment extends Fragment implements AnadibleComan
 	private LinearLayout llPlatos;
 	private int RESOURCE_PLATOS = 0;
 
-	private boolean mDualPane;
+	private boolean mDualPane, esCrear;
 	private Comanda comanda;
 	private List<CheckBox> checks = new ArrayList<CheckBox>();
 	private OnClickListener oclAnadir = new OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
-			MenuComanda menuComanda = obtenerMenuComanda();
-			anadirMenu(menuComanda);
+			if (spMenus.getSelectedItem() != null) {
+				MenuComanda menuComanda = obtenerMenuComanda();
+				anadirMenu(menuComanda);
+			} else {
+				Resources res = getActivity().getResources();
+				Toast.makeText(
+						getActivity(),
+						res.getString(R.string.anadir_menu_comanda_no_menu_disponible),
+						Toast.LENGTH_LONG).show();
+			}
+
 		}
 	};
 
@@ -138,6 +140,8 @@ public class AnadirMenuComandaFragment extends Fragment implements AnadibleComan
 			Intent intent = getActivity().getIntent();
 			this.comanda = intent
 					.getParcelableExtra(CrearComandaFragment.EXTRA_COMANDA);
+			this.esCrear = intent.getBooleanExtra(
+					CrearComandaFragment.EXTRA_CREAR, true);
 		}
 
 		actualizarMenus();
@@ -172,33 +176,36 @@ public class AnadirMenuComandaFragment extends Fragment implements AnadibleComan
 		// Vacio el linear layout platos
 		llPlatos.removeAllViews();
 
-		checks = new ArrayList<CheckBox>();
+		if (spMenus.getSelectedItem() != null) {
 
-		/* Añadir los ingredientes dinamicamente */
+			checks = new ArrayList<CheckBox>();
 
-		// Obtengo los platos del menu
-		GestionMenuDia gestor = new GestionMenuDia(getActivity());
-		MenuDia menuDia = (MenuDia) spMenus.getSelectedItem();
-		List<Plato> platos = gestor
-				.obtenerPlatosMenuDia(menuDia.getIdMenuDia());
-		gestor.cerrarDatabase();
+			/* Añadir los ingredientes dinamicamente */
 
-		// Generar dinamicamente los platos.
-		for (Plato plato : platos) {
-			LinearLayout llPlato = new LinearLayout(getActivity());
-			llPlato.setOrientation(LinearLayout.HORIZONTAL);
+			// Obtengo los platos del menu
+			GestionMenuDia gestor = new GestionMenuDia(getActivity());
+			MenuDia menuDia = (MenuDia) spMenus.getSelectedItem();
+			List<Plato> platos = gestor.obtenerPlatosMenuDia(menuDia
+					.getIdMenuDia());
+			gestor.cerrarDatabase();
 
-			EditText et = new EditText(getActivity());
-			et.setText("0");
-			et.setId(plato.getIdPlato());
-			CheckBox cb = new CheckBox(getActivity());
-			cb.setText(plato.getNombre());
-			cb.setTag(plato);
-			llPlato.addView(cb);
-			llPlato.addView(et);
-			checks.add(cb);
+			// Generar dinamicamente los platos.
+			for (Plato plato : platos) {
+				LinearLayout llPlato = new LinearLayout(getActivity());
+				llPlato.setOrientation(LinearLayout.HORIZONTAL);
 
-			llPlatos.addView(llPlato);
+				EditText et = new EditText(getActivity());
+				et.setText("0");
+				et.setId(plato.getIdPlato());
+				CheckBox cb = new CheckBox(getActivity());
+				cb.setText(plato.getNombre());
+				cb.setTag(plato);
+				llPlato.addView(cb);
+				llPlato.addView(et);
+				checks.add(cb);
+
+				llPlatos.addView(llPlato);
+			}
 		}
 		// llPrincipal.addView(llPlatos);
 	}
@@ -269,32 +276,54 @@ public class AnadirMenuComandaFragment extends Fragment implements AnadibleComan
 
 		// Con la pantalla dividida actualizo el pedido.
 		if (mDualPane) {
-			CrearComandaFragment crearFragment;
+			if (this.esCrear) {
+				CrearComandaFragment crearFragment;
 
-			// Make new fragment to show this selection.
-			crearFragment = (CrearComandaFragment) getFragmentManager()
-					.findFragmentById(R.id.listaComandasFl);
+				// Make new fragment to show this selection.
+				crearFragment = (CrearComandaFragment) getFragmentManager()
+						.findFragmentById(R.id.listaComandasFl);
 
-			crearFragment.setComanda(this.comanda);
-			crearFragment.actualizarComanda();
+				crearFragment.setComanda(this.comanda);
+				crearFragment.actualizarComanda();
+			} else {
+				AnadirAComandaFragment anadirFragment;
+
+				// Make new fragment to show this selection.
+				anadirFragment = (AnadirAComandaFragment) getFragmentManager()
+						.findFragmentById(R.id.listaComandasFl);
+
+				anadirFragment.setComanda(this.comanda);
+				anadirFragment.actualizarComanda();
+			}
 
 		}
 	}
 
 	private void cerrar() {
 		if (mDualPane) {
-			CrearComandaFragment crearFragment;
+			if (this.esCrear) {
+				CrearComandaFragment crearFragment;
 
-			// Make new fragment to show this selection.
-			crearFragment = (CrearComandaFragment) getFragmentManager()
-					.findFragmentById(R.id.listaComandasFl);
+				// Make new fragment to show this selection.
+				crearFragment = (CrearComandaFragment) getFragmentManager()
+						.findFragmentById(R.id.listaComandasFl);
 
-			crearFragment.ocultarDetalle();
+				crearFragment.ocultarDetalle();
+			} else {
+				AnadirAComandaFragment anadirFragment;
+
+				// Make new fragment to show this selection.
+				anadirFragment = (AnadirAComandaFragment) getFragmentManager()
+						.findFragmentById(R.id.listaComandasFl);
+
+				anadirFragment.ocultarDetalle();
+			}
 
 		} else {
 
 			Intent intent = new Intent();
 			intent.putExtra(CrearComandaFragment.EXTRA_COMANDA, this.comanda);
+			intent.putExtra(CrearComandaFragment.EXTRA_CREAR, this.esCrear);
 			getActivity().setResult(Activity.RESULT_OK, intent);
 			getActivity().finish();
 
@@ -307,11 +336,11 @@ public class AnadirMenuComandaFragment extends Fragment implements AnadibleComan
 			List<DetalleComanda> detallesComanda = new ArrayList<DetalleComanda>();
 			this.comanda = null;
 
-			this.comanda = new Comanda(0, "", null, "", (float) 0, null, "", "",
-					detallesComanda);
+			this.comanda = new Comanda(0, "", null, "", (float) 0, null, "",
+					"", detallesComanda);
 
-		} 
-		
+		}
+
 	}
 
 }

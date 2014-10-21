@@ -18,6 +18,7 @@
         <item>Activas#A</item>
         <item>Cerradas#C</item>
         <item>Nueva comanda#N</item>
+        <item>Añadir a comanda#D</item>
     </string-array>
     <string-array name="articulosArray">
         <item>Ingredientes#0</item>
@@ -468,5 +469,9 @@
     <string name="title_activity_anadir_menu_comanda">AnadirMenuComandaActivity</string>
     <string name="anadir_menu_comanda_cerrar">Cerrar</string>
     <string name="anadir_menu_comanda_anadir">Anadir</string>
+    <string name="anadir_menu_comanda_no_menu_disponible">No hay ningún menu el dia indicado</string>
+    
+    <!-- Añadir a comanda -->
+    <string name="anadir_a_comanda_no_comanda_activa">No hay comandas activas.</string>
 
 </resources>

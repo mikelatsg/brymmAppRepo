@@ -27,7 +27,7 @@ import android.widget.ListView;
 public class ListaComandasFragment extends Fragment implements ListaEstado {
 
 	public static final String EXTRA_ID_ESTADO = "extraIdEstado";
-	public static final int REQUEST_CODE_DETALLE = 1;
+	public static final int REQUEST_CODE_DETALLE = 10;
 
 	private ListView lvComandas;
 	private boolean mDualPane;

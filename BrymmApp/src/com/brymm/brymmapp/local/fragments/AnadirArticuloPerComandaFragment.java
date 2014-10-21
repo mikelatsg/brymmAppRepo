@@ -41,7 +41,7 @@ public class AnadirArticuloPerComandaFragment extends Fragment implements
 
 	private Button btCerrar, btAnadir;
 
-	private boolean mDualPane;
+	private boolean mDualPane, esCrear;
 	private Comanda comanda;
 	private List<CheckBox> checks = new ArrayList<CheckBox>();
 	private OnClickListener oclAnadir = new OnClickListener() {
@@ -119,6 +119,8 @@ public class AnadirArticuloPerComandaFragment extends Fragment implements
 			Intent intent = getActivity().getIntent();
 			this.comanda = intent
 					.getParcelableExtra(CrearComandaFragment.EXTRA_COMANDA);
+			this.esCrear = intent.getBooleanExtra(
+					CrearComandaFragment.EXTRA_CREAR, true);
 		}
 
 		actualizarTiposArticulo();
@@ -189,14 +191,25 @@ public class AnadirArticuloPerComandaFragment extends Fragment implements
 
 		// Con la pantalla dividida actualizo el pedido.
 		if (mDualPane) {
-			CrearComandaFragment crearFragment;
+			if (this.esCrear) {
+				CrearComandaFragment crearFragment;
 
-			// Make new fragment to show this selection.
-			crearFragment = (CrearComandaFragment) getFragmentManager()
-					.findFragmentById(R.id.listaComandasFl);
+				// Make new fragment to show this selection.
+				crearFragment = (CrearComandaFragment) getFragmentManager()
+						.findFragmentById(R.id.listaComandasFl);
 
-			crearFragment.setComanda(this.comanda);
-			crearFragment.actualizarComanda();
+				crearFragment.setComanda(this.comanda);
+				crearFragment.actualizarComanda();
+			} else {
+				AnadirAComandaFragment anadirFragment;
+
+				// Make new fragment to show this selection.
+				anadirFragment = (AnadirAComandaFragment) getFragmentManager()
+						.findFragmentById(R.id.listaComandasFl);
+
+				anadirFragment.setComanda(this.comanda);
+				anadirFragment.actualizarComanda();
+			}
 
 		}
 	}
@@ -275,6 +288,7 @@ public class AnadirArticuloPerComandaFragment extends Fragment implements
 
 			Intent intent = new Intent();
 			intent.putExtra(CrearComandaFragment.EXTRA_COMANDA, this.comanda);
+			intent.putExtra(CrearComandaFragment.EXTRA_CREAR, this.esCrear);
 			getActivity().setResult(Activity.RESULT_OK, intent);
 			getActivity().finish();
 

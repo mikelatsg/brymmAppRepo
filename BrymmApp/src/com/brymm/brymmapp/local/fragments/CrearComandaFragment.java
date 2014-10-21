@@ -57,9 +57,11 @@ import android.widget.Toast;
 public class CrearComandaFragment extends Fragment implements ListaEstado {
 
 	public static final String EXTRA_COMANDA = "extraComanda";
+	public static final String EXTRA_CREAR = "extraCrear";
 
 	public static final int REQUEST_CODE_ANADIR_ARTICULO = 1;
 	public static final int REQUEST_CODE_ANADIR_ARTICULO_PER = 2;
+	public static final int REQUEST_CODE_ANADIR_MENU = 3;
 
 	private Button btEnviar, btCancelar, btAnadirArticulo, btAnadirArticuloPer,
 			btAnadirMenu;
@@ -349,6 +351,7 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 			Intent intent = new Intent(getActivity(),
 					AnadirArticuloComandaActivity.class);
 			intent.putExtra(EXTRA_COMANDA, this.comanda);
+			intent.putExtra(EXTRA_CREAR, true);
 			startActivityForResult(intent, REQUEST_CODE_ANADIR_ARTICULO);
 		}
 
@@ -378,6 +381,7 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 			Intent intent = new Intent(getActivity(),
 					AnadirArticuloPerComandaActivity.class);
 			intent.putExtra(EXTRA_COMANDA, this.comanda);
+			intent.putExtra(EXTRA_CREAR, true);
 			startActivityForResult(intent, REQUEST_CODE_ANADIR_ARTICULO_PER);
 		}
 
@@ -407,6 +411,7 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 			Intent intent = new Intent(getActivity(),
 					AnadirMenuComandaFragment.class);
 			intent.putExtra(EXTRA_COMANDA, this.comanda);
+			intent.putExtra(EXTRA_CREAR, true);
 			startActivityForResult(intent, REQUEST_CODE_ANADIR_ARTICULO);
 		}
 
