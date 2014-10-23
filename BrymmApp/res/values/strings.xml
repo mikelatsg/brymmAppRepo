@@ -470,6 +470,7 @@
     <string name="anadir_menu_comanda_cerrar">Cerrar</string>
     <string name="anadir_menu_comanda_anadir">Anadir</string>
     <string name="anadir_menu_comanda_no_menu_disponible">No hay ningún menu el dia indicado</string>
+    <string name="anadir_menu_comanda_no_plato_seleccionado">No hay ningún plato seleccionado</string>
     
     <!-- Añadir a comanda -->
     <string name="anadir_a_comanda_no_comanda_activa">No hay comandas activas.</string>

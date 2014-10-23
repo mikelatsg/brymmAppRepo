@@ -144,7 +144,10 @@ public class AnadirArticuloComandaFragment extends Fragment implements
 
 		// Con la pantalla dividida actualizo el pedido.
 		if (mDualPane) {
-			if (this.esCrear) {
+			Fragment fragment = (CrearComandaFragment) getFragmentManager()
+					.findFragmentById(R.id.listaComandasFl);
+			
+			if (fragment instanceof CrearComandaFragment) {
 				CrearComandaFragment crearFragment;
 
 				// Make new fragment to show this selection.

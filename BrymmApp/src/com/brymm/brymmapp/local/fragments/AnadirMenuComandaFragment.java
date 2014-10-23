@@ -45,7 +45,7 @@ public class AnadirMenuComandaFragment extends Fragment implements
 	private Button btCerrar, btAnadir;
 	private EditText etCantidadMenu;
 	private LinearLayout llPlatos;
-	private int RESOURCE_PLATOS = 0;
+	private int posicionDetalle = 0;
 
 	private boolean mDualPane, esCrear;
 	private Comanda comanda;
@@ -56,7 +56,20 @@ public class AnadirMenuComandaFragment extends Fragment implements
 		public void onClick(View v) {
 			if (spMenus.getSelectedItem() != null) {
 				MenuComanda menuComanda = obtenerMenuComanda();
-				anadirMenu(menuComanda);
+
+				// Si menuComanda es nulo es porque no se ha seleccionado ningún
+				// plato.
+				if (menuComanda != null) {
+					anadirMenu(menuComanda);
+				} else {
+					Resources res = getActivity().getResources();
+
+					Toast.makeText(
+							getActivity(),
+							res.getString(R.string.anadir_menu_comanda_no_plato_seleccionado),
+							Toast.LENGTH_LONG).show();
+				}
+
 			} else {
 				Resources res = getActivity().getResources();
 				Toast.makeText(
@@ -130,11 +143,17 @@ public class AnadirMenuComandaFragment extends Fragment implements
 		mDualPane = anadirFrame != null
 				&& anadirFrame.getVisibility() == View.VISIBLE;
 
+		DetalleComanda detalleComanda = null;
+
 		if (mDualPane) {
 			Bundle bundle = getArguments();
 			if (bundle != null) {
 				this.comanda = bundle
 						.getParcelable(CrearComandaFragment.EXTRA_COMANDA);
+				detalleComanda = bundle
+						.getParcelable(AnadirAComandaFragment.EXTRA_DETALLE);
+				this.posicionDetalle = bundle.getInt(
+						AnadirAComandaFragment.EXTRA_POSICION, -1);
 			}
 		} else {
 			Intent intent = getActivity().getIntent();
@@ -142,14 +161,29 @@ public class AnadirMenuComandaFragment extends Fragment implements
 					.getParcelableExtra(CrearComandaFragment.EXTRA_COMANDA);
 			this.esCrear = intent.getBooleanExtra(
 					CrearComandaFragment.EXTRA_CREAR, true);
-		}
 
+			this.posicionDetalle = intent.getIntExtra(
+					AnadirAComandaFragment.EXTRA_POSICION, -1);
+
+			if (this.posicionDetalle >= 0) {
+				detalleComanda = intent
+						.getParcelableExtra(AnadirAComandaFragment.EXTRA_DETALLE);
+			}
+
+		}
+		cambiarEstadoVistas(true);
+
+		// Cargo los menus en el spinner
 		actualizarMenus();
 		actualizarPlatosMenu();
+
 		spMenus.setOnItemSelectedListener(oisl);
 
 		btAnadir.setOnClickListener(oclAnadir);
 		btCerrar.setOnClickListener(oclCerrar);
+
+		// Muestro el detalle de la comanda si viene
+		mostrarDetalle(detalleComanda);
 	}
 
 	public void actualizarMenus() {
@@ -200,6 +234,16 @@ public class AnadirMenuComandaFragment extends Fragment implements
 				CheckBox cb = new CheckBox(getActivity());
 				cb.setText(plato.getNombre());
 				cb.setTag(plato);
+				if (this.posicionDetalle >= 0) {
+					PlatoComanda platoComanda = existePlatoEnDetalle(plato
+							.getIdPlato());
+					if (platoComanda != null) {
+						cb.setChecked(true);
+						cb.setEnabled(false);
+						et.setText(Integer.toString(platoComanda.getCantidad()));
+					}
+				}
+
 				llPlato.addView(cb);
 				llPlato.addView(et);
 				checks.add(cb);
@@ -210,7 +254,21 @@ public class AnadirMenuComandaFragment extends Fragment implements
 		// llPrincipal.addView(llPlatos);
 	}
 
+	private PlatoComanda existePlatoEnDetalle(int idPlato) {
+		DetalleComanda detalleComanda = this.comanda.getDetallesComanda().get(
+				this.posicionDetalle);
+
+		for (Plato plato : detalleComanda.getMenuComanda().getPlatos()) {
+			if (plato.getIdPlato() == idPlato) {
+				return (PlatoComanda) plato;
+			}
+		}
+
+		return null;
+	}
+
 	private MenuComanda obtenerMenuComanda() {
+		boolean hayPlatoSeleccionado = false;
 		// Se obtiene el menu seleccionado
 		int idMenu = ((MenuDia) spMenus.getSelectedItem()).getMenu()
 				.getIdMenu();
@@ -218,65 +276,158 @@ public class AnadirMenuComandaFragment extends Fragment implements
 		MenuLocal menu = gm.obtenerMenu(idMenu);
 		gm.cerrarDatabase();
 
+		DetalleComanda detalleComanda = null;
+		if (this.posicionDetalle >= 0) {
+			// Detalle comanda recibido
+			detalleComanda = this.comanda.getDetallesComanda().get(
+					this.posicionDetalle);
+		}
+
 		// Se obtienen los platos seleccionados
 		List<PlatoComanda> platosComanda = new ArrayList<PlatoComanda>();
 		for (CheckBox checkBox : this.checks) {
 			if (checkBox.isChecked()) {
+				int cantidad = 0;
+
 				Plato plato = (Plato) checkBox.getTag();
 				EditText etTemporal = (EditText) getActivity().findViewById(
 						plato.getIdPlato());
 
-				PlatoComanda platoComanda = new PlatoComanda(0, plato, "",
-						Integer.parseInt(etTemporal.getText().toString()));
+				// Solo añado el plato si tiene una cantidad > 0
+				try {
+					cantidad = Integer
+							.parseInt(etTemporal.getText().toString());
+				} catch (Exception e) {
+					cantidad = 0;
+				}
 
-				platosComanda.add(platoComanda);
+				if (cantidad > 0) {
+
+					String estado = "EC";
+					if (this.posicionDetalle >= 0) {
+						// Compruebo si el plato ya estaba pedido
+						for (PlatoComanda platoComandaComp : detalleComanda
+								.getMenuComanda().getPlatos()) {
+							if (platoComandaComp.getIdPlato() == plato
+									.getIdPlato()) {
+								//Si han pedido mas de un plato que ya estaba pedido
+								//cambio el estado a "EC", sino dejo el estado q tenia
+								if (platoComandaComp.getCantidad() >= cantidad) {
+									estado = platoComandaComp.getEstado();
+								}
+							}
+
+						}
+					}
+
+					PlatoComanda platoComanda = new PlatoComanda(0, plato,
+							estado, cantidad);
+
+					platosComanda.add(platoComanda);
+
+					hayPlatoSeleccionado = true;
+				}
 			}
 		}
 
-		MenuComanda menuComanda = new MenuComanda(menu, platosComanda,
-				Integer.parseInt(etCantidadMenu.getText().toString()));
+		MenuComanda menuComanda = null;
+		if (hayPlatoSeleccionado) {
+			menuComanda = new MenuComanda(menu, platosComanda,
+					Integer.parseInt(etCantidadMenu.getText().toString()));
+		}
 		return menuComanda;
 	}
 
-	private void anadirMenu(MenuComanda menuComanda) {
-		GestionTipoComanda gtc = new GestionTipoComanda(getActivity());
-		TipoComanda tipoComanda;
-		Float precioDetalle = (float) 0;
-		// Obtengo el tipo comanda y el precio dependiendo de si es carta o no
-		if (menuComanda.getMenu().isCarta()) {
-			tipoComanda = gtc.obtenerTipoComanda(4);
-			for (PlatoComanda platoComanda : menuComanda.getPlatos()) {
-				precioDetalle = platoComanda.getPrecio()
-						* platoComanda.getCantidad();
+	private void mostrarDetalle(DetalleComanda detalleComanda) {
+		if (detalleComanda != null) {
+			cambiarEstadoVistas(false);
+			etCantidadMenu.setText(Integer.toString(detalleComanda
+					.getCantidad()));
+
+			// Selecciono el menu del detalle
+			int posicionSeleccionada = 0;
+			for (int i = 0; i < spMenus.getAdapter().getCount(); i++) {
+				posicionSeleccionada = i;
+				if (detalleComanda.getMenuComanda().getMenu().getIdMenu() == ((MenuDia) spMenus
+						.getAdapter().getItem(posicionSeleccionada)).getMenu()
+						.getIdMenu()) {
+					break;
+				}
 			}
-		} else {
-			tipoComanda = gtc.obtenerTipoComanda(3);
-			precioDetalle = menuComanda.getMenu().getPrecio();
+
+			spMenus.setSelection(posicionSeleccionada);
+
 		}
-		gtc.cerrarDatabase();
+	}
 
-		DetalleComanda detalleComanda = new DetalleComanda(0, tipoComanda,
-				menuComanda.getCantidad(), precioDetalle, "", null, menuComanda);
-
-		List<DetalleComanda> detallesComanda = null;
-		// Si es nulo inicializo los detalles.
-		if (this.comanda.getDetallesComanda() == null) {
-			detallesComanda = new ArrayList<DetalleComanda>();
+	private void cambiarEstadoVistas(boolean activar) {
+		if (activar) {
+			etCantidadMenu.setEnabled(true);
+			spMenus.setEnabled(true);
 		} else {
-			detallesComanda = this.comanda.getDetallesComanda();
+			etCantidadMenu.setEnabled(false);
+			spMenus.setEnabled(false);
 		}
+	}
 
-		float precio = this.comanda.getPrecio();
-		precio = precio
-				+ (detalleComanda.getPrecio() * detalleComanda.getCantidad());
-		this.comanda.setPrecio(precio);
+	private void anadirMenu(MenuComanda menuComanda) {
+		if (this.posicionDetalle >= 0) {
+			// Modifico el menu comanda recibido...
+			DetalleComanda detalleComanda = this.comanda.getDetallesComanda()
+					.get(posicionDetalle);
 
-		detallesComanda.add(detalleComanda);
-		this.comanda.setDetallesComanda(detallesComanda);
+			detalleComanda.setMenuComanda(menuComanda);
+
+			List<DetalleComanda> detallesComanda = this.comanda
+					.getDetallesComanda();
+
+			detallesComanda.set(this.posicionDetalle, detalleComanda);
+			this.comanda.setDetallesComanda(detallesComanda);
+		} else {
+			GestionTipoComanda gtc = new GestionTipoComanda(getActivity());
+			TipoComanda tipoComanda;
+			Float precioDetalle = (float) 0;
+			// Obtengo el tipo comanda y el precio dependiendo de si es carta o
+			// no
+			if (menuComanda.getMenu().isCarta()) {
+				tipoComanda = gtc.obtenerTipoComanda(4);
+				for (PlatoComanda platoComanda : menuComanda.getPlatos()) {
+					precioDetalle = platoComanda.getPrecio()
+							* platoComanda.getCantidad();
+				}
+			} else {
+				tipoComanda = gtc.obtenerTipoComanda(3);
+				precioDetalle = menuComanda.getMenu().getPrecio();
+			}
+			gtc.cerrarDatabase();
+
+			DetalleComanda detalleComanda = new DetalleComanda(0, tipoComanda,
+					menuComanda.getCantidad(), precioDetalle, "", null,
+					menuComanda);
+
+			List<DetalleComanda> detallesComanda = null;
+			// Si es nulo inicializo los detalles.
+			if (this.comanda.getDetallesComanda() == null) {
+				detallesComanda = new ArrayList<DetalleComanda>();
+			} else {
+				detallesComanda = this.comanda.getDetallesComanda();
+			}
+
+			float precio = this.comanda.getPrecio();
+			precio = precio
+					+ (detalleComanda.getPrecio() * detalleComanda
+							.getCantidad());
+			this.comanda.setPrecio(precio);
+
+			detallesComanda.add(detalleComanda);
+			this.comanda.setDetallesComanda(detallesComanda);
+		}
 
 		// Con la pantalla dividida actualizo el pedido.
 		if (mDualPane) {
-			if (this.esCrear) {
+			Fragment fragment = (Fragment) getFragmentManager()
+					.findFragmentById(R.id.listaComandasFl);
+			if (fragment instanceof CrearComandaFragment) {
 				CrearComandaFragment crearFragment;
 
 				// Make new fragment to show this selection.
@@ -301,7 +452,9 @@ public class AnadirMenuComandaFragment extends Fragment implements
 
 	private void cerrar() {
 		if (mDualPane) {
-			if (this.esCrear) {
+			Fragment fragment = (Fragment) getFragmentManager()
+					.findFragmentById(R.id.listaComandasFl);
+			if (fragment instanceof CrearComandaFragment) {
 				CrearComandaFragment crearFragment;
 
 				// Make new fragment to show this selection.

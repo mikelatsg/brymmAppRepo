@@ -1,4 +1,4 @@
- package com.brymm.brymmapp.local.adapters;
+package com.brymm.brymmapp.local.adapters;
 
 import java.io.IOException;
 import java.util.List;
@@ -45,6 +45,7 @@ import android.widget.LinearLayout.LayoutParams;
 public class DetalleComandaAdapter extends ArrayAdapter<DetalleComanda> {
 	private Context context;
 	private List<DetalleComanda> detallesComanda;
+	private boolean mostrarTerminar;
 
 	private TextView tvNombre, tvPrecio, tvCantidad, tvPrecioUnitario,
 			tvIngredientes, tvEstadoDetalle;
@@ -65,6 +66,16 @@ public class DetalleComandaAdapter extends ArrayAdapter<DetalleComanda> {
 		super(context, textViewResourceId, detallesComanda);
 		this.context = context;
 		this.detallesComanda = detallesComanda;
+		this.mostrarTerminar = true;
+	}
+
+	public DetalleComandaAdapter(Context context, int textViewResourceId,
+			List<DetalleComanda> detallesComanda, boolean mostrarTerminar) {
+		super(context, textViewResourceId, detallesComanda);
+		this.context = context;
+		this.detallesComanda = detallesComanda;
+		this.mostrarTerminar = mostrarTerminar;
+
 	}
 
 	private void inicializarMenuComanda(View convertView) {
@@ -234,7 +245,8 @@ public class DetalleComandaAdapter extends ArrayAdapter<DetalleComanda> {
 
 				// Si el estado es enviado cocina, creo el boton terminar cocina
 				if (platoComanda.getEstado().equals(
-						GestionComanda.ESTADO_ENVIADO_COCINA)) {
+						GestionComanda.ESTADO_ENVIADO_COCINA)
+						&& this.mostrarTerminar) {
 					Button btTerminarCocina = new Button(context);
 					btTerminarCocina.setLayoutParams(param);
 					llPlatosComanda.addView(btTerminarCocina);
@@ -242,15 +254,8 @@ public class DetalleComandaAdapter extends ArrayAdapter<DetalleComanda> {
 							.getString(R.string.item_comanda_terminar));
 					btTerminarCocina.setTag(platoComanda);
 					btTerminarCocina.setOnClickListener(oclTerminarPlato);
+					btTerminarCocina.setFocusable(false);
 				}
-
-				// Añado el layout creado al layout principal, en la parte de
-				// abajo.
-				// LinearLayout.LayoutParams paramLayoutPrincipal =
-				// (LayoutParams) llPlatosComanda
-				// .getLayoutParams();
-
-				// paramLayoutPrincipal.gravity = Gravity.BOTTOM;
 
 				llPrincipal.addView(llPlatosComanda);
 			}

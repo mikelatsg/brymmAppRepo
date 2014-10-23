@@ -60,6 +60,9 @@ import android.widget.Toast;
 
 public class AnadirAComandaFragment extends Fragment implements ListaEstado {
 
+	public static final String EXTRA_DETALLE = "extraDetalle";
+	public static final String EXTRA_POSICION = "extraPosicion";
+
 	private Button btEnviar, btCancelar, btAnadirArticulo, btAnadirArticuloPer,
 			btAnadirMenu;
 	private Spinner spMesas, spComandasActivas;
@@ -69,6 +72,21 @@ public class AnadirAComandaFragment extends Fragment implements ListaEstado {
 	private boolean mDualPane;
 	private RadioButton rbMesa, rbNombreDe;
 	private Comanda comanda;
+
+	private OnItemClickListener oiclActualizarMenu = new OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> adapter, View view,
+				int position, long id) {
+			DetalleComanda detalleComanda = (DetalleComanda) adapter
+					.getItemAtPosition(position);
+			// Si se trata de un menu muestro el contenido
+			if (detalleComanda.getTipoComanda().getIdTipoComanda() == 3) {
+				mostrarCompletarMenu(detalleComanda, position);
+			}
+
+		}
+	};
 
 	private OnItemSelectedListener oisl = new OnItemSelectedListener() {
 
@@ -222,7 +240,7 @@ public class AnadirAComandaFragment extends Fragment implements ListaEstado {
 				R.id.anadirAComandaRbNombreDe);
 
 		lvDetalles = (ListView) getActivity().findViewById(
-				R.id.anadirAComandaLvDetalles);
+				R.id.anadirAComandaLvDetalles);				
 
 		/*
 		 * Se guarda si esta en modo dual (con la lista y el formulario a la
@@ -358,10 +376,12 @@ public class AnadirAComandaFragment extends Fragment implements ListaEstado {
 		if (detallesComanda != null) {
 			DetalleComandaAdapter detalleComandaAdapter = new DetalleComandaAdapter(
 					getActivity(), R.layout.detalle_comanda_articulo_item,
-					detallesComanda);
+					detallesComanda,false);
 
-			lvDetalles.setAdapter(detalleComandaAdapter);
+			lvDetalles.setAdapter(detalleComandaAdapter);			
 		}
+				
+		lvDetalles.setOnItemClickListener(oiclActualizarMenu);
 	}
 
 	public void setComanda(Comanda comanda) {
@@ -509,6 +529,42 @@ public class AnadirAComandaFragment extends Fragment implements ListaEstado {
 
 	}
 
+	private void mostrarCompletarMenu(DetalleComanda detalleComanda, int position) {
+		if (mDualPane) {
+			AnadirMenuComandaFragment anadirFragment;
+
+			// Make new fragment to show this selection.
+			anadirFragment = new AnadirMenuComandaFragment();
+
+			Bundle bundle = new Bundle();
+			bundle.putParcelable(CrearComandaFragment.EXTRA_COMANDA,
+					this.comanda);
+			bundle.putParcelable(EXTRA_DETALLE, detalleComanda);
+			bundle.putInt(EXTRA_POSICION, position);
+			anadirFragment.setArguments(bundle);
+
+			// Execute a transaction, replacing any existing fragment
+			// with this one inside the frame.
+			FragmentTransaction ft = getFragmentManager().beginTransaction();
+			ft.replace(R.id.detalleComandaFl, anadirFragment);
+
+			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+			ft.commit();
+
+		} else {
+
+			Intent intent = new Intent(getActivity(),
+					AnadirMenuComandaFragment.class);
+			intent.putExtra(CrearComandaFragment.EXTRA_COMANDA, this.comanda);
+			intent.putExtra(EXTRA_DETALLE, detalleComanda);
+			intent.putExtra(CrearComandaFragment.EXTRA_CREAR, false);
+			intent.putExtra(EXTRA_POSICION, position);
+			startActivityForResult(intent,
+					CrearComandaFragment.REQUEST_CODE_ANADIR_MENU);
+		}
+
+	}
+
 	private JSONObject enviarComanda() throws IOException, JSONException {
 		JSONObject respJSON = null;
 
@@ -622,9 +678,9 @@ public class AnadirAComandaFragment extends Fragment implements ListaEstado {
 						Toast.LENGTH_LONG).show();
 
 				if (resultado.getCodigo() == 1) {
-					if (mDualPane) {						
+					if (mDualPane) {
 						actualizarComanda();
-					} 
+					}
 
 				}
 			}

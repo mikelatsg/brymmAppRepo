@@ -151,18 +151,23 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 				.getCamarero(getActivity()));
 		gestionCamarero.cerrarDatabase();
 
-		this.comanda = new Comanda(0, "", camarero, "", (float) 0, null, "", "",
-				detallesComanda);
+		this.comanda = new Comanda(0, "", camarero, "", (float) 0, null, "",
+				"", detallesComanda);
 
 		// Vacio el detalle
 		if (mDualPane) {
-			AnadibleComanda detalleFragment;
-
-			detalleFragment = (AnadibleComanda) getFragmentManager()
+			Fragment fragment = (Fragment) getFragmentManager()
 					.findFragmentById(R.id.detalleComandaFl);
 
-			if (detalleFragment != null) {
-				detalleFragment.vaciarDetalle();
+			if (fragment instanceof AnadibleComanda) {
+				AnadibleComanda detalleFragment;
+
+				detalleFragment = (AnadibleComanda) getFragmentManager()
+						.findFragmentById(R.id.detalleComandaFl);
+
+				if (detalleFragment != null) {
+					detalleFragment.vaciarDetalle();
+				}
 			}
 		}
 
@@ -272,7 +277,7 @@ public class CrearComandaFragment extends Fragment implements ListaEstado {
 		if (detallesComanda != null) {
 			DetalleComandaAdapter detalleComandaAdapter = new DetalleComandaAdapter(
 					getActivity(), R.layout.detalle_comanda_articulo_item,
-					detallesComanda);
+					detallesComanda, false);
 
 			lvDetalles.setAdapter(detalleComandaAdapter);
 		}

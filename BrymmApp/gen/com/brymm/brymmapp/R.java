@@ -763,7 +763,7 @@ public final class R {
         public static final int action_settings=0x7f060001;
         /**  Añadir a comanda 
          */
-        public static final int anadir_a_comanda_no_comanda_activa=0x7f060133;
+        public static final int anadir_a_comanda_no_comanda_activa=0x7f060134;
         public static final int anadir_articulo_aceptar=0x7f060038;
         public static final int anadir_articulo_anadir=0x7f060035;
         public static final int anadir_articulo_cancelar=0x7f060039;
@@ -811,6 +811,7 @@ public final class R {
         public static final int anadir_menu_comanda_anadir=0x7f060131;
         public static final int anadir_menu_comanda_cerrar=0x7f060130;
         public static final int anadir_menu_comanda_no_menu_disponible=0x7f060132;
+        public static final int anadir_menu_comanda_no_plato_seleccionado=0x7f060133;
         public static final int anadir_menu_nombre=0x7f060107;
         public static final int anadir_menu_precio=0x7f060106;
         public static final int anadir_mesa_aceptar=0x7f0600e1;
