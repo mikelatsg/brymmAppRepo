@@ -3,9 +3,12 @@ package com.brymm.brymmapp.menu;
 import android.content.Context;
 import android.content.Intent;
 
+import com.brymm.brymmapp.InicioActivity;
+import com.brymm.brymmapp.LoginActivity;
 import com.brymm.brymmapp.R;
 import com.brymm.brymmapp.local.ArticulosActivity;
 import com.brymm.brymmapp.local.ComandasActivity;
+import com.brymm.brymmapp.local.HomeLocalActivity;
 import com.brymm.brymmapp.local.HorariosActivity;
 import com.brymm.brymmapp.local.MenusActivity;
 import com.brymm.brymmapp.local.PedidosActivity;
@@ -35,10 +38,23 @@ public class MenuLocal {
 			MenuLocal.irMenus(context);
 			return true;
 		case R.id.menuLocalComandas:
-				MenuLocal.irComandas(context);
-				return true;			
+			MenuLocal.irComandas(context);
+			return true;
+		case R.id.menuLocalCerrarSession:
+			MenuLocal.cerrarSesion(context);
+			return true;
 		}
 		return false;
+	}
+
+	public static void cerrarSesion(Context context) {
+		//Cierro la session (quito de sarhed preferences)
+		LoginActivity.setSesionLocal(false, context);
+				
+		Intent intent = new Intent(context, LoginActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(intent);		
 	}
 
 	public static void irArticulos(Context context) {

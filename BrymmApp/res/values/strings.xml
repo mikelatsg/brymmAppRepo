@@ -175,6 +175,7 @@
     <string name="menu_local_reservas">Reservas</string>
     <string name="menu_local_menus">Menus</string>
     <string name="menu_local_comandas">Comandas</string>
+    <string name="menu_local_cerrar_sesion">Cerrar sesion</string>
 
     <!-- Menus contextuales -->
     <string name="context_menu_ingrediente_borrar">Borrar</string>

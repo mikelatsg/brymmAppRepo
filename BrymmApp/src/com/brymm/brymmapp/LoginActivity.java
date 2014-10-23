@@ -1,5 +1,7 @@
 package com.brymm.brymmapp;
 
+import java.util.Calendar;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -12,6 +14,7 @@ import org.json.JSONObject;
 
 import com.brymm.brymmapp.local.HomeLocalActivity;
 import com.brymm.brymmapp.local.bbdd.GestionCamarero;
+import com.brymm.brymmapp.servicios.ServicioActualizacionLocal;
 import com.brymm.brymmapp.servicios.ServicioDatosLocal;
 import com.brymm.brymmapp.servicios.ServicioDatosUsuario;
 import com.brymm.brymmapp.usuario.BuscadorLocalesActivity;
@@ -20,6 +23,8 @@ import com.google.gson.JsonObject;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -497,12 +502,31 @@ public class LoginActivity extends Activity {
 
 		editor.commit();
 	}
+	
+	public static void setSesionLocal(boolean mantenerSesion, Context context) {
+		SharedPreferences sp = context.getSharedPreferences(PREFRENCIAS,
+				Context.MODE_PRIVATE);		
+
+		Editor editor = sp.edit();
+		editor.putBoolean(KEY_GUARDAR_SESION_LOCAL, mantenerSesion);
+
+		editor.commit();
+	}
+	
+	
 
 	public static int getCamarero(Context context) {
 		SharedPreferences sp = context.getApplicationContext()
 				.getSharedPreferences(PREFRENCIAS, Context.MODE_PRIVATE);
 
 		return sp.getInt(KEY_ID_CAMARERO, 0);
+	}
+	
+	public static boolean getSessionLocal(Context context){
+		SharedPreferences sp = context.getApplicationContext()
+				.getSharedPreferences(PREFRENCIAS, Context.MODE_PRIVATE);
+
+		return sp.getBoolean(KEY_GUARDAR_SESION_LOCAL, false);
 	}
 
 	public static boolean esSesionCamarero(Context context) {
@@ -558,4 +582,5 @@ public class LoginActivity extends Activity {
 		}
 
 	}
+	
 }

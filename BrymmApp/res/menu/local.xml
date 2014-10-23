@@ -35,6 +35,11 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/menu_local_comandas"/>
+    <item
+        android:id="@+id/menuLocalCerrarSession"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/menu_local_cerrar_sesion"/>
     
 
 </menu>

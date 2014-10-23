@@ -542,17 +542,18 @@ public final class R {
         public static final int loginUsuarioEtNick=0x7f09003e;
         public static final int loginUsuarioEtPassword=0x7f09003f;
         public static final int menuLocalArticulos=0x7f090231;
+        public static final int menuLocalCerrarSession=0x7f090238;
         public static final int menuLocalComandas=0x7f090237;
         public static final int menuLocalHorarios=0x7f090234;
         public static final int menuLocalMenus=0x7f090236;
         public static final int menuLocalPedidos=0x7f090232;
         public static final int menuLocalReservas=0x7f090235;
         public static final int menuLocalServicios=0x7f090233;
-        public static final int menuUsuarioBuscador=0x7f09023a;
-        public static final int menuUsuarioDirecciones=0x7f090239;
-        public static final int menuUsuarioLocalesFavoritos=0x7f09023b;
-        public static final int menuUsuarioUltimasReservas=0x7f09023c;
-        public static final int menuUsuarioUltimosPedidos=0x7f090238;
+        public static final int menuUsuarioBuscador=0x7f09023b;
+        public static final int menuUsuarioDirecciones=0x7f09023a;
+        public static final int menuUsuarioLocalesFavoritos=0x7f09023c;
+        public static final int menuUsuarioUltimasReservas=0x7f09023d;
+        public static final int menuUsuarioUltimosPedidos=0x7f090239;
         public static final int menusDl=0x7f09004d;
         public static final int menusLlPrincipal=0x7f09004a;
         public static final int menusLvNavegador=0x7f09004c;
@@ -763,86 +764,86 @@ public final class R {
         public static final int action_settings=0x7f060001;
         /**  Añadir a comanda 
          */
-        public static final int anadir_a_comanda_no_comanda_activa=0x7f060134;
+        public static final int anadir_a_comanda_no_comanda_activa=0x7f060135;
         public static final int anadir_articulo_aceptar=0x7f060038;
         public static final int anadir_articulo_anadir=0x7f060035;
         public static final int anadir_articulo_cancelar=0x7f060039;
         public static final int anadir_articulo_cantidad=0x7f060036;
-        public static final int anadir_articulo_comanda_cerrar=0x7f06012a;
+        public static final int anadir_articulo_comanda_cerrar=0x7f06012b;
         public static final int anadir_articulo_ingredientes=0x7f060037;
-        public static final int anadir_articulo_local_aceptar=0x7f0600a0;
-        public static final int anadir_articulo_local_cancelar=0x7f0600a1;
-        public static final int anadir_articulo_local_descripcion=0x7f06009e;
+        public static final int anadir_articulo_local_aceptar=0x7f0600a1;
+        public static final int anadir_articulo_local_cancelar=0x7f0600a2;
+        public static final int anadir_articulo_local_descripcion=0x7f06009f;
         /**  Anadir articulo 
          */
-        public static final int anadir_articulo_local_nombre=0x7f06009d;
-        public static final int anadir_articulo_local_precio=0x7f06009f;
-        public static final int anadir_articulo_local_valido_pedidos=0x7f0600a2;
-        public static final int anadir_articulo_per_comanda_anadir=0x7f06012d;
-        public static final int anadir_articulo_per_comanda_cerrar=0x7f06012c;
-        public static final int anadir_articulo_per_comanda_no_ingrediente_sel=0x7f06012e;
+        public static final int anadir_articulo_local_nombre=0x7f06009e;
+        public static final int anadir_articulo_local_precio=0x7f0600a0;
+        public static final int anadir_articulo_local_valido_pedidos=0x7f0600a3;
+        public static final int anadir_articulo_per_comanda_anadir=0x7f06012e;
+        public static final int anadir_articulo_per_comanda_cerrar=0x7f06012d;
+        public static final int anadir_articulo_per_comanda_no_ingrediente_sel=0x7f06012f;
         public static final int anadir_articulo_personalizado_aceptar=0x7f06003b;
         public static final int anadir_articulo_personalizado_articulo_personalizado=0x7f06003e;
         public static final int anadir_articulo_personalizado_cancelar=0x7f06003c;
         public static final int anadir_articulo_personalizado_cantidad=0x7f06003d;
-        public static final int anadir_dia_cierre_aceptar=0x7f0600da;
-        public static final int anadir_dia_cierre_cancelar=0x7f0600db;
-        public static final int anadir_dia_cierre_fecha=0x7f0600d9;
-        public static final int anadir_direccion_cancelar=0x7f060084;
-        public static final int anadir_direccion_direccion=0x7f060080;
-        public static final int anadir_direccion_guardar=0x7f060083;
-        public static final int anadir_direccion_nombre=0x7f06007f;
-        public static final int anadir_direccion_poblacion=0x7f060081;
-        public static final int anadir_direccion_provincia=0x7f060082;
-        public static final int anadir_horario_local_aceptar=0x7f0600ca;
-        public static final int anadir_horario_local_cancelar=0x7f0600cb;
-        public static final int anadir_horario_local_hora_fin=0x7f0600c9;
+        public static final int anadir_dia_cierre_aceptar=0x7f0600db;
+        public static final int anadir_dia_cierre_cancelar=0x7f0600dc;
+        public static final int anadir_dia_cierre_fecha=0x7f0600da;
+        public static final int anadir_direccion_cancelar=0x7f060085;
+        public static final int anadir_direccion_direccion=0x7f060081;
+        public static final int anadir_direccion_guardar=0x7f060084;
+        public static final int anadir_direccion_nombre=0x7f060080;
+        public static final int anadir_direccion_poblacion=0x7f060082;
+        public static final int anadir_direccion_provincia=0x7f060083;
+        public static final int anadir_horario_local_aceptar=0x7f0600cb;
+        public static final int anadir_horario_local_cancelar=0x7f0600cc;
+        public static final int anadir_horario_local_hora_fin=0x7f0600ca;
         /**  Horarios local 
          */
-        public static final int anadir_horario_local_hora_inicio=0x7f0600c8;
-        public static final int anadir_horario_pedido_aceptar=0x7f0600d2;
-        public static final int anadir_horario_pedido_cancelar=0x7f0600d3;
-        public static final int anadir_horario_pedido_hora_fin=0x7f0600d1;
+        public static final int anadir_horario_local_hora_inicio=0x7f0600c9;
+        public static final int anadir_horario_pedido_aceptar=0x7f0600d3;
+        public static final int anadir_horario_pedido_cancelar=0x7f0600d4;
+        public static final int anadir_horario_pedido_hora_fin=0x7f0600d2;
         /**  Horario pedido 
          */
-        public static final int anadir_horario_pedido_hora_inicio=0x7f0600d0;
-        public static final int anadir_menu_aceptar=0x7f060108;
-        public static final int anadir_menu_cancelar=0x7f060109;
-        public static final int anadir_menu_comanda_anadir=0x7f060131;
-        public static final int anadir_menu_comanda_cerrar=0x7f060130;
-        public static final int anadir_menu_comanda_no_menu_disponible=0x7f060132;
-        public static final int anadir_menu_comanda_no_plato_seleccionado=0x7f060133;
-        public static final int anadir_menu_nombre=0x7f060107;
-        public static final int anadir_menu_precio=0x7f060106;
-        public static final int anadir_mesa_aceptar=0x7f0600e1;
-        public static final int anadir_mesa_cancelar=0x7f0600e2;
+        public static final int anadir_horario_pedido_hora_inicio=0x7f0600d1;
+        public static final int anadir_menu_aceptar=0x7f060109;
+        public static final int anadir_menu_cancelar=0x7f06010a;
+        public static final int anadir_menu_comanda_anadir=0x7f060132;
+        public static final int anadir_menu_comanda_cerrar=0x7f060131;
+        public static final int anadir_menu_comanda_no_menu_disponible=0x7f060133;
+        public static final int anadir_menu_comanda_no_plato_seleccionado=0x7f060134;
+        public static final int anadir_menu_nombre=0x7f060108;
+        public static final int anadir_menu_precio=0x7f060107;
+        public static final int anadir_mesa_aceptar=0x7f0600e2;
+        public static final int anadir_mesa_cancelar=0x7f0600e3;
         /**  ############  Reservas  ########### 
  Mesas 
          */
-        public static final int anadir_mesa_capacidad=0x7f0600df;
-        public static final int anadir_mesa_nombre=0x7f0600e0;
-        public static final int anadir_modificar_ingrediente_aceptar=0x7f06008f;
-        public static final int anadir_modificar_ingrediente_cancelar=0x7f060090;
-        public static final int anadir_modificar_ingrediente_descripcion=0x7f06008e;
-        public static final int anadir_modificar_ingrediente_nombre=0x7f06008c;
-        public static final int anadir_modificar_ingrediente_precio=0x7f06008d;
-        public static final int anadir_plato_aceptar=0x7f0600ff;
-        public static final int anadir_plato_cancelar=0x7f060100;
-        public static final int anadir_plato_nombre=0x7f0600fe;
+        public static final int anadir_mesa_capacidad=0x7f0600e0;
+        public static final int anadir_mesa_nombre=0x7f0600e1;
+        public static final int anadir_modificar_ingrediente_aceptar=0x7f060090;
+        public static final int anadir_modificar_ingrediente_cancelar=0x7f060091;
+        public static final int anadir_modificar_ingrediente_descripcion=0x7f06008f;
+        public static final int anadir_modificar_ingrediente_nombre=0x7f06008d;
+        public static final int anadir_modificar_ingrediente_precio=0x7f06008e;
+        public static final int anadir_plato_aceptar=0x7f060100;
+        public static final int anadir_plato_cancelar=0x7f060101;
+        public static final int anadir_plato_nombre=0x7f0600ff;
         /**  ############  Menus local  ########### 
  Platos 
          */
-        public static final int anadir_plato_precio=0x7f0600fd;
+        public static final int anadir_plato_precio=0x7f0600fe;
         /**  Anadir serivicio 
          */
-        public static final int anadir_servicio_importe_minimo=0x7f0600c1;
-        public static final int anadir_servicio_precio=0x7f0600c2;
+        public static final int anadir_servicio_importe_minimo=0x7f0600c2;
+        public static final int anadir_servicio_precio=0x7f0600c3;
         /**  Anadir tipo articulo 
          */
-        public static final int anadir_tipo_articulo_aceptar=0x7f060095;
-        public static final int anadir_tipo_articulo_cancelar=0x7f060096;
+        public static final int anadir_tipo_articulo_aceptar=0x7f060096;
+        public static final int anadir_tipo_articulo_cancelar=0x7f060097;
         public static final int app_name=0x7f060000;
-        public static final int articulos_anadir=0x7f060099;
+        public static final int articulos_anadir=0x7f06009a;
         public static final int buscador_local_buscar=0x7f060019;
         public static final int buscador_local_calle=0x7f060016;
         public static final int buscador_local_codigo_postal=0x7f060018;
@@ -853,91 +854,91 @@ public final class R {
         public static final int buscador_local_poblacion=0x7f060017;
         public static final int buscador_local_tipo_comida=0x7f06001a;
         public static final int buscador_local_todas=0x7f06001b;
-        public static final int context_menu_articulo_borrar=0x7f060065;
-        public static final int context_menu_articulo_modificar=0x7f060066;
-        public static final int context_menu_dia_cierre_borrar=0x7f060072;
-        public static final int context_menu_direccion_borrar=0x7f060068;
-        public static final int context_menu_direccion_modificar=0x7f060069;
-        public static final int context_menu_favoritos_eliminar=0x7f06006a;
-        public static final int context_menu_horario_local_borrar=0x7f060070;
-        public static final int context_menu_horario_pedido_borrar=0x7f060071;
+        public static final int context_menu_articulo_borrar=0x7f060066;
+        public static final int context_menu_articulo_modificar=0x7f060067;
+        public static final int context_menu_dia_cierre_borrar=0x7f060073;
+        public static final int context_menu_direccion_borrar=0x7f060069;
+        public static final int context_menu_direccion_modificar=0x7f06006a;
+        public static final int context_menu_favoritos_eliminar=0x7f06006b;
+        public static final int context_menu_horario_local_borrar=0x7f060071;
+        public static final int context_menu_horario_pedido_borrar=0x7f060072;
         /**  Menus contextuales 
          */
-        public static final int context_menu_ingrediente_borrar=0x7f060061;
-        public static final int context_menu_ingrediente_modificar=0x7f060062;
-        public static final int context_menu_menu_borrar=0x7f060077;
-        public static final int context_menu_menu_dia_asignar_plato=0x7f060079;
-        public static final int context_menu_menu_dia_borrar=0x7f06007b;
-        public static final int context_menu_menu_dia_desasignar_plato=0x7f06007a;
-        public static final int context_menu_menu_modificar=0x7f060078;
-        public static final int context_menu_mesa_borrar=0x7f060073;
-        public static final int context_menu_mesa_modificar=0x7f060074;
-        public static final int context_menu_pedido_borrar_articulo=0x7f060067;
-        public static final int context_menu_plato_borrar=0x7f060075;
-        public static final int context_menu_plato_modificar=0x7f060076;
-        public static final int context_menu_reserva_anular=0x7f06006b;
-        public static final int context_menu_reserva_asignar_mesa=0x7f0600ee;
-        public static final int context_menu_reserva_desasignar_mesa=0x7f0600ef;
-        public static final int context_menu_servicio_activar=0x7f06006e;
-        public static final int context_menu_servicio_borrar=0x7f06006d;
-        public static final int context_menu_servicio_desactivar=0x7f06006f;
-        public static final int context_menu_servicio_modificar=0x7f06006c;
-        public static final int context_menu_tipo_articulo_borrar=0x7f060063;
-        public static final int context_menu_tipo_articulo_modificar=0x7f060064;
-        public static final int crear_comanda_anadir_articulo=0x7f060120;
-        public static final int crear_comanda_anadir_articulo_per=0x7f060121;
-        public static final int crear_comanda_anadir_menu=0x7f060122;
-        public static final int crear_comanda_cancelar_comanda=0x7f060123;
+        public static final int context_menu_ingrediente_borrar=0x7f060062;
+        public static final int context_menu_ingrediente_modificar=0x7f060063;
+        public static final int context_menu_menu_borrar=0x7f060078;
+        public static final int context_menu_menu_dia_asignar_plato=0x7f06007a;
+        public static final int context_menu_menu_dia_borrar=0x7f06007c;
+        public static final int context_menu_menu_dia_desasignar_plato=0x7f06007b;
+        public static final int context_menu_menu_modificar=0x7f060079;
+        public static final int context_menu_mesa_borrar=0x7f060074;
+        public static final int context_menu_mesa_modificar=0x7f060075;
+        public static final int context_menu_pedido_borrar_articulo=0x7f060068;
+        public static final int context_menu_plato_borrar=0x7f060076;
+        public static final int context_menu_plato_modificar=0x7f060077;
+        public static final int context_menu_reserva_anular=0x7f06006c;
+        public static final int context_menu_reserva_asignar_mesa=0x7f0600ef;
+        public static final int context_menu_reserva_desasignar_mesa=0x7f0600f0;
+        public static final int context_menu_servicio_activar=0x7f06006f;
+        public static final int context_menu_servicio_borrar=0x7f06006e;
+        public static final int context_menu_servicio_desactivar=0x7f060070;
+        public static final int context_menu_servicio_modificar=0x7f06006d;
+        public static final int context_menu_tipo_articulo_borrar=0x7f060064;
+        public static final int context_menu_tipo_articulo_modificar=0x7f060065;
+        public static final int crear_comanda_anadir_articulo=0x7f060121;
+        public static final int crear_comanda_anadir_articulo_per=0x7f060122;
+        public static final int crear_comanda_anadir_menu=0x7f060123;
+        public static final int crear_comanda_cancelar_comanda=0x7f060124;
         /**  Crear comandas 
          */
-        public static final int crear_comanda_enviar_comanda=0x7f06011f;
-        public static final int crear_comanda_err_camarero=0x7f060128;
-        public static final int crear_comanda_mesa=0x7f060126;
-        public static final int crear_comanda_nombre_de=0x7f060127;
-        public static final int crear_comanda_observaciones=0x7f060124;
-        public static final int crear_comanda_precio=0x7f060125;
+        public static final int crear_comanda_enviar_comanda=0x7f060120;
+        public static final int crear_comanda_err_camarero=0x7f060129;
+        public static final int crear_comanda_mesa=0x7f060127;
+        public static final int crear_comanda_nombre_de=0x7f060128;
+        public static final int crear_comanda_observaciones=0x7f060125;
+        public static final int crear_comanda_precio=0x7f060126;
         /**  Detalle comanda 
          */
-        public static final int detalle_comanda_cancelar_comanda=0x7f060119;
-        public static final int detalle_comanda_cerrar=0x7f06011b;
-        public static final int detalle_comanda_terminar=0x7f06011a;
-        public static final int detalle_menu_dia_cancelar=0x7f06010e;
+        public static final int detalle_comanda_cancelar_comanda=0x7f06011a;
+        public static final int detalle_comanda_cerrar=0x7f06011c;
+        public static final int detalle_comanda_terminar=0x7f06011b;
+        public static final int detalle_menu_dia_cancelar=0x7f06010f;
         /**  Menu dia 
          */
-        public static final int detalle_menu_dia_platos_menu=0x7f06010c;
-        public static final int detalle_menu_dia_resto_platos=0x7f06010d;
-        public static final int detalle_pedido_aceptar=0x7f0600ae;
-        public static final int detalle_pedido_cancelar=0x7f0600ac;
-        public static final int detalle_pedido_direccion=0x7f0600a9;
-        public static final int detalle_pedido_estado=0x7f0600aa;
-        public static final int detalle_pedido_fecha_entrega=0x7f0600a6;
-        public static final int detalle_pedido_fecha_pedido=0x7f0600a7;
-        public static final int detalle_pedido_id_pedido=0x7f0600a5;
-        public static final int detalle_pedido_precio=0x7f0600a8;
-        public static final int detalle_pedido_rechazar=0x7f0600ad;
-        public static final int detalle_pedido_terminar=0x7f0600af;
-        public static final int detalle_pedido_usuario=0x7f0600ab;
+        public static final int detalle_menu_dia_platos_menu=0x7f06010d;
+        public static final int detalle_menu_dia_resto_platos=0x7f06010e;
+        public static final int detalle_pedido_aceptar=0x7f0600af;
+        public static final int detalle_pedido_cancelar=0x7f0600ad;
+        public static final int detalle_pedido_direccion=0x7f0600aa;
+        public static final int detalle_pedido_estado=0x7f0600ab;
+        public static final int detalle_pedido_fecha_entrega=0x7f0600a7;
+        public static final int detalle_pedido_fecha_pedido=0x7f0600a8;
+        public static final int detalle_pedido_id_pedido=0x7f0600a6;
+        public static final int detalle_pedido_precio=0x7f0600a9;
+        public static final int detalle_pedido_rechazar=0x7f0600ae;
+        public static final int detalle_pedido_terminar=0x7f0600b0;
+        public static final int detalle_pedido_usuario=0x7f0600ac;
         /**  Detalle reserva 
          */
-        public static final int detalle_reserva_aceptar=0x7f0600e6;
-        public static final int detalle_reserva_cancelar=0x7f0600e8;
-        public static final int detalle_reserva_mesas_asignadas=0x7f0600ea;
-        public static final int detalle_reserva_mesas_libres=0x7f0600e9;
-        public static final int detalle_reserva_rechazar=0x7f0600e7;
+        public static final int detalle_reserva_aceptar=0x7f0600e7;
+        public static final int detalle_reserva_cancelar=0x7f0600e9;
+        public static final int detalle_reserva_mesas_asignadas=0x7f0600eb;
+        public static final int detalle_reserva_mesas_libres=0x7f0600ea;
+        public static final int detalle_reserva_rechazar=0x7f0600e8;
         /**  Dialog hora 
          */
-        public static final int dialog_hora_aceptar=0x7f0600ce;
-        public static final int dialog_hora_cancelar=0x7f0600cf;
-        public static final int dialog_rechazar_pedido_aceptar=0x7f0600b1;
-        public static final int dialog_rechazar_pedido_cancelar=0x7f0600b2;
-        public static final int dialog_rechazar_pedido_motivo=0x7f0600b0;
-        public static final int dialog_rechazar_reserva_aceptar=0x7f0600ec;
-        public static final int dialog_rechazar_reserva_cancelar=0x7f0600ed;
-        public static final int dialog_rechazar_reserva_motivo=0x7f0600eb;
+        public static final int dialog_hora_aceptar=0x7f0600cf;
+        public static final int dialog_hora_cancelar=0x7f0600d0;
+        public static final int dialog_rechazar_pedido_aceptar=0x7f0600b2;
+        public static final int dialog_rechazar_pedido_cancelar=0x7f0600b3;
+        public static final int dialog_rechazar_pedido_motivo=0x7f0600b1;
+        public static final int dialog_rechazar_reserva_aceptar=0x7f0600ed;
+        public static final int dialog_rechazar_reserva_cancelar=0x7f0600ee;
+        public static final int dialog_rechazar_reserva_motivo=0x7f0600ec;
         /**  Dias cierre 
          */
-        public static final int dias_cierre_anadir=0x7f0600d8;
-        public static final int direcciones_anadir=0x7f06007d;
+        public static final int dias_cierre_anadir=0x7f0600d9;
+        public static final int direcciones_anadir=0x7f06007e;
         public static final int hacer_pedido_anadir_articulo=0x7f060024;
         public static final int hacer_pedido_anadir_articulo_personalizado=0x7f060025;
         public static final int hacer_pedido_enviar_a=0x7f060028;
@@ -947,45 +948,45 @@ public final class R {
         public static final int hacer_pedido_retrasar_pedido=0x7f06002b;
         public static final int hacer_pedido_terminar_pedido=0x7f060026;
         public static final int hello_world=0x7f060013;
-        public static final int horario_pedido_anadir=0x7f0600d4;
-        public static final int ingredientes_anadir=0x7f060088;
-        public static final int item_articulo_cantidad_cantidad=0x7f0600bd;
+        public static final int horario_pedido_anadir=0x7f0600d5;
+        public static final int ingredientes_anadir=0x7f060089;
+        public static final int item_articulo_cantidad_cantidad=0x7f0600be;
         /**  Articulo cantidad adapter 
          */
-        public static final int item_articulo_cantidad_descripcion=0x7f0600ba;
-        public static final int item_articulo_cantidad_precio_total=0x7f0600bc;
-        public static final int item_articulo_cantidad_precio_unidad=0x7f0600bb;
+        public static final int item_articulo_cantidad_descripcion=0x7f0600bb;
+        public static final int item_articulo_cantidad_precio_total=0x7f0600bd;
+        public static final int item_articulo_cantidad_precio_unidad=0x7f0600bc;
         /**  Item articulo 
          */
-        public static final int item_articulo_descripcion=0x7f06009a;
-        public static final int item_articulo_precio=0x7f06009b;
-        public static final int item_articulo_valido_pedidos=0x7f06009c;
-        public static final int item_comanda_camarero=0x7f060113;
+        public static final int item_articulo_descripcion=0x7f06009b;
+        public static final int item_articulo_precio=0x7f06009c;
+        public static final int item_articulo_valido_pedidos=0x7f06009d;
+        public static final int item_comanda_camarero=0x7f060114;
         /**  Comanda adapter 
          */
-        public static final int item_comanda_comanda=0x7f060112;
-        public static final int item_comanda_estado=0x7f060115;
-        public static final int item_comanda_mesa=0x7f060117;
-        public static final int item_comanda_observaciones=0x7f060116;
-        public static final int item_comanda_precio=0x7f060114;
-        public static final int item_comanda_terminar=0x7f060118;
-        public static final int item_detalle_comanda_articulo_cantidad=0x7f06011e;
-        public static final int item_detalle_comanda_articulo_precio_total=0x7f06011d;
+        public static final int item_comanda_comanda=0x7f060113;
+        public static final int item_comanda_estado=0x7f060116;
+        public static final int item_comanda_mesa=0x7f060118;
+        public static final int item_comanda_observaciones=0x7f060117;
+        public static final int item_comanda_precio=0x7f060115;
+        public static final int item_comanda_terminar=0x7f060119;
+        public static final int item_detalle_comanda_articulo_cantidad=0x7f06011f;
+        public static final int item_detalle_comanda_articulo_precio_total=0x7f06011e;
         /**  Detalle comanda articulo adapter 
          */
-        public static final int item_detalle_comanda_articulo_precio_unidad=0x7f06011c;
-        public static final int item_horario_local_hora_fin=0x7f0600cd;
+        public static final int item_detalle_comanda_articulo_precio_unidad=0x7f06011d;
+        public static final int item_horario_local_hora_fin=0x7f0600ce;
         /**  Horario local adapter 
          */
-        public static final int item_horario_local_hora_inicio=0x7f0600cc;
-        public static final int item_horario_pedido_hora_fin=0x7f0600d6;
+        public static final int item_horario_local_hora_inicio=0x7f0600cd;
+        public static final int item_horario_pedido_hora_fin=0x7f0600d7;
         /**  Horario pedido adapter 
          */
-        public static final int item_horario_pedido_hora_inicio=0x7f0600d5;
+        public static final int item_horario_pedido_hora_inicio=0x7f0600d6;
         /**  Item ingrediente 
          */
-        public static final int item_ingrediente_descripcion=0x7f060089;
-        public static final int item_ingrediente_precio=0x7f06008a;
+        public static final int item_ingrediente_descripcion=0x7f06008a;
+        public static final int item_ingrediente_precio=0x7f06008b;
         public static final int item_pedido_direccion=0x7f060044;
         public static final int item_pedido_estado=0x7f060045;
         public static final int item_pedido_fecha_entrega=0x7f060041;
@@ -994,26 +995,26 @@ public final class R {
          */
         public static final int item_pedido_id_pedido=0x7f06003f;
         public static final int item_pedido_local=0x7f060040;
-        public static final int item_pedido_local_direccion=0x7f0600b8;
-        public static final int item_pedido_local_estado=0x7f0600b9;
-        public static final int item_pedido_local_fecha_entrega=0x7f0600b5;
-        public static final int item_pedido_local_fecha_pedido=0x7f0600b6;
+        public static final int item_pedido_local_direccion=0x7f0600b9;
+        public static final int item_pedido_local_estado=0x7f0600ba;
+        public static final int item_pedido_local_fecha_entrega=0x7f0600b6;
+        public static final int item_pedido_local_fecha_pedido=0x7f0600b7;
         /**  Pedido local adapter 
          */
-        public static final int item_pedido_local_id_pedido=0x7f0600b3;
-        public static final int item_pedido_local_precio=0x7f0600b7;
-        public static final int item_pedido_local_usuario=0x7f0600b4;
+        public static final int item_pedido_local_id_pedido=0x7f0600b4;
+        public static final int item_pedido_local_precio=0x7f0600b8;
+        public static final int item_pedido_local_usuario=0x7f0600b5;
         public static final int item_pedido_precio=0x7f060043;
-        public static final int item_servicio_activo=0x7f0600c5;
-        public static final int item_servicio_importe_minimo=0x7f0600c4;
+        public static final int item_servicio_activo=0x7f0600c6;
+        public static final int item_servicio_importe_minimo=0x7f0600c5;
         /**  Servicio adapter 
          */
-        public static final int item_servicio_precio=0x7f0600c3;
-        public static final int item_tipo_articulo_personalizar=0x7f060094;
+        public static final int item_servicio_precio=0x7f0600c4;
+        public static final int item_tipo_articulo_personalizar=0x7f060095;
         /**  Lista tipos articulo 
          */
-        public static final int item_tipo_articulo_precio=0x7f060093;
-        public static final int lista_menu_dia_anadir=0x7f06010f;
+        public static final int item_tipo_articulo_precio=0x7f060094;
+        public static final int lista_menu_dia_anadir=0x7f060110;
         public static final int login_local_aceptar=0x7f060011;
         public static final int login_local_camarero=0x7f06000d;
         public static final int login_local_error_login=0x7f060012;
@@ -1032,14 +1033,15 @@ public final class R {
         /**  Login usuario 
          */
         public static final int login_usuario_tab_usuario=0x7f060005;
-        public static final int menu_adapter_carta=0x7f060104;
+        public static final int menu_adapter_carta=0x7f060105;
         /**  Menus 
          */
-        public static final int menu_adapter_menu=0x7f060103;
-        public static final int menu_anadir=0x7f060105;
+        public static final int menu_adapter_menu=0x7f060104;
+        public static final int menu_anadir=0x7f060106;
         /**  Menu local 
          */
         public static final int menu_local_articulos=0x7f06005a;
+        public static final int menu_local_cerrar_sesion=0x7f060061;
         public static final int menu_local_comandas=0x7f060060;
         public static final int menu_local_horarios=0x7f06005d;
         public static final int menu_local_menus=0x7f06005f;
@@ -1054,22 +1056,22 @@ public final class R {
  Menu Usuario 
          */
         public static final int menu_usuario_ultimos_pedidos=0x7f060055;
-        public static final int mesa_anadir=0x7f0600e3;
+        public static final int mesa_anadir=0x7f0600e4;
         public static final int mostrar_local_anadir_favorito=0x7f060021;
         public static final int mostrar_local_direccion=0x7f06001f;
         /**  Mostrar locales 
          */
         public static final int mostrar_local_telefono=0x7f06001e;
         public static final int mostrar_local_tipo_comida=0x7f060020;
-        public static final int nueva_reserva_local_cancelar=0x7f0600f4;
-        public static final int nueva_reserva_local_fecha=0x7f0600f0;
-        public static final int nueva_reserva_local_hora=0x7f0600f1;
-        public static final int nueva_reserva_local_mesas_asignadas=0x7f0600f8;
-        public static final int nueva_reserva_local_mesas_libres=0x7f0600f7;
-        public static final int nueva_reserva_local_nombre_de=0x7f0600f5;
-        public static final int nueva_reserva_local_numero_personas=0x7f0600f2;
-        public static final int nueva_reserva_local_observaciones=0x7f0600f6;
-        public static final int nueva_reserva_local_realizar_reserva=0x7f0600f3;
+        public static final int nueva_reserva_local_cancelar=0x7f0600f5;
+        public static final int nueva_reserva_local_fecha=0x7f0600f1;
+        public static final int nueva_reserva_local_hora=0x7f0600f2;
+        public static final int nueva_reserva_local_mesas_asignadas=0x7f0600f9;
+        public static final int nueva_reserva_local_mesas_libres=0x7f0600f8;
+        public static final int nueva_reserva_local_nombre_de=0x7f0600f6;
+        public static final int nueva_reserva_local_numero_personas=0x7f0600f3;
+        public static final int nueva_reserva_local_observaciones=0x7f0600f7;
+        public static final int nueva_reserva_local_realizar_reserva=0x7f0600f4;
         /**  Obtener menu 
          */
         public static final int obtener_menu_fecha=0x7f060032;
@@ -1083,63 +1085,63 @@ public final class R {
         public static final int pedido_motivo_rechazo=0x7f06004f;
         public static final int pedido_observaciones=0x7f060050;
         public static final int pedido_precio=0x7f06004c;
-        public static final int plato_anadir=0x7f060101;
+        public static final int plato_anadir=0x7f060102;
         public static final int progress_dialog_pedido=0x7f060052;
         /**  dialogos de carga, toast 
          */
         public static final int progress_dialog_realizando_operacion=0x7f060051;
-        public static final int reserva_anadir=0x7f0600e4;
+        public static final int reserva_anadir=0x7f0600e5;
         public static final int reservar_aceptar=0x7f060030;
         public static final int reservar_cancelar=0x7f060031;
         public static final int reservar_fecha=0x7f06002d;
         public static final int reservar_numero_personas=0x7f06002e;
         public static final int reservar_realizar_reserva=0x7f06002f;
-        public static final int reservas_dia_abrir_reservas=0x7f0600fb;
-        public static final int reservas_dia_cerrar_reservas=0x7f0600fa;
-        public static final int servicios_anadir=0x7f0600c0;
-        public static final int tipos_articulo_anadir=0x7f060092;
+        public static final int reservas_dia_abrir_reservas=0x7f0600fc;
+        public static final int reservas_dia_cerrar_reservas=0x7f0600fb;
+        public static final int servicios_anadir=0x7f0600c1;
+        public static final int tipos_articulo_anadir=0x7f060093;
         /**  Añadir articulo 
          */
         public static final int title_activity_anadir_articulo=0x7f060034;
         /**  Anadir articulo comanda 
          */
-        public static final int title_activity_anadir_articulo_comanda=0x7f060129;
-        public static final int title_activity_anadir_articulo_local=0x7f060098;
+        public static final int title_activity_anadir_articulo_comanda=0x7f06012a;
+        public static final int title_activity_anadir_articulo_local=0x7f060099;
         /**  Anadir articulo personalizado comanda 
          */
-        public static final int title_activity_anadir_articulo_per_comanda=0x7f06012b;
+        public static final int title_activity_anadir_articulo_per_comanda=0x7f06012c;
         /**  Añadir articulo personalizado 
          */
         public static final int title_activity_anadir_articulo_personalizado=0x7f06003a;
-        public static final int title_activity_anadir_dia_cierre=0x7f0600dc;
+        public static final int title_activity_anadir_dia_cierre=0x7f0600dd;
         /**  Añadir direccion 
          */
-        public static final int title_activity_anadir_direccion=0x7f06007e;
-        public static final int title_activity_anadir_horario=0x7f0600c7;
-        public static final int title_activity_anadir_horario_pedido=0x7f0600d7;
-        public static final int title_activity_anadir_menu=0x7f06010a;
+        public static final int title_activity_anadir_direccion=0x7f06007f;
+        public static final int title_activity_anadir_horario=0x7f0600c8;
+        public static final int title_activity_anadir_horario_pedido=0x7f0600d8;
+        public static final int title_activity_anadir_menu=0x7f06010b;
         /**  Anadir menu comanda 
          */
-        public static final int title_activity_anadir_menu_comanda=0x7f06012f;
-        public static final int title_activity_anadir_mesa=0x7f0600de;
+        public static final int title_activity_anadir_menu_comanda=0x7f060130;
+        public static final int title_activity_anadir_mesa=0x7f0600df;
         /**  Anadir ingrediente 
          */
-        public static final int title_activity_anadir_modificar=0x7f06008b;
-        public static final int title_activity_anadir_plato=0x7f060102;
-        public static final int title_activity_anadir_reserva=0x7f0600e5;
-        public static final int title_activity_anadir_servicio=0x7f0600bf;
+        public static final int title_activity_anadir_modificar=0x7f06008c;
+        public static final int title_activity_anadir_plato=0x7f060103;
+        public static final int title_activity_anadir_reserva=0x7f0600e6;
+        public static final int title_activity_anadir_servicio=0x7f0600c0;
         /**  ############  Articulos  ########### 
          */
-        public static final int title_activity_articulos=0x7f060097;
+        public static final int title_activity_articulos=0x7f060098;
         public static final int title_activity_buscador_locales=0x7f060014;
         /**  ############### Comandas ################ 
          */
-        public static final int title_activity_comandas=0x7f060111;
-        public static final int title_activity_detalle_menu_dia=0x7f060110;
-        public static final int title_activity_detalle_pedido=0x7f0600a4;
+        public static final int title_activity_comandas=0x7f060112;
+        public static final int title_activity_detalle_menu_dia=0x7f060111;
+        public static final int title_activity_detalle_pedido=0x7f0600a5;
         /**  Direcciones 
          */
-        public static final int title_activity_direcciones=0x7f06007c;
+        public static final int title_activity_direcciones=0x7f06007d;
         /**  Hacer pedido 
          */
         public static final int title_activity_hacer_pedido_fragment=0x7f060023;
@@ -1147,35 +1149,35 @@ public final class R {
         public static final int title_activity_home_usuario=0x7f060003;
         /**  ############  Horarios  ########### 
          */
-        public static final int title_activity_horarios=0x7f0600c6;
+        public static final int title_activity_horarios=0x7f0600c7;
         /**  ###############################  Local  ############################### 
  ############  Ingredientes  ########### 
          */
-        public static final int title_activity_ingredientes=0x7f060087;
-        public static final int title_activity_lista_reservas_dia=0x7f0600f9;
-        public static final int title_activity_locales_favoritos=0x7f060085;
+        public static final int title_activity_ingredientes=0x7f060088;
+        public static final int title_activity_lista_reservas_dia=0x7f0600fa;
+        public static final int title_activity_locales_favoritos=0x7f060086;
         /**  Activities 
          */
         public static final int title_activity_login=0x7f060002;
-        public static final int title_activity_menus=0x7f0600fc;
-        public static final int title_activity_menus_dia=0x7f06010b;
+        public static final int title_activity_menus=0x7f0600fd;
+        public static final int title_activity_menus_dia=0x7f06010c;
         public static final int title_activity_mostrar_local=0x7f060022;
         public static final int title_activity_mostrar_locales=0x7f06001d;
         public static final int title_activity_pedido=0x7f060047;
         /**  ############  Pedidos  ########### 
          */
-        public static final int title_activity_pedidos=0x7f0600a3;
+        public static final int title_activity_pedidos=0x7f0600a4;
         /**  Reservar 
          */
         public static final int title_activity_reservar_fragment=0x7f06002c;
-        public static final int title_activity_reservas=0x7f0600dd;
+        public static final int title_activity_reservas=0x7f0600de;
         /**  ############  Servicios  ########### 
          */
-        public static final int title_activity_servicios=0x7f0600be;
+        public static final int title_activity_servicios=0x7f0600bf;
         /**  ############  Tipos Articulo  ########### 
          */
-        public static final int title_activity_tipos_articulo=0x7f060091;
-        public static final int title_activity_ultimas_reservas=0x7f060086;
+        public static final int title_activity_tipos_articulo=0x7f060092;
+        public static final int title_activity_ultimas_reservas=0x7f060087;
         /**  Pedido 
          */
         public static final int title_activity_ultimos_pedidos=0x7f060046;
