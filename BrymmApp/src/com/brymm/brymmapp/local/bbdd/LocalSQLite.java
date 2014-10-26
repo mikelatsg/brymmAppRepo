@@ -484,15 +484,19 @@ public class LocalSQLite extends SQLiteOpenHelper {
 	public static final String COLUMN_CMR_ID_CAMARERO = "id_camarero";
 	public static final String COLUMN_CMR_NOMBRE = "nombre";
 	public static final String COLUMN_CMR_ACTIVO = "activo";
-	public static final String COLUMN_CMR_CONTROL_TOTAL = "control_total";
-
+	public static final String COLUMN_CMR_CONTROL_TOTAL = "control_total";	
+	
 	private static final String CREATE_TABLE_CAMARERO = "CREATE TABLE "
 			+ TABLE_CAMARERO + "(" + COLUMN_CMR_ID_CAMARERO
 			+ " INTEGER PRIMARY KEY ," + COLUMN_CMR_NOMBRE + " TEXT NOT NULL ,"
 			+ COLUMN_CMR_ACTIVO + " INTEGER NOT NULL ,"
 			+ COLUMN_CMR_CONTROL_TOTAL + " INTEGER NOT NULL  )";
-
 	
+	public static final String TABLE_ACTUALIZACION = "actualizacion";
+	public static final String COLUMN_ACT_FECHA = "fecha";
+
+	private static final String CREATE_TABLE_ACTUALIZACIONES = "CREATE TABLE "
+			+ TABLE_ACTUALIZACION + "(" + COLUMN_ACT_FECHA + " TEXT NOT NULL )";			
 
 	public LocalSQLite(Context context) {
 		super(context, context.getExternalFilesDir(null).getAbsolutePath()
@@ -533,7 +537,8 @@ public class LocalSQLite extends SQLiteOpenHelper {
 		database.execSQL(CREATE_TABLE_COMANDA_ARTICULO_PER);
 		database.execSQL(CREATE_TABLE_DETALLE_COMANDA);
 		database.execSQL(CREATE_TABLE_COMANDAS);
-		database.execSQL(CREATE_TABLE_CAMARERO);		
+		database.execSQL(CREATE_TABLE_CAMARERO);
+		database.execSQL(CREATE_TABLE_ACTUALIZACIONES);		
 	}
 
 	@Override

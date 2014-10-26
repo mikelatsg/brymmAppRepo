@@ -3,13 +3,15 @@ package com.brymm.brymmapp.servicios;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.brymm.brymmapp.LoginActivity;
+import com.brymm.brymmapp.local.bbdd.GestionActualizaciones;
 import com.brymm.brymmapp.local.bbdd.GestionArticulo;
 import com.brymm.brymmapp.local.bbdd.GestionCamarero;
 import com.brymm.brymmapp.local.bbdd.GestionComanda;
@@ -54,6 +56,8 @@ import com.brymm.brymmapp.local.pojo.TipoMenu;
 import com.brymm.brymmapp.local.pojo.TipoPlato;
 import com.brymm.brymmapp.local.pojo.TipoServicio;
 import com.brymm.brymmapp.local.pojo.HorarioPedido;
+import com.brymm.brymmapp.util.Resultado;
+import com.google.gson.JsonObject;
 
 import android.app.Service;
 import android.content.Intent;
@@ -81,9 +85,19 @@ public class ServicioActualizacionLocal extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		int idLocal = intent.getIntExtra(LoginActivity.EXTRA_ID_LOCAL, -1);
+		int idLocal = LoginActivity.getLocal(this);
+		GestionActualizaciones ga = new GestionActualizaciones(this);
+		String fecha = ga.obtenerUltimaFechaActualizacion();
+		ga.cerrarDatabase();
 
-		Toast.makeText(getApplicationContext(), "Service Running ", 1).show();
+		if (idLocal > 0) {
+			DatosLocal dl = new DatosLocal();
+			dl.execute(Integer.toString(idLocal),
+					fecha);
+		}
+
+		Toast.makeText(getApplicationContext(),
+				"Service Running " + Integer.toString(idLocal), 1).show();
 		return START_REDELIVER_INTENT;
 	}
 
@@ -98,29 +112,41 @@ public class ServicioActualizacionLocal extends Service {
 		super.onDestroy();
 	}
 
-	private JSONObject obtenerDatosLocal(int idLocal) {
+	private JSONObject obtenerActualicacionDatosLocal(int idLocal, String fecha) {
 		String respStr;
 		JSONObject respJSON = null;
 		HttpClient httpClient = new DefaultHttpClient();
 
 		try {
-			String url = LoginActivity.SITE_URL
-					+ "/api/locales/datosLocal/idLocal/" + idLocal
-					+ "/format/json";
 
-			HttpGet httpGet = new HttpGet(url);
-			httpGet.setHeader("content-type", "application/json");
-			HttpResponse resp = httpClient.execute(httpGet);
+			String url = LoginActivity.SITE_URL
+					+ "/api/alertas/obtenerAlertasLocal/format/json";
+
+			HttpPost httpPost = new HttpPost(url);
+
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty(GestionArticulo.JSON_ID_LOCAL,
+					LoginActivity.getLocal(this));
+			jsonObject.addProperty(GestionActualizaciones.JSON_FECHA, fecha);
+
+			StringEntity se = new StringEntity(jsonObject.toString());
+
+			// 6. set httpPost Entity
+			httpPost.setEntity(se);
+
+			// 7. Set some headers to inform server about the type of the
+			// content
+			httpPost.setHeader("Accept", "application/json");
+			httpPost.setHeader("Content-type", "application/json");
+			HttpResponse httpResponse = httpClient.execute(httpPost);
 
 			/*
 			 * Si el codigo de retorno es diferente de 200 se devuelve el objeto
 			 * nulo
 			 */
-			respStr = EntityUtils.toString(resp.getEntity());
-			// Log.w("res", respStr);
-			if (resp.getStatusLine().getStatusCode() == LoginActivity.CODE_LOGIN_OK) {
-				respJSON = new JSONObject(respStr);
-			}
+			respStr = EntityUtils.toString(httpResponse.getEntity());
+			Log.d("resultado", respStr);
+			respJSON = new JSONObject(respStr);
 
 		} catch (Exception ex) {
 			respJSON = null;
@@ -130,20 +156,36 @@ public class ServicioActualizacionLocal extends Service {
 		return respJSON;
 	}
 
-	
-	public class DatosLocal extends AsyncTask<Integer, Void, JSONObject> {
+	public class DatosLocal extends AsyncTask<String, Void, Void> {
 
 		@Override
-		protected JSONObject doInBackground(Integer... params) {
-			return obtenerDatosLocal(params[0]);
+		protected Void doInBackground(String... params) {
+
+			JSONObject respJSON = null;
+			respJSON = obtenerActualicacionDatosLocal(
+					Integer.parseInt(params[0]), params[1]);
+
+			boolean operacionOk;
+			try {
+				operacionOk = respJSON.getInt(Resultado.JSON_OPERACION_OK) == 0 ? false
+						: true;
+
+				if (operacionOk) {
+					GestionActualizaciones ga = new GestionActualizaciones(
+							ServicioActualizacionLocal.this);
+					ga.guardarActualizacion();
+					ga.cerrarDatabase();
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			return null;
+
 		}
 
 		@Override
-		protected void onPostExecute(JSONObject respJSON) {
-			super.onPostExecute(respJSON);
-			if (respJSON != null) {
-
-			}
+		protected void onPostExecute(Void v) {
+			super.onPostExecute(v);
 		}
 
 	}

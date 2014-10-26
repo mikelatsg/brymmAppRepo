@@ -1,5 +1,7 @@
 package com.brymm.brymmapp.servicios;
 
+import java.util.Calendar;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -10,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.brymm.brymmapp.LoginActivity;
+import com.brymm.brymmapp.local.bbdd.GestionActualizaciones;
 import com.brymm.brymmapp.local.bbdd.GestionArticulo;
 import com.brymm.brymmapp.local.bbdd.GestionCamarero;
 import com.brymm.brymmapp.local.bbdd.GestionComanda;
@@ -82,6 +85,11 @@ public class ServicioDatosLocal extends Service {
 		int idLocal = intent.getIntExtra(LoginActivity.EXTRA_ID_LOCAL, -1);
 
 		if (idLocal > 0) {
+			// Guardo la fecha de actualización			
+			GestionActualizaciones ga = new GestionActualizaciones(this);
+			ga.guardarActualizacion();
+			ga.cerrarDatabase();
+
 			DatosLocal dl = new DatosLocal();
 			dl.execute(idLocal);
 		}
@@ -252,7 +260,7 @@ public class ServicioDatosLocal extends Service {
 		// Se guardan las comandas
 		JSONArray comandasActivas = datosLocal
 				.getJSONArray(GestionComanda.JSON_COMANDAS_ACTIVAS);
-		//Log.d("K",comandasActivas.toString());
+		// Log.d("K",comandasActivas.toString());
 		guardarComandas(comandasActivas, true);
 
 		JSONArray comandasCerradas = datosLocal

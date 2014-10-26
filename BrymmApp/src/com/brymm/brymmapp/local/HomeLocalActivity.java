@@ -6,6 +6,7 @@ import com.brymm.brymmapp.Brymmapp;
 import com.brymm.brymmapp.InicioActivity;
 import com.brymm.brymmapp.LoginActivity;
 import com.brymm.brymmapp.R;
+import com.brymm.brymmapp.local.bbdd.GestionArticulo;
 import com.brymm.brymmapp.menu.MenuLocal;
 import com.brymm.brymmapp.servicios.ServicioActualizacionLocal;
 
@@ -47,7 +48,7 @@ public class HomeLocalActivity extends Activity {
 
 	@Override
 	protected void onDestroy() {
-		//Paro el servicio si no se guarda la sesion
+		// Paro el servicio si no se guarda la sesion
 		if (!LoginActivity.getSessionLocal(this)) {
 			this.pararActualizacionDatos();
 		}
@@ -58,13 +59,13 @@ public class HomeLocalActivity extends Activity {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.SECOND, 10);
 
-		Intent myIntent = new Intent(this, ServicioActualizacionLocal.class);
-		PendingIntent pendingIntentFriday = PendingIntent.getService(this,
-				123098, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		Intent myIntent = new Intent(this, ServicioActualizacionLocal.class);		
+		PendingIntent pendingIntent= PendingIntent.getService(this,
+				123098, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);		
 
 		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		alarmManager.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(),
-				20 * 1000, pendingIntentFriday);
+				60 * 1000, pendingIntent);
 	}
 
 	public void pararActualizacionDatos() {

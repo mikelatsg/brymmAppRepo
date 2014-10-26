@@ -567,7 +567,7 @@ public class LoginActivity extends Activity {
 
 	}
 
-	public void arrancarServicioLocal(int idLocal) {
+	public void arrancarServicioLocal(int idLocal) {		
 		Intent i = new Intent(this, ServicioDatosLocal.class);
 		i.putExtra(EXTRA_ID_LOCAL, idLocal);
 		startService(i);
