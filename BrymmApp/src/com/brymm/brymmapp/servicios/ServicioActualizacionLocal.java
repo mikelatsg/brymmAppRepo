@@ -7,6 +7,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -69,6 +70,11 @@ import android.widget.Toast;
 
 public class ServicioActualizacionLocal extends Service {
 
+	public static final String TIPO_OBJECTO = "tipoObjeto";
+	public static final String ALERTAS = "alertas";
+	public static final String OBJETO = "objecto";
+	public static final String ACCION = "accion";
+	public static final String BORRAR = "BOR";
 	private final IBinder binder = new MiBinder();
 
 	public class MiBinder extends Binder {
@@ -92,8 +98,7 @@ public class ServicioActualizacionLocal extends Service {
 
 		if (idLocal > 0) {
 			DatosLocal dl = new DatosLocal();
-			dl.execute(Integer.toString(idLocal),
-					fecha);
+			dl.execute(Integer.toString(idLocal), fecha);
 		}
 
 		Toast.makeText(getApplicationContext(),
@@ -110,6 +115,37 @@ public class ServicioActualizacionLocal extends Service {
 	public void onDestroy() {
 		Toast.makeText(getApplicationContext(), "Service destroyed ", 1).show();
 		super.onDestroy();
+	}
+
+	private void guardarDatos(JSONObject datosActualizados)
+			throws JSONException {
+		// Se guardan los tipos de articulo en la bd
+		JSONArray alertasJson = datosActualizados.getJSONArray(ALERTAS);
+
+		for (int i = 0; i < alertasJson.length(); i++) {
+			JSONObject jsonObject = alertasJson.getJSONObject(i);
+
+			if (jsonObject.getString(TIPO_OBJECTO).equals(
+					GestionArticulo.JSON_ARTICULO)) {
+
+				if (jsonObject.getString(ACCION).equals(BORRAR)) {
+					GestionArticulo ga = new GestionArticulo(this);
+					ga.borrarArticulo(jsonObject.getJSONObject(OBJETO).getInt(
+							GestionArticulo.JSON_ID_ARTICULO));
+					ga.cerrarDatabase();
+				} else {
+					Articulo articulo = GestionArticulo
+							.articuloJson2Articulo(jsonObject
+									.getJSONObject(OBJETO));
+
+					GestionArticulo ga = new GestionArticulo(this);
+					ga.guardarArticulo(articulo);
+					ga.cerrarDatabase();
+				}
+
+			}
+		}
+
 	}
 
 	private JSONObject obtenerActualicacionDatosLocal(int idLocal, String fecha) {
@@ -167,10 +203,12 @@ public class ServicioActualizacionLocal extends Service {
 
 			boolean operacionOk;
 			try {
-				operacionOk = respJSON.getInt(Resultado.JSON_OPERACION_OK) == 0 ? false
-						: true;
+				operacionOk = respJSON.getInt(Resultado.JSON_OPERACION_OK) == 1 ? true
+						: false;
 
 				if (operacionOk) {
+					guardarDatos(respJSON);
+
 					GestionActualizaciones ga = new GestionActualizaciones(
 							ServicioActualizacionLocal.this);
 					ga.guardarActualizacion();
