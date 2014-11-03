@@ -72,7 +72,7 @@ public class ServicioActualizacionLocal extends Service {
 
 	public static final String TIPO_OBJECTO = "tipoObjeto";
 	public static final String ALERTAS = "alertas";
-	public static final String OBJETO = "objecto";
+	public static final String OBJETO = "objeto";
 	public static final String ACCION = "accion";
 	public static final String BORRAR = "BOR";
 	private final IBinder binder = new MiBinder();
