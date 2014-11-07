@@ -9,12 +9,15 @@ import com.brymm.brymmapp.local.fragments.ListaPedidosFragment;
 import com.brymm.brymmapp.menu.MenuLocal;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +33,8 @@ public class PedidosActivity extends FragmentActivity {
 	private List<String> estadosPedido;
 	private List<String> idEstadosPedido;
 	private String estadoPedido = GestionPedido.ESTADO_PENDIENTE;
+
+	private ActionBarDrawerToggle mDrawerToggle;
 
 	private OnItemClickListener oicl = new OnItemClickListener() {
 
@@ -56,6 +61,16 @@ public class PedidosActivity extends FragmentActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+				mDrawerLayout.closeDrawer(Gravity.LEFT);
+			} else {
+				mDrawerLayout.openDrawer(Gravity.LEFT);
+			}
+
+			return true;
+		}
+
 		if (MenuLocal.gestionMenu(item.getItemId(), this)) {
 			return true;
 		}
@@ -104,7 +119,7 @@ public class PedidosActivity extends FragmentActivity {
 		Bundle args = new Bundle();
 		args.putString(ListaPedidosFragment.EXTRA_ID_ESTADO,
 				this.idEstadosPedido.get(0));
-		fragment.setArguments(args);		
+		fragment.setArguments(args);
 
 		/*
 		 * fragmentManager.beginTransaction() .replace(R.id.listaPedidosFl,
@@ -133,8 +148,8 @@ public class PedidosActivity extends FragmentActivity {
 		args.putString(ListaPedidosFragment.EXTRA_ID_ESTADO,
 				this.idEstadosPedido.get(posicion));
 		fragment.setArguments(args);
-		
-		//Se guarda el estado
+
+		// Se guarda el estado
 		this.estadoPedido = this.idEstadosPedido.get(posicion);
 
 		fragmentManager.beginTransaction()

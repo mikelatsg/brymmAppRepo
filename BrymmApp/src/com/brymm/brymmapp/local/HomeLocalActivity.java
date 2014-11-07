@@ -13,9 +13,11 @@ import com.brymm.brymmapp.servicios.ServicioActualizacionLocal;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -28,7 +30,7 @@ public class HomeLocalActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home_local);
 		pararActualizacionDatos();
-		arrancarActualizacionDatos(LoginActivity.getLocal(this));
+		arrancarActualizacionDatos(LoginActivity.getLocal(this));		
 	}
 
 	@Override
@@ -54,7 +56,7 @@ public class HomeLocalActivity extends Activity {
 		}
 		super.onDestroy();
 	}
-
+	
 	public void arrancarActualizacionDatos(int idLocal) {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.SECOND, 10);

@@ -1063,6 +1063,36 @@ public final class R {
          */
         public static final int mostrar_local_telefono=0x7f06001e;
         public static final int mostrar_local_tipo_comida=0x7f060020;
+        public static final int notificacion_articulo=0x7f060137;
+        public static final int notificacion_comanda=0x7f06013d;
+        public static final int notificacion_dia_cierre=0x7f060147;
+        public static final int notificacion_dia_cierre_reserva=0x7f060151;
+        public static final int notificacion_horario_local=0x7f060143;
+        public static final int notificacion_horario_pedido=0x7f060145;
+        public static final int notificacion_ingrediente=0x7f06013f;
+        public static final int notificacion_menu_dia=0x7f06014d;
+        public static final int notificacion_menus=0x7f06014b;
+        public static final int notificacion_mesa=0x7f060149;
+        /**  Notificaciones 
+         */
+        public static final int notificacion_modificacion_articulo=0x7f060136;
+        public static final int notificacion_modificacion_comanda=0x7f06013c;
+        public static final int notificacion_modificacion_dia_cierre=0x7f060146;
+        public static final int notificacion_modificacion_dia_cierre_reserva=0x7f060150;
+        public static final int notificacion_modificacion_horario_local=0x7f060142;
+        public static final int notificacion_modificacion_horario_pedido=0x7f060144;
+        public static final int notificacion_modificacion_ingrediente=0x7f06013e;
+        public static final int notificacion_modificacion_menu_dia=0x7f06014c;
+        public static final int notificacion_modificacion_menus=0x7f06014a;
+        public static final int notificacion_modificacion_mesa=0x7f060148;
+        public static final int notificacion_modificacion_pedido=0x7f060138;
+        public static final int notificacion_modificacion_plato=0x7f06014e;
+        public static final int notificacion_modificacion_reserva=0x7f06013a;
+        public static final int notificacion_modificacion_tipo_articulo=0x7f060140;
+        public static final int notificacion_pedido=0x7f060139;
+        public static final int notificacion_plato=0x7f06014f;
+        public static final int notificacion_reserva=0x7f06013b;
+        public static final int notificacion_tipo_articulo=0x7f060141;
         public static final int nueva_reserva_local_cancelar=0x7f0600f5;
         public static final int nueva_reserva_local_fecha=0x7f0600f1;
         public static final int nueva_reserva_local_hora=0x7f0600f2;

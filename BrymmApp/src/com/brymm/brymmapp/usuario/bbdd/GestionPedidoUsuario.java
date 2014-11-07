@@ -20,9 +20,10 @@ import android.util.Log;
 
 public class GestionPedidoUsuario {
 
+	public static final String JSON_PEDIDO = "pedido";
 	public static final String JSON_ID_PEDIDO = "idPedido";
 	public static final String JSON_ESTADO = "estado";
-	public static final String JSON_PRECIO = "precio";
+	public static final String JSON_PRECIO = "precio";	
 	public static final String JSON_FECHA_PEDIDO = "fechaPedido";
 	public static final String JSON_OBSERVACIONES = "observaciones";
 	public static final String JSON_NOMBRE_LOCAL = "nombreLocal";

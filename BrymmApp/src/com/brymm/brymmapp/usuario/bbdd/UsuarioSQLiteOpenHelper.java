@@ -269,6 +269,12 @@ public class UsuarioSQLiteOpenHelper extends SQLiteOpenHelper {
 	private static final String DROP_TABLE_DIRECCIONES = "DROP TABLE IF EXISTS "
 			+ TABLE_DIRECCIONES;
 
+	public static final String TABLE_ACTUALIZACION = "actualizacion";
+	public static final String COLUMN_ACT_FECHA = "fecha";
+
+	private static final String CREATE_TABLE_ACTUALIZACIONES = "CREATE TABLE "
+			+ TABLE_ACTUALIZACION + "(" + COLUMN_ACT_FECHA + " TEXT NOT NULL )";
+
 	public UsuarioSQLiteOpenHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
@@ -289,6 +295,7 @@ public class UsuarioSQLiteOpenHelper extends SQLiteOpenHelper {
 		database.execSQL(CREATE_TABLE_INGREDIENTES_LOCAL);
 		database.execSQL(CREATE_TABLE_DETALLE_ARTICULO);
 		database.execSQL(CREATE_TABLE_ARTICULOS_LOCAL);
+		database.execSQL(CREATE_TABLE_ACTUALIZACIONES);
 	}
 
 	@Override

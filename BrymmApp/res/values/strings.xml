@@ -472,8 +472,39 @@
     <string name="anadir_menu_comanda_anadir">Anadir</string>
     <string name="anadir_menu_comanda_no_menu_disponible">No hay ningún menu el dia indicado</string>
     <string name="anadir_menu_comanda_no_plato_seleccionado">No hay ningún plato seleccionado</string>
-    
+
     <!-- Añadir a comanda -->
     <string name="anadir_a_comanda_no_comanda_activa">No hay comandas activas.</string>
+
+    <!-- Notificaciones -->
+    <string name="notificacion_modificacion_articulo">Modificaciones en articulos </string>
+    <string name="notificacion_articulo">,articulos </string>
+    <string name="notificacion_modificacion_pedido">Modificaciones en pedidos </string>
+    <string name="notificacion_pedido">,pedidos </string>
+    <string name="notificacion_modificacion_reserva">Modificaciones en reservas </string>
+    <string name="notificacion_reserva">,reservas </string>
+    <string name="notificacion_modificacion_comanda">Modificaciones en comandas </string>
+    <string name="notificacion_comanda">,comandas </string>
+    <string name="notificacion_modificacion_ingrediente">Modificaciones en ingredientes </string>
+    <string name="notificacion_ingrediente">,ingredientes </string>
+    <string name="notificacion_modificacion_tipo_articulo">Modificaciones en tipos de articulo </string>
+    <string name="notificacion_tipo_articulo">,tipos de articulo </string>
+    <string name="notificacion_modificacion_horario_local">Modificaciones en horarios de local </string>
+    <string name="notificacion_horario_local">,horarios de local </string>
+    <string name="notificacion_modificacion_horario_pedido">Modificaciones en horarios de pedido </string>
+    <string name="notificacion_horario_pedido">,horarios de pedido </string>
+    <string name="notificacion_modificacion_dia_cierre">Modificaciones en los dia de cierre </string>
+    <string name="notificacion_dia_cierre">,dias de cierre </string>
+    <string name="notificacion_modificacion_mesa">Modificaciones en mesas </string>
+    <string name="notificacion_mesa">,mesas </string>
+    <string name="notificacion_modificacion_menus">Modificaciones en menus </string>
+    <string name="notificacion_menus">,menus </string>
+    <string name="notificacion_modificacion_menu_dia">Modificaciones en menus del dia </string>
+    <string name="notificacion_menu_dia">,menus del dia </string>
+    <string name="notificacion_modificacion_plato">Modificaciones en platos </string>
+    <string name="notificacion_plato">,platos </string>
+    <string name="notificacion_modificacion_dia_cierre_reserva">Modificaciones en dias cerrados para reservas </string>
+    <string name="notificacion_dia_cierre_reserva">,dias cerrados para reservas </string>    
+    
 
 </resources>

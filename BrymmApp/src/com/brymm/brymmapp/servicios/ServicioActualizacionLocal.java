@@ -11,13 +11,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.brymm.brymmapp.LoginActivity;
+import com.brymm.brymmapp.R;
+import com.brymm.brymmapp.local.ArticulosActivity;
+import com.brymm.brymmapp.local.ComandasActivity;
+import com.brymm.brymmapp.local.HomeLocalActivity;
+import com.brymm.brymmapp.local.HorariosActivity;
+import com.brymm.brymmapp.local.MenusActivity;
+import com.brymm.brymmapp.local.PedidosActivity;
+import com.brymm.brymmapp.local.ReservasActivity;
 import com.brymm.brymmapp.local.bbdd.GestionActualizaciones;
 import com.brymm.brymmapp.local.bbdd.GestionArticulo;
 import com.brymm.brymmapp.local.bbdd.GestionCamarero;
 import com.brymm.brymmapp.local.bbdd.GestionComanda;
 import com.brymm.brymmapp.local.bbdd.GestionDiaCierre;
 import com.brymm.brymmapp.local.bbdd.GestionDiaCierreReserva;
-import com.brymm.brymmapp.local.bbdd.GestionDiaSemana;
 import com.brymm.brymmapp.local.bbdd.GestionHorarioLocal;
 import com.brymm.brymmapp.local.bbdd.GestionHorarioPedido;
 import com.brymm.brymmapp.local.bbdd.GestionIngrediente;
@@ -46,11 +53,17 @@ import com.brymm.brymmapp.local.pojo.HorarioPedido;
 import com.brymm.brymmapp.util.Resultado;
 import com.google.gson.JsonObject;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -60,6 +73,7 @@ public class ServicioActualizacionLocal extends Service {
 	public static final String ALERTAS = "alertas";
 	public static final String OBJETO = "objeto";
 	public static final String ACCION = "accion";
+	public static final String CREAR_NOTIFICACION = "crearNotificacion";
 	public static final String BORRAR = "BOR";
 	private final IBinder binder = new MiBinder();
 
@@ -71,7 +85,8 @@ public class ServicioActualizacionLocal extends Service {
 
 	@Override
 	public void onCreate() {
-		Toast.makeText(getApplicationContext(), "Service created ", 1).show();
+		Toast.makeText(getApplicationContext(), "Service created ",
+				Toast.LENGTH_LONG).show();
 		super.onCreate();
 	}
 
@@ -88,7 +103,8 @@ public class ServicioActualizacionLocal extends Service {
 		}
 
 		Toast.makeText(getApplicationContext(),
-				"Service Running " + Integer.toString(idLocal), 1).show();
+				"Service Running " + Integer.toString(idLocal),
+				Toast.LENGTH_LONG).show();
 		return START_REDELIVER_INTENT;
 	}
 
@@ -99,12 +115,17 @@ public class ServicioActualizacionLocal extends Service {
 
 	@Override
 	public void onDestroy() {
-		Toast.makeText(getApplicationContext(), "Service destroyed ", 1).show();
+		Toast.makeText(getApplicationContext(), "Service destroyed ",
+				Toast.LENGTH_LONG).show();
 		super.onDestroy();
 	}
 
 	private void guardarDatos(JSONObject datosActualizados)
 			throws JSONException {
+		String textoAlerta = null;
+		Resources res = this.getResources();
+		Class<?> clase = null;
+
 		// Se guardan los tipos de articulo en la bd
 		JSONArray alertasJson = datosActualizados.getJSONArray(ALERTAS);
 
@@ -121,6 +142,22 @@ public class ServicioActualizacionLocal extends Service {
 							GestionArticulo.JSON_ID_ARTICULO));
 					ga.cerrarDatabase();
 				} else {
+
+					//Se comprueba si requiere notificacion
+					if (jsonObject.getInt(CREAR_NOTIFICACION) == 1) {
+						if (textoAlerta == null) {
+							textoAlerta = res
+									.getString(R.string.notificacion_modificacion_articulo);
+							
+							clase = ArticulosActivity.class;
+						} else {
+							textoAlerta += res
+									.getString(R.string.notificacion_articulo);
+							
+							clase = HomeLocalActivity.class;
+						}
+					}
+
 					Articulo articulo = GestionArticulo
 							.articuloJson2Articulo(jsonObject
 									.getJSONObject(OBJETO));
@@ -135,6 +172,21 @@ public class ServicioActualizacionLocal extends Service {
 			// Pedidos
 			if (jsonObject.getString(TIPO_OBJECTO).equals(
 					GestionPedido.JSON_PEDIDO)) {
+				
+				//Se comprueba si requiere notificacion
+				if (jsonObject.getInt(CREAR_NOTIFICACION) == 1) {
+					if (textoAlerta == null) {
+						textoAlerta = res
+								.getString(R.string.notificacion_modificacion_pedido);
+						
+						clase = PedidosActivity.class;
+					} else {
+						textoAlerta += res
+								.getString(R.string.notificacion_pedido);
+						
+						clase = HomeLocalActivity.class;
+					}
+				}
 
 				Pedido pedido = GestionPedido.pedidoJson2Pedido(jsonObject
 						.getJSONObject(OBJETO));
@@ -147,6 +199,21 @@ public class ServicioActualizacionLocal extends Service {
 			// Reservas
 			if (jsonObject.getString(TIPO_OBJECTO).equals(
 					GestionReserva.JSON_RESERVA)) {
+				
+				//Se comprueba si requiere notificacion
+				if (jsonObject.getInt(CREAR_NOTIFICACION) == 1) {
+					if (textoAlerta == null) {
+						textoAlerta = res
+								.getString(R.string.notificacion_modificacion_reserva);
+						
+						clase = ReservasActivity.class;
+					} else {
+						textoAlerta += res
+								.getString(R.string.notificacion_reserva);
+						
+						clase = HomeLocalActivity.class;
+					}
+				}
 
 				Reserva reserva = GestionReserva.reservaJson2Reserva(jsonObject
 						.getJSONObject(OBJETO));
@@ -159,6 +226,21 @@ public class ServicioActualizacionLocal extends Service {
 			// Comandas
 			if (jsonObject.getString(TIPO_OBJECTO).equals(
 					GestionComanda.JSON_COMANDA)) {
+				
+				//Se comprueba si requiere notificacion
+				if (jsonObject.getInt(CREAR_NOTIFICACION) == 1) {
+					if (textoAlerta == null) {
+						textoAlerta = res
+								.getString(R.string.notificacion_modificacion_comanda);
+						
+						clase = ComandasActivity.class;
+					} else {
+						textoAlerta += res
+								.getString(R.string.notificacion_comanda);
+						
+						clase = HomeLocalActivity.class;
+					}
+				}
 
 				Comanda comanda = GestionComanda.comandaJson2Comanda(jsonObject
 						.getJSONObject(OBJETO));
@@ -178,6 +260,22 @@ public class ServicioActualizacionLocal extends Service {
 							.getInt(GestionIngrediente.JSON_ID_INGREDIENTE));
 					gi.cerrarDatabase();
 				} else {
+					
+					//Se comprueba si requiere notificacion
+					if (jsonObject.getInt(CREAR_NOTIFICACION) == 1) {
+						if (textoAlerta == null) {
+							textoAlerta = res
+									.getString(R.string.notificacion_modificacion_ingrediente);
+							
+							clase = ArticulosActivity.class;
+						} else {
+							textoAlerta += res
+									.getString(R.string.notificacion_ingrediente);
+							
+							clase = HomeLocalActivity.class;
+						}
+					}
+					
 					Ingrediente ingrediente = GestionIngrediente
 							.ingredienteJson2Ingrediente(jsonObject
 									.getJSONObject(OBJETO));
@@ -201,6 +299,22 @@ public class ServicioActualizacionLocal extends Service {
 							.getInt(GestionTipoArticuloLocal.JSON_ID_TIPO_ARTICULO_LOCAL));
 					gtal.cerrarDatabase();
 				} else {
+					
+					//Se comprueba si requiere notificacion
+					if (jsonObject.getInt(CREAR_NOTIFICACION) == 1) {
+						if (textoAlerta == null) {
+							textoAlerta = res
+									.getString(R.string.notificacion_modificacion_tipo_articulo);
+							
+							clase = ArticulosActivity.class;
+						} else {
+							textoAlerta += res
+									.getString(R.string.notificacion_tipo_articulo);
+							
+							clase = HomeLocalActivity.class;
+						}
+					}
+					
 					TipoArticuloLocal tipoArticuloLocal = GestionTipoArticuloLocal
 							.tipoArticuloLocalJson2TipoArticuloLocal(jsonObject
 									.getJSONObject(OBJETO));
@@ -223,6 +337,22 @@ public class ServicioActualizacionLocal extends Service {
 							.getInt(GestionHorarioLocal.JSON_ID_HORARIO_LOCAL));
 					ghl.cerrarDatabase();
 				} else {
+					
+					//Se comprueba si requiere notificacion
+					if (jsonObject.getInt(CREAR_NOTIFICACION) == 1) {
+						if (textoAlerta == null) {
+							textoAlerta = res
+									.getString(R.string.notificacion_modificacion_horario_local);
+							
+							clase = HorariosActivity.class;
+						} else {
+							textoAlerta += res
+									.getString(R.string.notificacion_horario_local);
+							
+							clase = HomeLocalActivity.class;
+						}
+					}
+					
 					HorarioLocal horarioLocal = GestionHorarioLocal
 							.horarioLocalJson2HorarioLocal(jsonObject
 									.getJSONObject(OBJETO));
@@ -244,6 +374,22 @@ public class ServicioActualizacionLocal extends Service {
 							.getInt(GestionHorarioPedido.JSON_ID_HORARIO_PEDIDO));
 					ghp.cerrarDatabase();
 				} else {
+					
+					//Se comprueba si requiere notificacion
+					if (jsonObject.getInt(CREAR_NOTIFICACION) == 1) {
+						if (textoAlerta == null) {
+							textoAlerta = res
+									.getString(R.string.notificacion_modificacion_horario_pedido);
+							
+							clase = HorariosActivity.class;
+						} else {
+							textoAlerta += res
+									.getString(R.string.notificacion_horario_pedido);
+							
+							clase = HomeLocalActivity.class;
+						}
+					}
+					
 					HorarioPedido horarioPedido = GestionHorarioPedido
 							.horarioPedidoJson2HorarioPedido(jsonObject
 									.getJSONObject(OBJETO));
@@ -264,6 +410,22 @@ public class ServicioActualizacionLocal extends Service {
 							.getInt(GestionDiaCierre.JSON_ID_DIA_CIERRE));
 					gdc.cerrarDatabase();
 				} else {
+					
+					//Se comprueba si requiere notificacion
+					if (jsonObject.getInt(CREAR_NOTIFICACION) == 1) {
+						if (textoAlerta == null) {
+							textoAlerta = res
+									.getString(R.string.notificacion_modificacion_dia_cierre);
+							
+							clase = HorariosActivity.class;
+						} else {
+							textoAlerta += res
+									.getString(R.string.notificacion_dia_cierre);
+							
+							clase = HomeLocalActivity.class;
+						}
+					}
+					
 					DiaCierre diaCierre = GestionDiaCierre
 							.diaCierreJson2DiaCierre(jsonObject
 									.getJSONObject(OBJETO));
@@ -284,6 +446,22 @@ public class ServicioActualizacionLocal extends Service {
 							GestionMesa.JSON_ID_MESA));
 					gm.cerrarDatabase();
 				} else {
+					
+					//Se comprueba si requiere notificacion
+					if (jsonObject.getInt(CREAR_NOTIFICACION) == 1) {
+						if (textoAlerta == null) {
+							textoAlerta = res
+									.getString(R.string.notificacion_modificacion_mesa);
+							
+							clase = ReservasActivity.class;
+						} else {
+							textoAlerta += res
+									.getString(R.string.notificacion_mesa);
+							
+							clase = HomeLocalActivity.class;
+						}
+					}
+					
 					Mesa mesa = GestionMesa.mesaJson2Mesa(jsonObject
 							.getJSONObject(OBJETO));
 
@@ -303,6 +481,22 @@ public class ServicioActualizacionLocal extends Service {
 							GestionMenu.JSON_ID_MENU));
 					gm.cerrarDatabase();
 				} else {
+					
+					//Se comprueba si requiere notificacion
+					if (jsonObject.getInt(CREAR_NOTIFICACION) == 1) {
+						if (textoAlerta == null) {
+							textoAlerta = res
+									.getString(R.string.notificacion_modificacion_menus);
+							
+							clase = MenusActivity.class;
+						} else {
+							textoAlerta += res
+									.getString(R.string.notificacion_menus);
+							
+							clase = HomeLocalActivity.class;
+						}
+					}
+					
 					MenuLocal menu = GestionMenu.menuJson2Menu(jsonObject
 							.getJSONObject(OBJETO));
 
@@ -322,6 +516,22 @@ public class ServicioActualizacionLocal extends Service {
 							GestionMenuDia.JSON_ID_MENU_DIA));
 					gm.cerrarDatabase();
 				} else {
+					
+					//Se comprueba si requiere notificacion
+					if (jsonObject.getInt(CREAR_NOTIFICACION) == 1) {
+						if (textoAlerta == null) {
+							textoAlerta = res
+									.getString(R.string.notificacion_modificacion_menu_dia);
+							
+							clase = MenusActivity.class;
+						} else {
+							textoAlerta += res
+									.getString(R.string.notificacion_menu_dia);
+							
+							clase = HomeLocalActivity.class;
+						}
+					}
+					
 					MenuDia menuDia = GestionMenuDia
 							.menuDiaJson2MenuDia(jsonObject
 									.getJSONObject(OBJETO));
@@ -342,6 +552,22 @@ public class ServicioActualizacionLocal extends Service {
 							GestionPlato.JSON_ID_PLATO));
 					gp.cerrarDatabase();
 				} else {
+					
+					//Se comprueba si requiere notificacion
+					if (jsonObject.getInt(CREAR_NOTIFICACION) == 1) {
+						if (textoAlerta == null) {
+							textoAlerta = res
+									.getString(R.string.notificacion_modificacion_plato);
+							
+							clase = MenusActivity.class;
+						} else {
+							textoAlerta += res
+									.getString(R.string.notificacion_plato);
+							
+							clase = HomeLocalActivity.class;
+						}
+					}
+					
 					Plato plato = GestionPlato.platoJson2Plato(jsonObject
 							.getJSONObject(OBJETO));
 
@@ -360,7 +586,8 @@ public class ServicioActualizacionLocal extends Service {
 					gc.borrarCamarero(jsonObject.getJSONObject(OBJETO).getInt(
 							GestionCamarero.JSON_ID_CAMARERO));
 					gc.cerrarDatabase();
-				} else {
+				} else {					
+					
 					Camarero camarero = GestionCamarero
 							.camareroJson2Camarero(jsonObject
 									.getJSONObject(OBJETO));
@@ -383,11 +610,28 @@ public class ServicioActualizacionLocal extends Service {
 							.getInt(GestionDiaCierreReserva.JSON_ID_DIA_CIERRE_RESERVA));
 					gdcr.cerrarDatabase();
 				} else {
+					
+					//Se comprueba si requiere notificacion
+					if (jsonObject.getInt(CREAR_NOTIFICACION) == 1) {
+						if (textoAlerta == null) {
+							textoAlerta = res
+									.getString(R.string.notificacion_modificacion_dia_cierre_reserva);
+							
+							clase = ReservasActivity.class;
+						} else {
+							textoAlerta += res
+									.getString(R.string.notificacion_dia_cierre_reserva);
+							
+							clase = HomeLocalActivity.class;
+						}
+					}
+					
 					DiaCierreReserva diaCierreReserva = GestionDiaCierreReserva
 							.diaCierreReservaJson2DiaCierreReserva(jsonObject
 									.getJSONObject(OBJETO));
 
-					GestionDiaCierreReserva gdcr = new GestionDiaCierreReserva(this);
+					GestionDiaCierreReserva gdcr = new GestionDiaCierreReserva(
+							this);
 					gdcr.guardarDiaCierreReserva(diaCierreReserva);
 					gdcr.cerrarDatabase();
 				}
@@ -397,6 +641,24 @@ public class ServicioActualizacionLocal extends Service {
 
 	}
 
+	public void crearNotificacion(Class<?> destino, String texto) {
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+				this).setSmallIcon(android.R.drawable.stat_sys_warning)
+				.setContentTitle("Brymm").setContentText(texto)
+				.setContentInfo("4").setTicker("Alerta!");
+
+		Intent notIntent = new Intent(this, destino);
+
+		PendingIntent contIntent = PendingIntent.getActivity(this, 0,
+				notIntent, 0);
+
+		mBuilder.setContentIntent(contIntent);
+
+		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+		mNotificationManager.notify(1, mBuilder.build());
+	}
+
 	private JSONObject obtenerActualicacionDatosLocal(int idLocal, String fecha) {
 		String respStr;
 		JSONObject respJSON = null;
@@ -404,8 +666,15 @@ public class ServicioActualizacionLocal extends Service {
 
 		try {
 
-			String url = LoginActivity.SITE_URL
-					+ "/api/alertas/obtenerAlertasLocal/format/json";
+			String url = null;
+
+			if (LoginActivity.esSesionCamarero(this)) {
+				url = LoginActivity.SITE_URL
+						+ "/api/alertas/obtenerAlertasCamarero/format/json";
+			} else {
+				url = LoginActivity.SITE_URL
+						+ "/api/alertas/obtenerAlertasLocal/format/json";
+			}
 
 			HttpPost httpPost = new HttpPost(url);
 

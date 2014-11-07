@@ -15,7 +15,7 @@ import com.brymm.brymmapp.usuario.pojo.Direccion;
 import com.brymm.brymmapp.usuario.pojo.ReservaUsuario;
 
 public class GestionReservaUsuario {
-
+	
 	public static final String JSON_ULTIMAS_RESERVAS = "ultimasReservas";
 	public static final String JSON_ID_RESERVA = "id_reserva";
 	public static final String JSON_ID_LOCAL = "id_local";
