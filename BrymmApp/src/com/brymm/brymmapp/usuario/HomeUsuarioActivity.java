@@ -20,7 +20,7 @@ public class HomeUsuarioActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home_usuario);
 		pararActualizacionDatos();
-		arrancarActualizacionDatos(LoginActivity.getUsuario(this));
+		arrancarActualizacionDatos();
 	}
 
 	@Override
@@ -39,13 +39,13 @@ public class HomeUsuarioActivity extends Activity {
 		super.onDestroy();
 	}
 
-	public void arrancarActualizacionDatos(int idLocal) {
+	public void arrancarActualizacionDatos() {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.SECOND, 10);
 
 		Intent myIntent = new Intent(this, ServicioActualizacionUsuario.class);		
 		PendingIntent pendingIntent= PendingIntent.getService(this,
-				123098, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);		
+				111111, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);		
 
 		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		alarmManager.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(),

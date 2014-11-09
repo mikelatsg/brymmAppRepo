@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.brymm.brymmapp.LoginActivity;
+import com.brymm.brymmapp.local.bbdd.GestionActualizaciones;
 import com.brymm.brymmapp.local.bbdd.GestionTipoArticuloLocal;
 import com.brymm.brymmapp.usuario.bbdd.GestionArticuloLocal;
 import com.brymm.brymmapp.usuario.bbdd.GestionDireccion;
@@ -110,7 +111,7 @@ public class ServicioDatosUsuario extends Service {
 	private static final String JSON_SL_IMPORTE_MINIMO = "importe_minimo";
 	private static final String JSON_SL_PRECIO = "precio";
 
-	//private static final String JSON_TA_TIPOS_ARTICULO = "tiposArticulo";
+	// private static final String JSON_TA_TIPOS_ARTICULO = "tiposArticulo";
 	private static final String JSON_TA_ID_TIPO_ARTICULO = "id_tipo_articulo";
 	private static final String JSON_TA_TIPO_ARTICULO = "tipo_articulo";
 	private static final String JSON_TA_DESCRIPCION = "descripcion";
@@ -151,6 +152,11 @@ public class ServicioDatosUsuario extends Service {
 		int idUsuario = intent.getIntExtra(LoginActivity.EXTRA_ID_USUARIO, -1);
 
 		if (idUsuario > 0) {
+			// Guardo la fecha de actualización
+			GestionActualizaciones ga = new GestionActualizaciones(this);
+			ga.guardarActualizacion();
+			ga.cerrarDatabase();
+
 			// cargaInicial(idUsuario);
 			DatosUsuario du = new DatosUsuario();
 			du.execute(idUsuario);

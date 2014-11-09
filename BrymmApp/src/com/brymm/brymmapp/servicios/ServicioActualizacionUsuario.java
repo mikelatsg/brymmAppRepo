@@ -11,7 +11,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.brymm.brymmapp.LoginActivity;
+import com.brymm.brymmapp.R;
+import com.brymm.brymmapp.local.ReservasActivity;
 import com.brymm.brymmapp.local.bbdd.GestionActualizaciones;
+import com.brymm.brymmapp.usuario.UltimasReservasActivity;
+import com.brymm.brymmapp.usuario.UltimosPedidosActivity;
 import com.brymm.brymmapp.usuario.bbdd.GestionPedidoUsuario;
 import com.brymm.brymmapp.usuario.bbdd.GestionReservaUsuario;
 import com.brymm.brymmapp.usuario.pojo.PedidoUsuario;
@@ -19,11 +23,16 @@ import com.brymm.brymmapp.usuario.pojo.ReservaUsuario;
 import com.brymm.brymmapp.util.Resultado;
 import com.google.gson.JsonObject;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -61,7 +70,7 @@ public class ServicioActualizacionUsuario extends Service {
 		}
 
 		Toast.makeText(getApplicationContext(),
-				"Service Running " + Integer.toString(idUsuario), 1).show();
+				"Service usuario " + Integer.toString(idUsuario), 1).show();
 		return START_REDELIVER_INTENT;
 	}
 
@@ -78,15 +87,34 @@ public class ServicioActualizacionUsuario extends Service {
 
 	private void guardarDatos(JSONObject datosActualizados)
 			throws JSONException {
+		
+		String textoAlerta = null;
+		Class<?> clase = null;
 		// Se guardan los tipos de articulo en la bd
 		JSONArray alertasJson = datosActualizados.getJSONArray(ALERTAS);
 
 		for (int i = 0; i < alertasJson.length(); i++) {
 			JSONObject jsonObject = alertasJson.getJSONObject(i);
+			Resources res = getResources();
 
 			// Pedidos
 			if (jsonObject.getString(TIPO_OBJECTO).equals(
 					GestionPedidoUsuario.JSON_PEDIDO)) {
+				
+				//Se comprueba si requiere notificacion
+				if (jsonObject.getInt(ServicioActualizacionLocal.CREAR_NOTIFICACION) == 1) {
+					if (textoAlerta == null) {
+						textoAlerta = res
+								.getString(R.string.notificacion_modificacion_dia_cierre_reserva);
+						
+						clase = ReservasActivity.class;
+					} else {
+						textoAlerta += res
+								.getString(R.string.notificacion_modificacion_pedido);
+						
+						clase = UltimosPedidosActivity.class;
+					}
+				}
 
 				PedidoUsuario pedido = GestionPedidoUsuario
 						.pedidoJson2PedidoUsuario(jsonObject
@@ -100,6 +128,21 @@ public class ServicioActualizacionUsuario extends Service {
 			// Reservas
 			if (jsonObject.getString(TIPO_OBJECTO).equals(
 					GestionReservaUsuario.JSON_RESERVA)) {
+				
+				//Se comprueba si requiere notificacion
+				if (jsonObject.getInt(ServicioActualizacionLocal.CREAR_NOTIFICACION) == 1) {
+					if (textoAlerta == null) {
+						textoAlerta = res
+								.getString(R.string.notificacion_modificacion_reserva);
+						
+						clase = ReservasActivity.class;
+					} else {
+						textoAlerta += res
+								.getString(R.string.notificacion_dia_cierre_reserva);
+						
+						clase = UltimasReservasActivity.class;
+					}
+				}
 
 				ReservaUsuario reserva = GestionReservaUsuario
 						.reservaJson2ReservaUsuario(jsonObject
@@ -111,7 +154,32 @@ public class ServicioActualizacionUsuario extends Service {
 			}
 
 		}
+		
+		if (textoAlerta != null){
+			crearNotificacion(clase, textoAlerta);
+		}
 
+	}
+	
+	public void crearNotificacion(Class<?> destino, String texto) {
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+				this).setSmallIcon(android.R.drawable.stat_sys_warning)
+				.setContentTitle("Brymm").setContentText(texto)
+				.setContentInfo("4").setTicker("Alerta!")
+				.setAutoCancel(true);
+
+		Intent notIntent = new Intent(this, destino);
+
+		PendingIntent contIntent = PendingIntent.getActivity(this, 0,
+				notIntent, 0);
+
+		mBuilder.setContentIntent(contIntent);
+
+		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);		
+		
+		mNotificationManager.notify(1, mBuilder.build());
+		
+		
 	}
 
 	private JSONObject obtenerActualicacionDatosUsuario(int idUsuario, String fecha) {

@@ -1,6 +1,5 @@
 package com.brymm.brymmapp;
 
-import java.util.Calendar;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -14,10 +13,9 @@ import org.json.JSONObject;
 
 import com.brymm.brymmapp.local.HomeLocalActivity;
 import com.brymm.brymmapp.local.bbdd.GestionCamarero;
-import com.brymm.brymmapp.servicios.ServicioActualizacionLocal;
 import com.brymm.brymmapp.servicios.ServicioDatosLocal;
 import com.brymm.brymmapp.servicios.ServicioDatosUsuario;
-import com.brymm.brymmapp.usuario.BuscadorLocalesActivity;
+import com.brymm.brymmapp.usuario.HomeUsuarioActivity;
 import com.google.gson.JsonObject;
 
 import android.os.AsyncTask;
@@ -438,7 +436,7 @@ public class LoginActivity extends Activity {
 	 */
 	private void irHomeUsuario() {
 
-		Intent intent = new Intent(this, BuscadorLocalesActivity.class);
+		Intent intent = new Intent(this, HomeUsuarioActivity.class);
 		startActivity(intent);
 
 	}

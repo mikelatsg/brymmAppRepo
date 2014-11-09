@@ -18,12 +18,9 @@ import org.json.JSONObject;
 
 import com.brymm.brymmapp.LoginActivity;
 import com.brymm.brymmapp.R;
-import com.brymm.brymmapp.R.layout;
-import com.brymm.brymmapp.R.menu;
 import com.brymm.brymmapp.menu.MenuUsuario;
 import com.brymm.brymmapp.usuario.bbdd.GestionTipoServicio;
 import com.brymm.brymmapp.usuario.bbdd.GestionTipoComida;
-import com.brymm.brymmapp.usuario.pojo.Direccion;
 import com.brymm.brymmapp.usuario.pojo.Local;
 import com.brymm.brymmapp.usuario.pojo.TipoServicio;
 import com.brymm.brymmapp.usuario.pojo.TipoComida;

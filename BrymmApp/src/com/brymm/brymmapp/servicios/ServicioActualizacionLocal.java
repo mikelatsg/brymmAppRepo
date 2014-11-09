@@ -637,6 +637,10 @@ public class ServicioActualizacionLocal extends Service {
 				}
 
 			}
+			
+			if (textoAlerta != null){
+				crearNotificacion(clase, textoAlerta);
+			}
 		}
 
 	}
@@ -645,7 +649,8 @@ public class ServicioActualizacionLocal extends Service {
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 				this).setSmallIcon(android.R.drawable.stat_sys_warning)
 				.setContentTitle("Brymm").setContentText(texto)
-				.setContentInfo("4").setTicker("Alerta!");
+				.setContentInfo("4").setTicker("Alerta!")
+				.setAutoCancel(true);
 
 		Intent notIntent = new Intent(this, destino);
 
@@ -654,9 +659,11 @@ public class ServicioActualizacionLocal extends Service {
 
 		mBuilder.setContentIntent(contIntent);
 
-		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
+		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);		
+		
 		mNotificationManager.notify(1, mBuilder.build());
+		
+		
 	}
 
 	private JSONObject obtenerActualicacionDatosLocal(int idLocal, String fecha) {
