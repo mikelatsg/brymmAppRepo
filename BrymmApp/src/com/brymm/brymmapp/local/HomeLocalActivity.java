@@ -23,14 +23,14 @@ import android.view.MenuItem;
 
 public class HomeLocalActivity extends Activity {
 
-	private static final int REQUEST_CODE_SERVICIO_ACT = 14;
+	private static final int REQUEST_CODE_ACT_LOCAL = 1001;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home_local);
 		pararActualizacionDatos();
-		arrancarActualizacionDatos(LoginActivity.getLocal(this));		
+		arrancarActualizacionDatos(LoginActivity.getLocal(this));
 	}
 
 	@Override
@@ -56,14 +56,15 @@ public class HomeLocalActivity extends Activity {
 		}
 		super.onDestroy();
 	}
-	
+
 	public void arrancarActualizacionDatos(int idLocal) {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.SECOND, 10);
 
-		Intent myIntent = new Intent(this, ServicioActualizacionLocal.class);		
-		PendingIntent pendingIntent= PendingIntent.getService(this,
-				123098, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);		
+		Intent myIntent = new Intent(this, ServicioActualizacionLocal.class);
+		PendingIntent pendingIntent = PendingIntent.getService(this,
+				REQUEST_CODE_ACT_LOCAL, myIntent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
 
 		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		alarmManager.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(),
@@ -73,8 +74,9 @@ public class HomeLocalActivity extends Activity {
 	public void pararActualizacionDatos() {
 
 		Intent stopIntent = new Intent(this, ServicioActualizacionLocal.class);
-		PendingIntent stopFriday = PendingIntent.getService(this, 123098,
-				stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent stopFriday = PendingIntent.getService(this,
+				REQUEST_CODE_ACT_LOCAL, stopIntent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
 		AlarmManager stopManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		stopManager.cancel(stopFriday);
 	}

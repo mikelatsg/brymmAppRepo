@@ -85,7 +85,7 @@ public class HacerPedidoFragment extends Fragment {
 	private ListView lvArticulos;
 	private Spinner spDirecciones;
 	private EditText etObservaciones, etFecha;
-	private CheckBox cbEnviar, cbFecha;
+	protected CheckBox cbEnviar, cbFecha;
 
 	private List<ListaArticulosPedido> articulosPedido = new ArrayList<ListaArticulosPedido>();
 
@@ -93,6 +93,11 @@ public class HacerPedidoFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
+		if (savedInstanceState != null) {
+			Toast.makeText(getActivity(),
+					savedInstanceState.getString("prueba"), Toast.LENGTH_LONG)
+					.show();
+		}
 		return inflater.inflate(R.layout.fragment_hacer_pedido, container,
 				false);
 	}
@@ -491,6 +496,11 @@ public class HacerPedidoFragment extends Fragment {
 		});
 		custom.show();
 
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putString("prueba", "kk");
 	}
 
 }

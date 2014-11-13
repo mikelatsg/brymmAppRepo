@@ -42,6 +42,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TabHost;
 import android.widget.Toast;
 
 public class BuscadorLocalesActivity extends Activity {
@@ -62,6 +63,9 @@ public class BuscadorLocalesActivity extends Activity {
 	private static final String JSON_L_EMAIL = "email";
 	private static final String JSON_L_TELEFONO = "telefono";
 	private static final String JSON_L_TIPO_COMIDA = "tipo_comida";
+
+	// Datos a mantener
+	private static final String CHECK_SEL = "checkSeleccionados";
 
 	private Button bBuscar;
 	private EditText etNombre, etPoblacion, etCalle, etCodigoPostal;
@@ -91,10 +95,10 @@ public class BuscadorLocalesActivity extends Activity {
 		getMenuInflater().inflate(R.menu.usuario, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (MenuUsuario.gestionMenuUsuario(item.getItemId(), this)){
+		if (MenuUsuario.gestionMenuUsuario(item.getItemId(), this)) {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -249,5 +253,35 @@ public class BuscadorLocalesActivity extends Activity {
 		}
 
 		return respJSON;
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle guardaDatos) {
+		super.onSaveInstanceState(guardaDatos);
+		// Checks seleccionados
+		List<Integer> checkSeleccionados = new ArrayList<Integer>();
+		for (CheckBox cb : checks) {
+			if (cb.isChecked()) {
+				checkSeleccionados.add((Integer) cb.getTag());
+			}
+		}
+		// lo "guardamos" en el Bundle
+		guardaDatos.putIntegerArrayList(CHECK_SEL,
+				(ArrayList<Integer>) checkSeleccionados);
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle recuperaDatos) {
+		super.onRestoreInstanceState(recuperaDatos);
+		// recuperamos el String del Bundle
+		ArrayList<Integer> checkSeleccionados = recuperaDatos
+				.getIntegerArrayList(CHECK_SEL);
+
+		for (CheckBox cb : checks) {			
+			if (checkSeleccionados.contains((Integer) cb.getTag())) {				
+				cb.setChecked(true);
+			}
+		}
+
 	}
 }

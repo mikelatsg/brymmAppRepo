@@ -21,6 +21,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TabHost;
+import android.widget.Toast;
 
 public class MostrarLocalActivity extends FragmentActivity {
 
@@ -28,10 +30,16 @@ public class MostrarLocalActivity extends FragmentActivity {
 	private static final int TIPO_SERVICIO_PEDIDO = 1;
 	private static final int TIPO_SERVICIO_RESERVA = 3;
 	private static final int TIPO_SERVICIO_MENU = 4;
+	private static final int INICIO_LOCAL = 0;
+
+	// Datos a mantener
+	private static final String FRAGMENT_VISIBLE = "fragmentVisible";
 
 	private ListView navList;
 	private DrawerLayout mDrawerLayout;
-	private List<ServicioLocal> serviciosLocalMenu;	
+	private List<ServicioLocal> serviciosLocalMenu;
+
+	private int fragmentVisible = INICIO_LOCAL;
 
 	private OnItemClickListener oicl = new OnItemClickListener() {
 
@@ -47,10 +55,10 @@ public class MostrarLocalActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mostrar_local);
-		
+
 		inicializar();
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -65,14 +73,14 @@ public class MostrarLocalActivity extends FragmentActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	private void inicializar() {
-		
+
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.mostrarLocalDl);
 		navList = (ListView) findViewById(R.id.mostrarLocalLvNavegador);
 
 		List<ServicioLocal> serviciosLocal;
-		
+
 		// Se asigna la lista de servicios
 		GestionServicioLocal gsl = new GestionServicioLocal(this);
 		serviciosLocal = gsl.obtenerServiciosLocal();
@@ -109,7 +117,7 @@ public class MostrarLocalActivity extends FragmentActivity {
 
 		fragmentManager.beginTransaction()
 				.replace(R.id.mostrarLocalLlPrincipal, fragment).commit();
-		
+
 	}
 
 	private void cambiarFragment(int posicion) {
@@ -119,12 +127,15 @@ public class MostrarLocalActivity extends FragmentActivity {
 		switch (servicio.getIdTipoServicio()) {
 		case TIPO_SERVICIO_PEDIDO:
 			fragment = new HacerPedidoFragment();
+			this.fragmentVisible = TIPO_SERVICIO_PEDIDO;
 			break;
 		case TIPO_SERVICIO_RESERVA:
 			fragment = new ReservarFragment();
+			this.fragmentVisible = TIPO_SERVICIO_RESERVA;
 			break;
 		case TIPO_SERVICIO_MENU:
 			fragment = new MenuFragment();
+			this.fragmentVisible = TIPO_SERVICIO_MENU;
 			break;
 		}
 
@@ -136,6 +147,46 @@ public class MostrarLocalActivity extends FragmentActivity {
 		navList.setItemChecked(posicion, true);
 
 		mDrawerLayout.closeDrawer(navList);
+
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle guardaDatos) {
+		super.onSaveInstanceState(guardaDatos);
+
+		guardaDatos.putInt(FRAGMENT_VISIBLE, this.fragmentVisible);		
+
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle recuperaDatos) {
+		super.onRestoreInstanceState(recuperaDatos);
+		// recuperamos el String del Bundle
+		this.fragmentVisible = recuperaDatos.getInt(FRAGMENT_VISIBLE);
+
+		// Cargo el fragment activo
+		Fragment fragment = null;
+		switch (this.fragmentVisible) {
+		case TIPO_SERVICIO_PEDIDO:
+			fragment = new HacerPedidoFragment();
+			this.fragmentVisible = TIPO_SERVICIO_PEDIDO;
+			break;
+		case TIPO_SERVICIO_RESERVA:
+			fragment = new ReservarFragment();
+			this.fragmentVisible = TIPO_SERVICIO_RESERVA;
+			break;
+		case TIPO_SERVICIO_MENU:
+			fragment = new MenuFragment();
+			this.fragmentVisible = TIPO_SERVICIO_MENU;
+			break;
+		case INICIO_LOCAL:
+			break;
+		}
+
+		FragmentManager fragmentManager = getSupportFragmentManager();
+
+		fragmentManager.beginTransaction()
+				.replace(R.id.mostrarLocalLlPrincipal, fragment).commit();
 
 	}
 

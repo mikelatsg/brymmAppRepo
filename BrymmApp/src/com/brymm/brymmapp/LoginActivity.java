@@ -73,6 +73,9 @@ public class LoginActivity extends Activity {
 
 	// Url
 	public static final String SITE_URL = "http://10.0.2.2/brymm/index.php";
+	
+	//Datos a mantener
+	private static final String TAB_SEL = "tabSeleccionado";
 
 	private Button bLoginUsuario, bLoginLocal;
 	private EditText etNick, etPasswordUsuario, etNombreLocal, etCamarero,
@@ -580,5 +583,26 @@ public class LoginActivity extends Activity {
 		}
 
 	}
+	
+	@Override
+    protected void onSaveInstanceState(Bundle guardaDatos) {
+          super.onSaveInstanceState(guardaDatos);
+          //guardo el tab seleccionado
+          TabHost tabs = (TabHost) findViewById(android.R.id.tabhost);
+          int tabSeleccionado = tabs.getCurrentTab();
+          //lo "guardamos" en el Bundle   
+          guardaDatos.putInt(TAB_SEL, tabSeleccionado);   
+    }
+ 
+    @Override
+    protected void onRestoreInstanceState(Bundle recuperaDatos) {
+          super.onRestoreInstanceState(recuperaDatos);
+          //recuperamos el String del Bundle
+          int tabSeleccionado = recuperaDatos.getInt(TAB_SEL);
+          
+          //Sellecciono el tab
+          TabHost tabs = (TabHost) findViewById(android.R.id.tabhost);
+          tabs.setCurrentTab(tabSeleccionado);                    
+    }
 	
 }

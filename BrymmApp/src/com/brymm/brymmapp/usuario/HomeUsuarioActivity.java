@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 import com.brymm.brymmapp.LoginActivity;
 import com.brymm.brymmapp.R;
+import com.brymm.brymmapp.menu.MenuUsuario;
 import com.brymm.brymmapp.servicios.ServicioActualizacionUsuario;
 
 import android.os.Bundle;
@@ -12,8 +13,11 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.view.Menu;
+import android.view.MenuItem;
 
 public class HomeUsuarioActivity extends Activity {
+
+	private static final int REQUEST_CODE_ACT_USUARIO = 1000;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,14 @@ public class HomeUsuarioActivity extends Activity {
 		getMenuInflater().inflate(R.menu.usuario, menu);
 		return true;
 	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (MenuUsuario.gestionMenuUsuario(item.getItemId(), this)) {
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 
 	@Override
 	protected void onDestroy() {
@@ -43,9 +55,10 @@ public class HomeUsuarioActivity extends Activity {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.SECOND, 10);
 
-		Intent myIntent = new Intent(this, ServicioActualizacionUsuario.class);		
-		PendingIntent pendingIntent= PendingIntent.getService(this,
-				111111, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);		
+		Intent myIntent = new Intent(this, ServicioActualizacionUsuario.class);
+		PendingIntent pendingIntent = PendingIntent.getService(this,
+				REQUEST_CODE_ACT_USUARIO, myIntent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
 
 		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		alarmManager.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(),
@@ -55,8 +68,9 @@ public class HomeUsuarioActivity extends Activity {
 	public void pararActualizacionDatos() {
 
 		Intent stopIntent = new Intent(this, ServicioActualizacionUsuario.class);
-		PendingIntent stopFriday = PendingIntent.getService(this, 123098,
-				stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent stopFriday = PendingIntent.getService(this,
+				REQUEST_CODE_ACT_USUARIO, stopIntent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
 		AlarmManager stopManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		stopManager.cancel(stopFriday);
 	}
