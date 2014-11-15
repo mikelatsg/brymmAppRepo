@@ -37,11 +37,13 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -80,6 +82,13 @@ public class HacerPedidoFragment extends Fragment {
 	private static final String JSON_PEDIDO = "pedido";
 	private static final String JSON_MENSAJE = "mensaje";
 
+	// Datos a mantener
+	private static final String ENVIAR = "enviar";
+	private static final String DIRECCION = "direccion";
+	private static final String FECHA = "fecha";
+	private static final String RETRASAR_PEDIDO = "retrasarPedido";
+	private static final String OBSERVACIONES = "observaciones";
+
 	private Button bAnadirArticulo, bTerminarPedido,
 			bAnadirArticuloPersonalizado;
 	private ListView lvArticulos;
@@ -88,24 +97,30 @@ public class HacerPedidoFragment extends Fragment {
 	protected CheckBox cbEnviar, cbFecha;
 
 	private List<ListaArticulosPedido> articulosPedido = new ArrayList<ListaArticulosPedido>();
+	private Bundle datosConservar;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
-		if (savedInstanceState != null) {
-			Toast.makeText(getActivity(),
-					savedInstanceState.getString("prueba"), Toast.LENGTH_LONG)
-					.show();
-		}
 		return inflater.inflate(R.layout.fragment_hacer_pedido, container,
 				false);
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		inicializar();
 		super.onActivityCreated(savedInstanceState);
+		inicializar();
+
+		// Compruebo si se han guardado datos para conservar (rotacion)
+		if (savedInstanceState != null) {			
+			cbEnviar.setChecked(savedInstanceState.getBoolean(ENVIAR));
+			cbFecha.setChecked(savedInstanceState.getBoolean(RETRASAR_PEDIDO));
+			etFecha.setText(savedInstanceState.getString(FECHA));
+			spDirecciones.setSelection(savedInstanceState.getInt(DIRECCION));
+			etObservaciones.setText(savedInstanceState
+					.getString(OBSERVACIONES));
+		}
+
 	}
 
 	@Override
@@ -500,7 +515,12 @@ public class HacerPedidoFragment extends Fragment {
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		outState.putString("prueba", "kk");
+		super.onSaveInstanceState(outState);
+		outState.putBoolean(ENVIAR, cbEnviar.isChecked());
+		outState.putBoolean(RETRASAR_PEDIDO, cbFecha.isChecked());
+		outState.putInt(DIRECCION, spDirecciones.getSelectedItemPosition());
+		outState.putString(FECHA, etFecha.getText().toString());
+		outState.putString(OBSERVACIONES, etObservaciones.getText().toString());
 	}
 
 }

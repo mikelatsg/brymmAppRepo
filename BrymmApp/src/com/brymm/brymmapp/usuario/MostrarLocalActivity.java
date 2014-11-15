@@ -56,7 +56,7 @@ public class MostrarLocalActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mostrar_local);
 
-		inicializar();
+		inicializar(savedInstanceState);
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class MostrarLocalActivity extends FragmentActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void inicializar() {
+	private void inicializar(Bundle savedInstanceState) {
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.mostrarLocalDl);
 		navList = (ListView) findViewById(R.id.mostrarLocalLvNavegador);
@@ -105,18 +105,22 @@ public class MostrarLocalActivity extends FragmentActivity {
 		// navList.setOnItemSelectedListener(oisl);
 		navList.setOnItemClickListener(oicl);
 
-		FragmentManager fragmentManager = getSupportFragmentManager();
+		if (savedInstanceState == null) {
 
-		Fragment fragment = new LocalInicioFragment();
+			FragmentManager fragmentManager = getSupportFragmentManager();
 
-		/*
-		 * Local local = (Local) getIntent().getParcelableExtra(EXTRA_LOCAL);
-		 * Bundle args = new Bundle(); args.putParcelable(EXTRA_LOCAL, local);
-		 * fragment.setArguments(args);
-		 */
+			Fragment fragment = new LocalInicioFragment();
 
-		fragmentManager.beginTransaction()
-				.replace(R.id.mostrarLocalLlPrincipal, fragment).commit();
+			/*
+			 * Local local = (Local)
+			 * getIntent().getParcelableExtra(EXTRA_LOCAL); Bundle args = new
+			 * Bundle(); args.putParcelable(EXTRA_LOCAL, local);
+			 * fragment.setArguments(args);
+			 */
+
+			fragmentManager.beginTransaction()
+					.replace(R.id.mostrarLocalLlPrincipal, fragment).commit();
+		}
 
 	}
 
@@ -154,7 +158,7 @@ public class MostrarLocalActivity extends FragmentActivity {
 	protected void onSaveInstanceState(Bundle guardaDatos) {
 		super.onSaveInstanceState(guardaDatos);
 
-		guardaDatos.putInt(FRAGMENT_VISIBLE, this.fragmentVisible);		
+		guardaDatos.putInt(FRAGMENT_VISIBLE, this.fragmentVisible);
 
 	}
 
@@ -162,7 +166,7 @@ public class MostrarLocalActivity extends FragmentActivity {
 	protected void onRestoreInstanceState(Bundle recuperaDatos) {
 		super.onRestoreInstanceState(recuperaDatos);
 		// recuperamos el String del Bundle
-		this.fragmentVisible = recuperaDatos.getInt(FRAGMENT_VISIBLE);
+		/*this.fragmentVisible = recuperaDatos.getInt(FRAGMENT_VISIBLE);
 
 		// Cargo el fragment activo
 		Fragment fragment = null;
@@ -187,6 +191,7 @@ public class MostrarLocalActivity extends FragmentActivity {
 
 		fragmentManager.beginTransaction()
 				.replace(R.id.mostrarLocalLlPrincipal, fragment).commit();
+				*/
 
 	}
 
