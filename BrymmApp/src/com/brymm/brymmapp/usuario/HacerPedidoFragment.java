@@ -2,6 +2,7 @@ package com.brymm.brymmapp.usuario;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -42,6 +43,7 @@ import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -88,6 +90,8 @@ public class HacerPedidoFragment extends Fragment {
 	private static final String FECHA = "fecha";
 	private static final String RETRASAR_PEDIDO = "retrasarPedido";
 	private static final String OBSERVACIONES = "observaciones";
+	private static final String ARTICULOS = "articulos";
+	private static final String ARTICULOS_PERSONALIZADOS = "articulosPersonalizados";
 
 	private Button bAnadirArticulo, bTerminarPedido,
 			bAnadirArticuloPersonalizado;
@@ -112,13 +116,25 @@ public class HacerPedidoFragment extends Fragment {
 		inicializar();
 
 		// Compruebo si se han guardado datos para conservar (rotacion)
-		if (savedInstanceState != null) {			
+		if (savedInstanceState != null) {
 			cbEnviar.setChecked(savedInstanceState.getBoolean(ENVIAR));
 			cbFecha.setChecked(savedInstanceState.getBoolean(RETRASAR_PEDIDO));
 			etFecha.setText(savedInstanceState.getString(FECHA));
 			spDirecciones.setSelection(savedInstanceState.getInt(DIRECCION));
-			etObservaciones.setText(savedInstanceState
-					.getString(OBSERVACIONES));
+			etObservaciones
+					.setText(savedInstanceState.getString(OBSERVACIONES));
+			ArrayList<ArticuloLocalCantidad> articulos = savedInstanceState
+					.getParcelableArrayList(ARTICULOS);
+			ArrayList<ArticuloPersonalizado> articulosPersonalizados = savedInstanceState
+					.getParcelableArrayList(ARTICULOS_PERSONALIZADOS);
+			if (articulos != null) {
+				this.articulosPedido.addAll(articulos);
+			}
+			articulosPersonalizados = savedInstanceState
+					.getParcelable(ARTICULOS_PERSONALIZADOS);
+			if (articulosPersonalizados != null) {
+				this.articulosPedido.addAll(articulosPersonalizados);
+			}
 		}
 
 	}
@@ -521,6 +537,18 @@ public class HacerPedidoFragment extends Fragment {
 		outState.putInt(DIRECCION, spDirecciones.getSelectedItemPosition());
 		outState.putString(FECHA, etFecha.getText().toString());
 		outState.putString(OBSERVACIONES, etObservaciones.getText().toString());
+
+		ArrayList<ArticuloLocalCantidad> articulos = new ArrayList<ArticuloLocalCantidad>();
+		ArrayList<ArticuloPersonalizado> articulosPersonalizados = new ArrayList<ArticuloPersonalizado>();
+		for (ListaArticulosPedido articulo : this.articulosPedido) {
+			if (articulo instanceof ArticuloPersonalizado) {
+				articulosPersonalizados.add((ArticuloPersonalizado) articulo);
+			} else if (articulo instanceof ArticuloLocalCantidad) {
+				articulos.add((ArticuloLocalCantidad) articulo);
+			}
+		}
+		outState.putParcelableArrayList(ARTICULOS, articulos);
+		outState.putParcelableArrayList(ARTICULOS_PERSONALIZADOS, articulos);
 	}
 
 }
