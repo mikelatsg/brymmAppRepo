@@ -59,36 +59,39 @@ public class MenuFragment extends Fragment {
 	private static final String JSON_TIPO_PLATO = "tipoPlato";
 	private static final String JSON_NOMBRE_PLATO = "nombrePlato";
 	private static final String JSON_PRECIO_MENU = "precioMenu";
+	private static final String MENU = "menu";
 
 	private EditText etFecha;
 	private Spinner spTipoMenu;
 	private Button btVerMenu;
 	private List<String> tiposMenu;
 	private List<Integer> tiposMenuId;
+	private TextView tvMenu = null;
 
 	private OnClickListener ocl = new OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
 			ObtenerMenu om = new ObtenerMenu();
-			
-			//Se obtienen los datos necesarios para enviar la petición
+
+			// Se obtienen los datos necesarios para enviar la petición
 			String idTipoMenu = Integer.toString(tiposMenuId.get(spTipoMenu
 					.getSelectedItemPosition()));
-			
+
 			String fechaMenu;
 			if (etFecha.getText().toString().equals("")) {
 				fechaMenu = Resultado.NO_DATA;
 			} else {
 				fechaMenu = etFecha.getText().toString().replace("/", "-");
 			}
-			
+
 			// Se obtiene el local del intent
 			Intent intent = getActivity().getIntent();
 			Local local = intent
 					.getParcelableExtra(MostrarLocalActivity.EXTRA_LOCAL);
-			
-			om.execute(fechaMenu,Integer.toString(local.getIdLocal()),idTipoMenu);
+
+			om.execute(fechaMenu, Integer.toString(local.getIdLocal()),
+					idTipoMenu);
 
 		}
 	};
@@ -103,6 +106,14 @@ public class MenuFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		inicializar();
+		// Compruebo si se han guardado datos para conservar (rotacion)
+		if (savedInstanceState != null) {
+			LinearLayout ll = (LinearLayout) getActivity().findViewById(
+					R.id.obtenerMenuLlprincipal);
+			tvMenu = new TextView(getActivity());			
+			tvMenu.setText(savedInstanceState.getString(MENU));
+			ll.addView(tvMenu);
+		}
 		super.onActivityCreated(savedInstanceState);
 	}
 
@@ -140,6 +151,14 @@ public class MenuFragment extends Fragment {
 		});
 
 		btVerMenu.setOnClickListener(ocl);
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		if (tvMenu != null) {
+			outState.putString(MENU, tvMenu.getText().toString());
+		}
+
 	}
 
 	@SuppressLint("NewApi")
@@ -184,7 +203,7 @@ public class MenuFragment extends Fragment {
 	}
 
 	private void mostrarMenu(JSONArray menusJson) throws JSONException {
-		TextView tvMenu = new TextView(getActivity());
+		tvMenu = new TextView(getActivity());
 		LinearLayout ll = (LinearLayout) getActivity().findViewById(
 				R.id.obtenerMenuLlprincipal);
 
@@ -226,7 +245,7 @@ public class MenuFragment extends Fragment {
 			String idTipoMenu) {
 		String respStr;
 		JSONObject respJSON = null;
-		HttpClient httpClient = new DefaultHttpClient();				
+		HttpClient httpClient = new DefaultHttpClient();
 
 		try {
 			String url = LoginActivity.SITE_URL
@@ -275,7 +294,7 @@ public class MenuFragment extends Fragment {
 			String mensaje = "";
 			Resultado res = null;
 			try {
-				respJSON = obtenerMenu(params[0],params[1],params[2]);
+				respJSON = obtenerMenu(params[0], params[1], params[2]);
 
 				if (respJSON != null) {
 
@@ -300,7 +319,7 @@ public class MenuFragment extends Fragment {
 			if (resultado != null) {
 				Toast.makeText(getActivity(), resultado.getMensaje(),
 						Toast.LENGTH_LONG).show();
-				
+
 				if (resultado.getCodigo() == Resultado.RES_OK) {
 					try {
 						mostrarMenu(respJSON.getJSONArray(JSON_MENU));
@@ -310,8 +329,6 @@ public class MenuFragment extends Fragment {
 				}
 
 			}
-
-			
 
 		}
 	}

@@ -131,7 +131,7 @@ public class HacerPedidoFragment extends Fragment {
 				this.articulosPedido.addAll(articulos);
 			}
 			articulosPersonalizados = savedInstanceState
-					.getParcelable(ARTICULOS_PERSONALIZADOS);
+					.getParcelableArrayList(ARTICULOS_PERSONALIZADOS);
 			if (articulosPersonalizados != null) {
 				this.articulosPedido.addAll(articulosPersonalizados);
 			}
@@ -548,7 +548,7 @@ public class HacerPedidoFragment extends Fragment {
 			}
 		}
 		outState.putParcelableArrayList(ARTICULOS, articulos);
-		outState.putParcelableArrayList(ARTICULOS_PERSONALIZADOS, articulos);
+		outState.putParcelableArrayList(ARTICULOS_PERSONALIZADOS,  articulosPersonalizados);
 	}
 
 }
