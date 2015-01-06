@@ -131,6 +131,7 @@ public class LocalesFavoritosActivity extends ListActivity {
 	private void inicializar() {
 		Intent intent = new Intent(LocalesFavoritosActivity.this,
 				ServicioDatosUsuario.class);
+		
 		bindService(intent, conexion, Context.BIND_AUTO_CREATE);
 		actualizarListaLocales();
 		getListView().setOnItemClickListener(oicl);
@@ -158,6 +159,12 @@ public class LocalesFavoritosActivity extends ListActivity {
 		setListAdapter(localAdapter);
 	}
 
+	@Override
+	protected void onDestroy() {
+		unbindService(conexion);
+		super.onDestroy();
+	}
+	
 	private JSONObject eliminarFavorito(int idLocal, int idUsuario) {
 		String respStr;
 		JSONObject respJSON = null;

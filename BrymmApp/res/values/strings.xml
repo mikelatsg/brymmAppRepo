@@ -108,6 +108,7 @@
     <string name="title_activity_reservar_fragment">ReservarFragment</string>
     <string name="reservar_fecha">Fecha/hora</string>
     <string name="reservar_numero_personas">Numero personas</string>
+    <string name="reservar_observaciones">Observaciones</string>
     <string name="reservar_realizar_reserva">Realizar reserva</string>
     <string name="reservar_aceptar">Aceptar</string>
     <string name="reservar_cancelar">Cancelar</string>
@@ -381,7 +382,7 @@
     <string name="context_menu_reserva_desasignar_mesa">Desasignar mesa</string>
     <string name="nueva_reserva_local_fecha">Fecha</string>
     <string name="nueva_reserva_local_hora">Hora</string>
-    <string name="nueva_reserva_local_numero_personas">Numero personas</string>
+    <string name="nueva_reserva_local_numero_personas">Numero personas</string>    
     <string name="nueva_reserva_local_realizar_reserva">Realizar reserva</string>
     <string name="nueva_reserva_local_cancelar">Cancelar</string>
     <string name="nueva_reserva_local_nombre_de">A nombre de</string>
